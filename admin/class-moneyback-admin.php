@@ -6,8 +6,8 @@
  * @link       avitrop
  * @since      1.0.0
  *
- * @package    Index_Pashkevil
- * @subpackage Index_Pashkevil/admin
+ * @package    Moneyback
+ * @subpackage Moneyback/admin
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Index_Pashkevil
- * @subpackage Index_Pashkevil/admin
+ * @package    Moneyback
+ * @subpackage Moneyback/admin
  * @author     tziki trop <avitrop@gmail.com>
  */
-class Index_Pashkevil_Admin {
+class Moneyback_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -65,15 +65,15 @@ class Index_Pashkevil_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Index_Pashkevil_Loader as all of the hooks are defined
+		 * defined in Moneyback_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Index_Pashkevil_Loader will then create the relationship
+		 * The Moneyback_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/index-pashkevil-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/moneyback-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -88,15 +88,15 @@ class Index_Pashkevil_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Index_Pashkevil_Loader as all of the hooks are defined
+		 * defined in Moneyback_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Index_Pashkevil_Loader will then create the relationship
+		 * The Moneyback_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/index-pashkevil-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/moneyback-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 

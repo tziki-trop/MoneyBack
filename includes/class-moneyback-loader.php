@@ -6,8 +6,8 @@
  * @link       avitrop
  * @since      1.0.0
  *
- * @package    Index_Pashkevil
- * @subpackage Index_Pashkevil/includes
+ * @package    Moneyback
+ * @subpackage Moneyback/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Index_Pashkevil
- * @subpackage Index_Pashkevil/includes
+ * @package    Moneyback
+ * @subpackage Moneyback/includes
  * @author     tziki trop <avitrop@gmail.com>
  */
-class Index_Pashkevil_Loader {
+class Moneyback_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

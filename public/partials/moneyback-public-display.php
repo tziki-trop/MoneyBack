@@ -8,8 +8,8 @@
  * @link       avitrop
  * @since      1.0.0
  *
- * @package    Index_Pashkevil
- * @subpackage Index_Pashkevil/public/partials
+ * @package    Moneyback
+ * @subpackage Moneyback/public/partials
  */
 ?>
 

@@ -9,8 +9,8 @@
  * @link       avitrop
  * @since      1.0.0
  *
- * @package    Index_Pashkevil
- * @subpackage Index_Pashkevil/includes
+ * @package    Moneyback
+ * @subpackage Moneyback/includes
  */
 
 /**
@@ -20,11 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Index_Pashkevil
- * @subpackage Index_Pashkevil/includes
+ * @package    Moneyback
+ * @subpackage Moneyback/includes
  * @author     tziki trop <avitrop@gmail.com>
  */
-class Index_Pashkevil_i18n {
+class Moneyback_i18n {
 
 
 	/**
@@ -35,7 +35,7 @@ class Index_Pashkevil_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'index-pashkevil',
+			'moneyback',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

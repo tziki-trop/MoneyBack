@@ -6,8 +6,8 @@
  * @link       avitrop
  * @since      1.0.0
  *
- * @package    Index_Pashkevil
- * @subpackage Index_Pashkevil/includes
+ * @package    Moneyback
+ * @subpackage Moneyback/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    Index_Pashkevil
- * @subpackage Index_Pashkevil/includes
+ * @package    Moneyback
+ * @subpackage Moneyback/includes
  * @author     tziki trop <avitrop@gmail.com>
  */
-class Index_Pashkevil_Deactivator {
+class Moneyback_Deactivator {
 
 	/**
 	 * Short Description. (use period)

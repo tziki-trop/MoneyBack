@@ -22,7 +22,7 @@
  * @link       avitrop
  * @since      1.0.0
  *
- * @package    Index_Pashkevil
+ * @package    Moneyback
  */
 
 // If uninstall not called from WordPress, then exit.
