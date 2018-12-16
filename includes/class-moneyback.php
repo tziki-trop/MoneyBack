@@ -121,7 +121,10 @@ class Moneyback {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-moneyback-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-cpt.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-mengge-elementor.php';
 
+		
 		$this->loader = new Moneyback_Loader();
 
 	}
