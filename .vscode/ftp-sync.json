@@ -1,0 +1,27 @@
+{
+    "remotePath": "/public_html/wp-content/plugins/moneyback",
+    "host": "bob.spd.co.il",
+    "username": "money@moneyback.tempurl.co.il",
+    "password": "IWyJWkWk",
+    "port": 21,
+    "secure": false,
+    "protocol": "ftp",
+    "uploadOnSave": true,
+    "passive": false,
+    "debug": false,
+    "privateKeyPath": null,
+    "passphrase": null,
+    "agent": null,
+    "allow": [],
+    "ignore": [
+        "\\.vscode",
+        "\\.git",
+        "\\.DS_Store"
+    ],
+    "generatedFiles": {
+        "extensionsToInclude": [
+            ""
+        ],
+        "path": ""
+    }
+}
