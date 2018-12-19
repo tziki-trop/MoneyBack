@@ -36,6 +36,13 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'PLUGIN_NAME_VERSION', '1.0.0' );
+// Define global constants
+$constant_name_prefix = 'MB_';
+defined( $constant_name_prefix . 'REGISTER' ) or define( $constant_name_prefix . 'DIR', dirname( plugin_basename( __FILE__ ) ) );
+defined( $constant_name_prefix . 'LOGIN' ) or define( $constant_name_prefix . 'BASE', plugin_basename( __FILE__ ) );
+defined( $constant_name_prefix . 'TEX1' ) or define( $constant_name_prefix . 'TEX1', 40 );
+
+
 
 /**
  * The code that runs during plugin activation.
@@ -54,7 +61,24 @@ function deactivate_index_pashkevil() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-index-pashkevil-deactivator.php';
 	Index_Pashkevil_Deactivator::deactivate();
 }
+function mb_redirect($page,$vars = []){
+	//$url  = '';
+	//$url = add_query_arg($vars,get_permalink(40));
+	$page_id = 0;
+	switch($page){
+		case 'tex1':
+		$page_id = 40;
+		break;
+		case 'register':
+		$page_id = 224;
+		break;
+		case 'login':
+		$page_id = 256;
+		break;
+	}
+	return add_query_arg($vars,get_permalink($page_id));
 
+}
 register_activation_hook( __FILE__, 'activate_index_pashkevil' );
 register_deactivation_hook( __FILE__, 'deactivate_index_pashkevil' );
 

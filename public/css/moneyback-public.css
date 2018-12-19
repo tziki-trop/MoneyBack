@@ -2,3 +2,17 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+ .acf-form-submit .hidden{
+     display: none;
+ }
+ .acf-field .acf-notice.-error {
+    background: #ffe6e6;
+    color: #d12626;
+    position: absolute;
+    top: -100%;
+    border-radius: 5px;
+}
+.acf-spinner {
+    background-image: url(http://moneyback.tempurl.co.il/wp-content/uploads/2018/12/loading.gif)!important;
+    background-size: 20px 20px;
+}

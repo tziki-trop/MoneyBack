@@ -120,10 +120,8 @@ class Moneyback {
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-moneyback-public.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-cpt.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-mengge-elementor.php';
-
+		
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-add-inclouds.php';
 		
 		$this->loader = new Moneyback_Loader();
 

@@ -17,6 +17,7 @@ use WP_Query;
    // add_filter( 'get_Taxes_types', [$this,'get_Taxes_types']);
     add_action( 'init', [$this,'on_init' ]);
     add_action( 'reg_cpts', [$this,'on_init' ]);
+    add_filter('insert_cpt', [$this,'insert_cpt'],10,2 );
 
   //  add_action( 'add_meta_boxes_Taxes', [$this,'meta_box' ]);
  //   add_action( 'save_post_Taxes', [$this,'save_meta_box_data' ]);
@@ -28,8 +29,73 @@ use WP_Query;
     add_action( 'elementor_pro/forms/validation', [ $this,'send_email_to_client'],10,2 ); 
   //  add_filter('acf/pre_save_post' , [ $this,'acf_pre_save'], 10, 1 );
  // add_filter( 'wp_insert_post_empty_content', [$this,'disable_save'], 999999, 2 );
-  // add_action('acf/save_post', [$this,'acf_save_data'], 20,1);
+   add_action('acf/save_post', [$this,'acf_save_data'], 20,1);
   // add_action( 'save_post', [$this,'acf_save_data'] );
+    }
+    public function insert_cpt($user_id,$year){
+               // error_log( "insert cpt function");
+
+            $exsist = $this->check_if_cpt_exsist($user_id,$year);
+         //   error_log($exsist);
+            if($exsist)
+            return false;
+            return  $this->insert_new_cpt($user_id,$year);
+
+    }
+    protected function insert_new_cpt($user_id,$year){
+       // error_log($year);
+
+      //  tax_input meta_input
+      $tax_input  = array(
+        'taxes_year' => array(
+            (int)$year       
+        )
+    );
+
+        $args = array(
+            'post_type' =>  'taxes',
+            'post_status' => 'publish',
+            'tax_input' =>  $tax_input,
+            'meta_input' => array('owner' => $user_id)
+        );
+        $pid = wp_insert_post($args);
+      $SET_TERMS =  wp_set_object_terms( $pid, (int)$year , 'taxes_year');
+      if(is_wp_error($SET_TERMS)){
+        error_log($SET_TERMS->get_error_message());
+        }
+       return $pid;   
+    }
+    protected function check_if_cpt_exsist($user_id,$year){
+        $exsist = false;
+        $args = array(
+            'post_type' =>  'taxes',
+            'post_status' => 'publish',
+            'meta_query' =>  array(
+                    array(
+                    'key'     => 'owner',
+                    'value'   => $user_id,
+                    'compare' => '='
+                    )
+                    ),
+            'tax_query' => array(
+                    array(
+                    'taxonomy' => 'taxes_year',
+                    'field'    => 'term_id',
+                    'terms'    => array( (int)$year ),
+                    'operator' => '=',
+                        ),            
+                    )
+                    );
+        $wp_query = new WP_Query( $args);
+         // error_log( print_r($wp_query, TRUE) );
+
+            $output = $wp_query->have_posts();
+            if( $wp_query->have_posts() ){
+                error_log("have post");
+                $exsist = true;
+            }
+            wp_reset_query();
+            return $exsist;
     }
     public function disable_save( $maybe_empty, $postarr ) {
         if ( ! function_exists( 'post_exists' )) {
@@ -51,15 +117,52 @@ use WP_Query;
         return $maybe_empty;
     }
     public function acf_save_data( $post_id ){
-    if(isset($_SESSION['owner'])) {
-    update_post_meta($post_id, 'owner', $_SESSION['owner']);
-    unset($_SESSION['owner']);
-  //  wp_redirect(get_permalink($post_id));  
+       // var_dump($post_id);
+       // var_dump([$_POST]);
+      //  var_dump($_POST['acf']);  
+      //  var_dump($_POST['acf']);  
+    /*  foreach(acf_get_field_groups() as $group){
+        echo "acf_get_field_groups: <br>";
+
+       //   var_dump($group);
+        $opsion[$group['ID']] = $group['title']. "-" .$group['ID'];
+        }*/
+//echo "row count: <br>";
+$rowscount = 0;
+foreach($_POST['acf'] as $group => $val){
+    //var_dump( get_field_object($group) );
+   // wp_die();
+
+    $uoniq = true;
+        $rows = get_field('post_groups',$post_id);
+        if($rows)
+        {
+           foreach($rows as $row)
+               {
+                      if($row['group_key'] === $group)
+                     $uoniq = false;
+              }
+        }
+    if($uoniq && !empty($val)){
+        $group_detl =  get_field_object($group) ;
+    //    ["label"]=> string(23) "פרטים אישיים" ["name"]=> string(8) "personal" 
+        $row = array(
+            'group_key'	=> $group,
+            'group_label' => $group_detl['label'],
+            'group_name' => $group_detl['name'],
+
+        );
+        $rowscount = add_row( 'post_groups',$row, $post_id );
+    }
+}
+//var_dump($rowscount);
+ //       wp_die();
 
 }
-}
     public function acf_pre_save( $post_id ) {
-       // var_dump($post_id);
+        var_dump($post_id);
+        var_dump([$_POST]);
+        wp_die();
        // wp_die();
         if( $post_id === 0 ) {
            // if(!is_user_logged_in())
@@ -106,7 +209,7 @@ use WP_Query;
      }
     //global $wp_query;
     $args=array(  
-        'post_type' => 'Taxes',
+        'post_type' => 'taxes',
         'post_status' => 'publish',
         'post__in' =>  array((int)$_POST['id'])
     );
@@ -147,57 +250,89 @@ use WP_Query;
     }
 
     }
-     public function on_init(){
-        acf_form_head(); 
-   
-               if( !session_id() )
-                   session_start();
-  
- register_post_type( 'Taxes',
-    array(
-      'labels' => array(
-        'name' => __( 'Taxes', 'donat'),
-        'singular_name' => __( 'Taxes', 'donat'),
-        'add_new' => __('Add Taxes','donat'),      
-          'add_new_item' => __('Add Taxes','donat')
-      ),
-        'show_in_menu' => true,
-        'show_ui' => true,
-      'public' => true,
-      'has_archive' => true,
-      'supports' => array('title','editor')
-    )
-  );
+    protected function register_status(){
+   if( have_rows('cpt_status','option') ):
 
+    // loop through the rows of data
+   while ( have_rows('cpt_status','option') ) : the_row();
+
+       // display a sub field value
+       // $status =  get_sub_field('status');
+        if( have_rows('status') ): 
+        while( have_rows('status')) : the_row();
+        $status =[];
+        $status['name'] =  get_sub_field('name');
+        $status['val'] =  get_sub_field('val');  
+   register_post_status($status['val'] , array(
+    'label'                     => $status['name'],
+    'public'                    => true,
+    'exclude_from_search'       => false,
+    'show_in_admin_all_list'    => true,
+    'show_in_admin_status_list' => true,
+    'label_count'               => _n_noop( $status['name'].' <span class="count">(%s)</span>', $status['name'].' <span class="count">(%s)</span>' ),
+    ) );
+   
+        endwhile; 	
+    endif;
+
+   endwhile;
+
+else :
+
+   // no rows found
+
+endif;
+
+
+    }
+     public function on_init(){
+                 acf_form_head(); 
+                 if( !session_id() )
+                 session_start();
   
-$labels = array(
-    'name' => __( 'year', 'taxonomy general name' ),
-    'singular_name' => __( 'year', 'taxonomy singular name' ),
-    'search_items' =>  __( 'Search year' ),
-    'popular_items' => __( 'Popular year' ),
-    'all_items' => __( 'All year' ),
-    'parent_item' => null,
-    'parent_item_colon' => null,
-    'edit_item' => __( 'Edit year' ), 
-    'update_item' => __( 'Update year' ),
-    'update_item' => __( 'Update year' ),
-    'add_new_item' => __( 'Add New year' ),
-    'new_item_name' => __( 'New year Name' ),
-    'separate_items_with_commas' => __( 'Separate years with commas' ),
-    'add_or_remove_items' => __( 'Add or remove year' ),
-    'choose_from_most_used' => __( 'Choose from the most used year' ),
-    'menu_name' => __( 'year' ),
-  ); 
-    register_taxonomy('year','Taxes',array(
-	'public' => true,
-    'hierarchical' => true,
-    'labels' => $labels,
-    'show_ui' => true,
-    'update_count_callback' => '_update_post_term_count',
-    'query_var' => true,
-    'rewrite' => array( 'slug' => 'year' ),
-	 'show_admin_column' => true
-  ));
+        register_post_type( 'taxes',
+          array(
+        'labels' => array(
+         'name' => __( 'Taxes', 'donat'),
+         'singular_name' => __( 'Taxes', 'donat'),
+         'add_new' => __('Add Taxes','donat'),      
+              'add_new_item' => __('Add Taxes','donat')
+              ),
+                 'show_in_menu' => true,
+                 'show_ui' => true,
+                'public' => true,
+               'has_archive' => true,
+               'supports' => array('title','editor')
+               )
+             );
+  $labels_textemony = array(
+    'name'              => _x( 'Year', 'taxonomy general name', 'textdomain' ),
+    'singular_name'     => _x( 'Year', 'taxonomy singular name', 'textdomain' ),
+    'search_items'      => __( 'Search Year', 'textdomain' ),
+    'all_items'         => __( 'All Year', 'textdomain' ),
+    'parent_item'       => __( 'Parent Year', 'textdomain' ),
+    'parent_item_colon' => __( 'Parent GeYearnre:', 'textdomain' ),
+    'edit_item'         => __( 'Edit Year', 'textdomain' ),
+    'update_item'       => __( 'Update Year', 'textdomain' ),
+    'add_new_item'      => __( 'Add New Year', 'textdomain' ),
+    'new_item_name'     => __( 'New Year Name', 'textdomain' ),
+    'menu_name'         => __( 'Year', 'textdomain' ),
+);
+
+$args_tex = array(
+    'hierarchical'      => true,
+    'labels'            => $labels_textemony,
+    'show_ui'           => true,
+    'show_admin_column' => true,
+    'query_var'         => true,
+    'rewrite'           => array( 'slug' => 'taxes_year' ),
+);
+    
+register_taxonomy( 'taxes_year', array( 'taxes' ), $args_tex );
+  //var_dump($test);
+  //wp_die();
+  $this->register_status();
+
            }
  
         }

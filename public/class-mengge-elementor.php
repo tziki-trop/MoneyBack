@@ -9,7 +9,7 @@ namespace MeneggeElementor;
     public function add_wp_actions(){
    // add_action( 'elementor/theme/register_locations', [$this,'register_elementor_locations'] );
     add_action( 'elementor/widgets/widgets_registered', [ $this, 'on_widgets_registered' ] );
-   // add_action( 'elementor/dynamic_tags/register_tags',[$this,'reg_my_tag']);
+    add_action( 'elementor/dynamic_tags/register_tags',[$this,'reg_my_tag']);
     
 }
     public function register_elementor_locations($elementor_theme_manager){
@@ -38,8 +38,18 @@ namespace MeneggeElementor;
 			\Elementor\Plugin::$instance->dynamic_tags->register_group( 'meta-variables', [
 		   'title' => 'Meta Variables' 
            ] );
-          // require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-elementor-tag-logout.php';
-        //   $dynamic_tags->register_tag( new \Pashkevil\Tags\TZT_Tag_log_our() );          
+               
+           require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-elementor-tag-login-logout-text.php';
+           $dynamic_tags->register_tag( new \mb\Tags\TZT_login_logout_text() ); 
+           require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-elementor-tag-login-logout-url.php';
+           $dynamic_tags->register_tag( new \mb\Tags\TZT_login_logout_url() );              
+           require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-elementor-tag-get-all-terms.php';
+           $dynamic_tags->register_tag( new \mb\Tags\TZT_Tag_all_terms() );  
+           require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-elementor-tag-acf-group.php';
+           $dynamic_tags->register_tag( new \mb\Tags\TZT_acf_group_text() );  
+           require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-elmentor-tag-cpt-status.php';
+           $dynamic_tags->register_tag( new \mb\Tags\TZT_acf_post_status_text() );  
+
     }
     public function on_widgets_registered() {
    // require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-index-pashkevil-arc-widget.php';
