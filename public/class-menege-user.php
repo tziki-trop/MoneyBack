@@ -66,6 +66,22 @@ public function __construct(){
       // error_log( "login form" );
 
         $send = $record->get_form_settings( 'form_id' );
+        if($send === "choose_year"){
+            $raw_fields = $record->get( 'fields' );
+            $fields = []; 
+            $fields = '' ; 
+            foreach ( $raw_fields as $id => $field ) {
+
+                $fields[ $id ] = (string)$field['value'];
+            } 
+
+        $insert_cpt = apply_filters('insert_cpt',get_current_user_id(),$fields['message']);
+        $vars = array('tex_id' => $insert_cpt); 
+        $url = add_query_arg($vars,get_permalink(40));
+        
+       $ajax_handler->add_response_data( 'redirect_url', $url);
+ 
+        }
         if($send === "add_user"){
         //return;   
         $raw_fields = $record->get( 'fields' );
@@ -76,11 +92,11 @@ public function __construct(){
       //  $ajax_handler->add_error_message( var_export($fields));
        // error_log( print_r($fields, TRUE) );
         if(email_exists($fields[ 'email' ])){
-        $ajax_handler->add_error_message("user exsist");
+        $ajax_handler->add_error_message("כתובת הדוא״ל כבר רשומה במערכת, נסה להתחבר");
         return;
         }
         if($fields[ 'pass' ] != $fields[ 'pass1' ]){
-            $ajax_handler->add_error_message("pas dont good");
+            $ajax_handler->add_error_message("הסיסמאות לא תואמות");
             return;
         }
         $userarray = array(
@@ -94,18 +110,11 @@ public function __construct(){
         $ajax_handler->add_error_message($user->get_error_message());
         return;
         }
-               error_log( print_r($fields, TRUE) );
-
-        $insert_cpt = apply_filters('insert_cpt',$user,$fields['8d26fa3']);
-       // $ajax_handler->add_error_message((string)$insert_cpt);
-
-       // do_action('send_castum_email_temp','user_reg',$fields[ 'email' ],$fields);
         wp_clear_auth_cookie();
         wp_set_current_user ( $user );
         wp_set_auth_cookie  ( $user );
-        $vars = array('tex_id' => $insert_cpt); 
-        $url = add_query_arg($vars,get_permalink(40));
-        $ajax_handler->add_response_data( 'redirect_url', $url );
+      
+        $ajax_handler->add_response_data( 'redirect_url', get_permalink(369) );
       //  $url = add_query_arg($vars,get_permalink(40));
        // $ajax_handler->add_response_data( 'redirect_url', $url);
     }

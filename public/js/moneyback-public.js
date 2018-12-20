@@ -5,6 +5,7 @@ var form_submited = false;
 		var postID = acf.get('post_id');
 	
 		$("#submit_acf_form a").click(function (e) { 
+			debugger;
 			e.preventDefault();
 			$(".acf-button").click();
 	
@@ -12,7 +13,10 @@ var form_submited = false;
 		jQuery(function($) {
 			$('#acf-form').on('submit', (e) => {
 				debugger;
-				if(form_submited || !$(e.target).hasClass("ajex")){
+				if(!$(e.target).hasClass("ajex")){
+					return true;
+				}
+				if(form_submited){
 					e.preventDefault();
 					return false;
 				}
@@ -29,6 +33,14 @@ var form_submited = false;
 		
 			});
 	});
+		$('.one_year').click(function() {
+			
+		   if($(this).find('input').is(':checked')) {
+			$(this).closest("form").find("label").css ("background-color","transparent");
+			 $ (this).find("label").css ("background-color","#E7B007");
+		   }
+		});  
+	
 });
 	function submitACF_AJAX(form) {
 		debugger;

@@ -37,8 +37,8 @@ use WP_Query;
 
             $exsist = $this->check_if_cpt_exsist($user_id,$year);
          //   error_log($exsist);
-            if($exsist)
-            return false;
+            if($exsist != false)
+            return $exsist;
             return  $this->insert_new_cpt($user_id,$year);
 
     }
@@ -91,11 +91,12 @@ use WP_Query;
 
             $output = $wp_query->have_posts();
             if( $wp_query->have_posts() ){
-                error_log("have post");
-                $exsist = true;
+                while ($wp_query->have_posts()) : $wp_query->the_post();
+                return get_the_ID();
+                 endwhile;
             }
             wp_reset_query();
-            return $exsist;
+            return false;
     }
     public function disable_save( $maybe_empty, $postarr ) {
         if ( ! function_exists( 'post_exists' )) {
@@ -155,18 +156,15 @@ foreach($_POST['acf'] as $group => $val){
         $rowscount = add_row( 'post_groups',$row, $post_id );
     }
 }
-//var_dump($rowscount);
- //       wp_die();
+
 
 }
     public function acf_pre_save( $post_id ) {
-        var_dump($post_id);
-        var_dump([$_POST]);
-        wp_die();
+       // var_dump($post_id);
+       // var_dump([$_POST]);
+       // wp_die();
        // wp_die();
         if( $post_id === 0 ) {
-           // if(!is_user_logged_in())
-           // return null;
             if (!session_id())
             session_start();
             $_SESSION['owner'] = get_current_user_id();

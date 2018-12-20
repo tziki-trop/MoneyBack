@@ -95,7 +95,8 @@ class Moneyback_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
+		wp_enqueue_script( 'load_mb_ajax', plugin_dir_url( __FILE__ ) .  'js/loudajax.js', array('jquery') , $this->version, true );
+	
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/moneyback-public.js', array( 'jquery' ), $this->version, false );
 
 	}

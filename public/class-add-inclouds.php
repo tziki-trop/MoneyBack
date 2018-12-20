@@ -38,13 +38,13 @@ class loud_includ {
 
 	private function load_dependencies() {
 
-		
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-add-inclouds.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-moneyback-public.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-cpt.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-mengge-elementor.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-menege-user.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-option-page-acf.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-shortcode.php';
 
 	}
 

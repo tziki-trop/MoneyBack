@@ -259,8 +259,14 @@ public function get_name() {
                                         ]
                                     );
                      
-		 }
+         }
+      
+
   protected function render() {
+    
+     
+  // var_dump( wp_count_posts( 'taxes' ) );
+
    /* $groups =[];
     $filds = [];
     foreach(acf_get_field_groups() as $group){
@@ -290,11 +296,14 @@ public function get_name() {
    }
 
     $famely_status = get_field('personal_famely_status', (int)$settings['pid']);
+    if($famely_status != ''){
         if($famely_status != 'Married' &&  $famely_status != 'Separated'){
             if (($key = array_search(78, $settings['fild_group_id_array'])) !== false) {
                 unset($settings['fild_group_id_array'][$key]);
             }
         }
+    }
+
     $filds = [];
     foreach($settings['fild_group_id_array'] as $group_filds){
      if(!empty($group_filds) && !empty($settings['fild'.$group_filds])){
