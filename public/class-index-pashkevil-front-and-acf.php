@@ -260,34 +260,80 @@ public function get_name() {
                                     );
                      
          }
-      
+ protected function add_tfasim($pid){
+    if( have_rows('placeOfWork_bizz_names',$pid) ):
+        $rows = [];
+        $required_tofes_aas = get_field("required", $pid);
+        while ( have_rows('placeOfWork_bizz_names',$pid) ) : the_row();
+       // echo get_sub_field("name");
+            $exixt = false;
+           // $new_rows = [];
+           if(is_array($required_tofes_aas['tofes_aas'])){
+            foreach($required_tofes_aas['tofes_aas'] as $index=>$current_row){
+                if($current_row['name'] === get_sub_field("name"))
+                $exixt = $index;
+            }
+        }
+            if($exixt !== false){
+                $rows [] = $required_tofes_aas['tofes_aas'][$exixt];
+            }
+            else  $rows [] = array(
+            'name'	=> get_sub_field("name"),
+            'tofes' => '',
+        );
 
+      endwhile;
+    //  var_dump($required_tofes_aas);
+      $required_tofes_aas['tofes_aas'] = $rows;		
+      update_field("required", $required_tofes_aas, $pid);
+      endif;
+      //var_dump( get_field_object('required') );
+
+  
+ }
+  protected function check_logic($group,$pid){
+
+        if( have_rows('condition','option') ):
+        while ( have_rows('condition','option') ) : the_row();
+        if($group === get_sub_field("fild")){
+            $con_fild = get_field(get_sub_field("con_fild"), (int)$pid) ?: false;
+            
+            while ( have_rows('vals') ) : the_row();
+            $layout = get_row_layout();
+            if( $layout == 'values' ){
+                if(get_sub_field('val') === $con_fild){
+                    return true;
+                }
+            }
+               // the_sub_field('text');
+            else if( $layout == 'true_false' ){
+               //var_dump ($con_fild);
+               // var_dump( get_sub_field('true_false') );
+                if(get_sub_field('true_false') === $con_fild){
+                   // var_dump ($con_fild);
+                   // var_dump( get_sub_field('true_false') );
+                     return true;
+                }
+                else return false;
+            }
+               
+    
+            endwhile;
+
+    
+            return false;
+        }
+        endwhile;
+        endif;
+        return true;
+
+  }
   protected function render() {
     
      
   // var_dump( wp_count_posts( 'taxes' ) );
 
-   /* $groups =[];
-    $filds = [];
-    foreach(acf_get_field_groups() as $group){
-        $option_fild_groups[$group['ID']] = $group['title']. "-" .$group['ID'];
 
-        foreach( acf_get_fields($group['ID']) as $main_fild){
-       // var_dump($main_fild);
-            if($main_fild['type'] === 'group'){
-            $groups[$main_fild['ID']] = $main_fild['name'];
-                foreach($main_fild['sub_fields'] as $child_fild){    
-                    $filds[$main_fild["name"]."_".$child_fild["name"]] = $child_fild['name'];
-
-                 }
-            }
-       }
-     }
-     var_dump($groups);
-     var_dump($filds);
-     echo "<br> <br> <br>";*/
-   
-   // 'fields' =>
     $settings = $this->get_settings_for_display();
     if($settings['pid'] != ""){
     $user = (int)get_field( 'owner', $settings['pid'] );
@@ -306,9 +352,16 @@ public function get_name() {
 
     $filds = [];
     foreach($settings['fild_group_id_array'] as $group_filds){
+
      if(!empty($group_filds) && !empty($settings['fild'.$group_filds])){
       $this_group_filds = $settings['fild'.$group_filds] ;
-      $filds = $filds + $this_group_filds;
+      foreach($this_group_filds as $group_to_check){
+          if($group_to_check === "required")
+          $this->add_tfasim($settings['pid']);
+          if($this->check_logic($group_to_check,$settings['pid']))
+          $filds [] = $group_to_check;
+      }
+      //$filds = $filds + $this_group_filds;
      }
     }
    // $filds_in_grups = array_map('intval',$filds);
@@ -328,9 +381,6 @@ public function get_name() {
       $settungs_acf['form_attributes'] =  array(
 		'class' => 'ajex',
       );
-      //				  var i = "<i class=\"ctggbi fa fa-spinner fa-spin\"></i>"
-     // 'html_submit_spinner'	=> '<span class="acf-spinner"></span>',
-    //  $settungs_acf['html_submit_spinner'] = "<i class=\"acf-spinner ctggbi fa fa-spinner fa-spin\"></i>";
       $settungs_acf['label_placement'] =   $settings['label_placement'];
       $settungs_acf['field_groups'] =   $fild_grups;
       $settungs_acf['submit_value'] =  $settings['submit_text'];

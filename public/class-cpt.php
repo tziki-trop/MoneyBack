@@ -54,7 +54,7 @@ use WP_Query;
 
         $args = array(
             'post_type' =>  'taxes',
-            'post_status' => 'publish',
+            'post_status' => 'new',
             'tax_input' =>  $tax_input,
             'meta_input' => array('owner' => $user_id)
         );

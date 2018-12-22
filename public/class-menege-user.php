@@ -82,7 +82,7 @@ public function __construct(){
        $ajax_handler->add_response_data( 'redirect_url', $url);
  
         }
-        if($send === "add_user"){
+    if($send === "add_user"){
         //return;   
         $raw_fields = $record->get( 'fields' );
         $fields = [];   
@@ -135,6 +135,38 @@ public function __construct(){
         $ajax_handler->add_error_message($user->get_error_message());
         return;
         }
+    
+    }
+    if($send === "forgot_password"){
+        $raw_fields = $record->get( 'fields' );
+        $fields = [];   
+        foreach ( $raw_fields as $id => $field ) {
+            $fields[ $id ] = (string)$field['value'];
+        } 
+        $user = get_user_by( 'email' ,$fields['email'] );
+        if($user === false){
+        $ajax_handler->add_error_message("לדוא״ל זה אין משתמש, נסה להרשם");
+        return;
+        }
+        $pas = wp_generate_password();
+        $userarray = array(
+            'ID' => $user->ID,
+            'user_pass' => $pas,
+        );
+        $user =  wp_update_user($userarray);
+        if(is_wp_error($user)){
+        $ajax_handler->add_error_message($user->get_error_message());
+        return;
+        }
+        $title = "הסיסמה שלך באתר Money Back השתנתה";
+        $content = "הזיזמה החדשה שלך באתר: <bt>";
+        $content .=  $pas;
+        $content .=  "באפשרותך לשנות אותה בהגדרות המשתמש באתר";
+
+        $headers = array('Content-Type: text/html; charset=UTF-8;', 'From: '.get_bloginfo( "name").' <noreplay@'.str_replace(array( 'http://', 'https://','www.' ),'',home_url()).'>');
+    
+		$mail_ras = wp_mail( $fields['email'], $title, $content , $headers );
+
     
     }
     if($send === "login_user"){

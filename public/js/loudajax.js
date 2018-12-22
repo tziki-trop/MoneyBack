@@ -3,6 +3,8 @@ var filterActiv = false;
 (function( $ ) {
 	'use strict';
 $(document).ready(function () {
+    if(typeof misha_loadmore_params === "undefined")
+    return;
 $(".elementor-field-group button").click(function (e) {
     filterActiv = true;
     if(!canBeLoaded)
