@@ -272,6 +272,7 @@ public function get_name() {
             foreach($required_tofes_aas['tofes_aas'] as $index=>$current_row){
                 if($current_row['name'] === get_sub_field("name"))
                 $exixt = $index;
+                //sdfsf dfsdfsf 
             }
         }
             if($exixt !== false){

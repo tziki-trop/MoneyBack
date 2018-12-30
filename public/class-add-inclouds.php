@@ -45,6 +45,7 @@ class loud_includ {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-menege-user.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-option-page-acf.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-shortcode.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/widgets/cpt.php';
 
 	}
 

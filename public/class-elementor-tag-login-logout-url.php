@@ -38,7 +38,7 @@ protected function _register_controls() {
 			[
 				'label' => __( 'logout URL', 'elementor-pro' ),
                 'type' => \Elementor\Controls_Manager::URL,
-				
+				//ff
             ]
             
         );

@@ -32,8 +32,87 @@ var form_submited = false;
 				form.submit(function(event) { event.preventDefault(); submitACF_AJAX(this); return false;});
 		
 			});
+		});
+$(".reperter_section").each(function(index){
+	$(this).find(".fil_val").each(function (param) { 
+		debugger;
+
+		var name = $(this).attr("name");
+		var new_name = "reperter---" + name + "---0" ;
+		$(this).attr("name",new_name);
+});
+
+});
+$( "[data-fild]" ).each(function(index) {
+	var fild = $(this).attr("data-fild");
+	var value = $(this).attr("data-fild-val");
+	var depens =	$("input[name='"+fild+"']");
+	if(depens.length > 1)
+	var depens =	$("input[name='"+fild+"']:checked");
+  else
+	var depens =	$("input[name='"+fild+"']");
+
+	    if(depens.val() === value)
+			$(this).css("display","block");
+			else 	$(this).css("display","none");
+  
+});
+$("input").change(function (e) { 
+	//	debugger;
+		var name = $(this).attr("name");
+
+	var depens =	$("[data-fild='"+name+"']");
+	var value  = $(this).val();
+			$( depens ).each(function(index) {
+				debugger;      
+				if(value === $(this).attr("data-fild-val"))
+				$(this).css("display","block");
+				else 	$(this).css("display","none");
+
+			});   
+
+		e.preventDefault();
+		
 	});
-		$('.one_year').click(function() {
+$(".remove_row_to_re").click(function (e) { 
+	var num = parseInt( $(this).closest(".re_buttons").prev(".reperter_section").attr("data-totel") );
+   if(num > 0)
+	 $(this).closest(".re_buttons").prev(".reperter_section").remove();
+});
+$(".add_row_to_re").click(function (e) { 
+
+		debugger;
+		var num = parseInt( $(this).closest(".re_buttons").prev(".reperter_section").attr("data-totel") );
+
+		var clone = $(this).closest(".re_buttons").prev(".reperter_section").clone();
+		$(clone).insertBefore($(this).closest(".re_buttons"));
+		$(this).closest(".re_buttons").prev(".reperter_section").attr("data-totel",num + 1);
+		var filds = $(this).closest(".re_buttons").prev(".reperter_section").find(".fil_val");
+		$(filds).each(function(index) {
+			debugger;
+			var name =	$(this).attr("name");
+			var input = name.split('---');
+		var	index = parseInt(input[2]) + 1;
+			var new_name = input[0] + "---" + input[1] + "---" + index ;
+			$(this).attr("name",new_name);
+
+		});
+
+
+		//e.preventDefault();
+		var name =	$(this).closest(".elementor-widget-container").find(".worrper_new_input").last().find("input").attr("name");
+var clone =		$(this).closest(".elementor-widget-container").find(".repet").first().clone();
+$(clone).insertAfter($(this).closest(".elementor-widget-container").find(".repet").last());
+//$(this).closest(".elementor-widget-container").append(clone);
+	var input = name.split('---');
+	var index = parseInt(input[2]) + 1;
+	var new_name = input[0] + "---" + input[1] + "---" + index ;
+$(this).closest(".elementor-widget-container").find(".worrper_new_input").last().find("input").attr("name",new_name);
+
+
+
+});
+/*	$('.one_year').click(function() {
 			
 		   if($(this).find('input').is(':checked')) {
 			$(this).closest("form").find("label").css ("background-color","transparent");
@@ -41,7 +120,7 @@ var form_submited = false;
 		   }
 		});  
 	
-});
+});*/
 	function submitACF_AJAX(form) {
 		debugger;
 		var data = new FormData(form);
