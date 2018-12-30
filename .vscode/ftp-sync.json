@@ -8,7 +8,7 @@
     "protocol": "ftp",
     "uploadOnSave": true,
     "passive": false,
-    "debug": false,
+    "debug": true,
     "privateKeyPath": null,
     "passphrase": null,
     "agent": null,
