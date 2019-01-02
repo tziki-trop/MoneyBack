@@ -293,23 +293,29 @@ public function get_name() {
   
  }
   protected function check_logic($group,$pid){
-
+ //   var_dump ($group);
+  //  var_dump(  get_field_object($group,$pid) );
         if( have_rows('condition','option') ):
         while ( have_rows('condition','option') ) : the_row();
         if($group === get_sub_field("fild")){
             $con_fild = get_field(get_sub_field("con_fild"), (int)$pid) ?: false;
-            
+             var_dump ($con_fild);
+   
             while ( have_rows('vals') ) : the_row();
             $layout = get_row_layout();
             if( $layout == 'values' ){
-                if(get_sub_field('val') === $con_fild){
+                if(is_array($con_fild)){
+                    if(in_array(get_sub_field('val'), $con_fild))
                     return true;
                 }
+                else if(get_sub_field('val') === $con_fild){
+                    return true;
+                }      
             }
                // the_sub_field('text');
             else if( $layout == 'true_false' ){
-               //var_dump ($con_fild);
-               // var_dump( get_sub_field('true_false') );
+               var_dump ($con_fild);
+                var_dump( get_sub_field('true_false') );
                 if(get_sub_field('true_false') === $con_fild){
                    // var_dump ($con_fild);
                    // var_dump( get_sub_field('true_false') );
