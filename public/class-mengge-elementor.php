@@ -5,7 +5,7 @@ namespace MeneggeElementor;
     public function __construct(){
         $this->add_wp_actions();
      }
-   
+     
     public function add_wp_actions(){
    // add_action( 'elementor/theme/register_locations', [$this,'register_elementor_locations'] );
     add_action( 'elementor/widgets/widgets_registered', [ $this, 'on_widgets_registered' ] );
@@ -177,7 +177,10 @@ public function add_categories( $elements_manager ) {
 			\Elementor\Plugin::$instance->dynamic_tags->register_group( 'meta-variables', [
 		   'title' => 'Meta Variables' 
            ] );
-               
+            //TZT_Tag_link_with_get
+            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-elementor-tag-url-with-get.php';
+            $dynamic_tags->register_tag( new \mb\Tags\TZT_Tag_link_with_get() ); 
+
            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-elementor-tag-login-logout-text.php';
            $dynamic_tags->register_tag( new \mb\Tags\TZT_login_logout_text() ); 
            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-elementor-tag-login-logout-url.php';

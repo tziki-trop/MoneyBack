@@ -5,6 +5,12 @@ var filterActiv = false;
 $(document).ready(function () {
     if(typeof misha_loadmore_params === "undefined")
     return;
+//.tf .acf-button-group
+$("input[type=radio]").change(function (e) { 
+  //  e.preventDefault();
+  debugger;
+    $(this).closest(".tf").find("label").not(".selected").addClass("label_blue");
+});
 $(".elementor-field-group button").click(function (e) {
     filterActiv = true;
     if(!canBeLoaded)

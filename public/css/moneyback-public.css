@@ -2,6 +2,45 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+ .child_birthday , .child_name{
+     width: 50%!important;
+ }
+ .mosad .acf-field{
+     width: 50%!important;
+ }
+ .files_upload:not(.childern) tbody{
+     width: 100%;
+ }
+ .files_upload .acf-field-file{
+    width: 100%;
+}
+ .child_birthday .acf-date-picker:before{
+content: "תאריך לידה";
+position: absolute;
+top: 20px;
+right: 20px;
+font-weight: 400;
+font-size: 1.125rem!important;
+color: #000;
+ }
+ .acf-repeater > table {
+    background: transparent!important;
+}
+ .set_tabole .acf-field-text{
+width: 50%!important;
+ }
+ .no_add .acf-actions ,  .no_add .acf-row-handle.remove{
+     display: none!important;
+ }
+ .acf-row-handle.order a{
+     display: none!important;
+ }
+ .-plus {
+    display: none!important;
+}
+.acf-table  tr:first-child .remove .-minus {
+    display: none!important;
+}
  .acf-form-submit .hidden{
      display: none;
  }

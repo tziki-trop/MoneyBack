@@ -51,7 +51,7 @@ public function get_name() {
         foreach(acf_get_fields($group['ID']) as $fild){
           //  echo $fild['name'];
             if($fild['name'] != '')
-            $fildsforgroup[ $fild['name'] ] = $fild['name'];
+            $fildsforgroup[ $fild['key'] ] = $fild['name'];
             }
             $filds[$group['ID']] = $fildsforgroup;
         }
@@ -264,6 +264,7 @@ public function get_name() {
     if( have_rows('placeOfWork_bizz_names',$pid) ):
         $rows = [];
         $required_tofes_aas = get_field("required", $pid);
+      //  var_dump($required_tofes_aas);
         while ( have_rows('placeOfWork_bizz_names',$pid) ) : the_row();
        // echo get_sub_field("name");
             $exixt = false;
@@ -292,9 +293,45 @@ public function get_name() {
 
   
  }
+ protected function add_tfasim_mosad($pid){
+  //  var_dump ( $pid);
+   //  return;
+    if( have_rows('personal_Details_lerning_detail',$pid) ):
+        //    var_dump ( "test");
+
+        $rows = [];
+        $required_tofes_aas = get_field("more_files", $pid);
+      //  var_dump($required_tofes_aas);
+        while ( have_rows('personal_Details_lerning_detail',$pid) ) : the_row();
+       // echo get_sub_field("name");
+            $exixt = false;
+           // $new_rows = [];
+           //detiels_lerning
+           if(is_array($required_tofes_aas['eanlimodim_fiels'])){
+            foreach($required_tofes_aas['eanlimodim_fiels'] as $index=>$current_row){
+                if($current_row['detiels_lerning'] === get_sub_field("mosad_name"))
+                $exixt = $index;
+                //sdfsf dfsdfsf 
+            }
+        }
+            if($exixt !== false){
+                $rows [] = $required_tofes_aas['eanlimodim_fiels'][$exixt];
+            }
+            else  $rows [] = array(
+            'detiels_lerning'	=> get_sub_field("mosad_name"),
+        );
+
+      endwhile;
+    //  var_dump($required_tofes_aas);
+      $required_tofes_aas['eanlimodim_fiels'] = $rows;		
+      update_field("more_files", $required_tofes_aas, $pid);
+      endif;
+      //var_dump( get_field_object('required') );
+
+  
+ }
   protected function check_logic($group,$pid){
- //   var_dump ($group);
-  //  var_dump(  get_field_object($group,$pid) );
+
         if( have_rows('condition','option') ):
         while ( have_rows('condition','option') ) : the_row();
         if($group === get_sub_field("fild")){
@@ -336,7 +373,7 @@ public function get_name() {
 
   }
   protected function render() {
-    
+   
      
   // var_dump( wp_count_posts( 'taxes' ) );
 
@@ -359,35 +396,34 @@ public function get_name() {
 
     $filds = [];
     foreach($settings['fild_group_id_array'] as $group_filds){
-
+    //var_dump ( $settings['fild_group_id_array'] );
      if(!empty($group_filds) && !empty($settings['fild'.$group_filds])){
+      // var_dump("test");
       $this_group_filds = $settings['fild'.$group_filds] ;
       foreach($this_group_filds as $group_to_check){
           if($group_to_check === "required")
           $this->add_tfasim($settings['pid']);
-          if($this->check_logic($group_to_check,$settings['pid']))
+          if($group_to_check === "more_files")
+          $this->add_tfasim_mosad($settings['pid']);
+         if($this->check_logic($group_to_check,$settings['pid']))
           $filds [] = $group_to_check;
+         // $filds = array("how_is_reporting", "my_incomes","me_and_my_wife" , "placeOfWork", "incum"  );
+
       }
       //$filds = $filds + $this_group_filds;
      }
     }
+    //var_dump($filds);
    // $filds_in_grups = array_map('intval',$filds);
     $fild_grups = array_map('intval',$settings['fild_group_id_array']);
 
-    acf_enqueue_uploader(); 
-    ?>
-         <script type="text/javascript">
-           (function($) {
-        	acf.do_action('append', $('#popup-id'));	
-            });
-            </script>
-    <?php
+
       $settungs_acf = array();
       $settungs_acf['html_submit_button'] = "<input type=\"submit\" class=\"acf-button acf_submit button button-primary button-large ".$settings['show_submit']."\" value=\"%s\" />";
-      if($settings['ajex'] === 'true')
-      $settungs_acf['form_attributes'] =  array(
-		'class' => 'ajex',
-      );
+    //  if($settings['ajex'] === 'true')
+    //  $settungs_acf['form_attributes'] =  array(
+	//	'class' => 'ajex',
+   //   );
       $settungs_acf['label_placement'] =   $settings['label_placement'];
       $settungs_acf['field_groups'] =   $fild_grups;
       $settungs_acf['submit_value'] =  $settings['submit_text'];
