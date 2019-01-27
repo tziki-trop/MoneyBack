@@ -335,13 +335,16 @@ public function get_name() {
         if( have_rows('condition','option') ):
         while ( have_rows('condition','option') ) : the_row();
         if($group === get_sub_field("fild")){
+var_dump($group);
+echo "<br>";
+var_dump( get_sub_field("con_fild"));
             $con_fild = get_field(get_sub_field("con_fild"), (int)$pid) ?: false;
-             var_dump ($con_fild);
-   
             while ( have_rows('vals') ) : the_row();
             $layout = get_row_layout();
             if( $layout == 'values' ){
+              //  var_dump ($con_fild);
                 if(is_array($con_fild)){
+                   
                     if(in_array(get_sub_field('val'), $con_fild))
                     return true;
                 }
@@ -349,14 +352,21 @@ public function get_name() {
                     return true;
                 }      
             }
-               // the_sub_field('text');
             else if( $layout == 'true_false' ){
-               var_dump ($con_fild);
-                var_dump( get_sub_field('true_false') );
-                if(get_sub_field('true_false') === $con_fild){
-                   // var_dump ($con_fild);
-                   // var_dump( get_sub_field('true_false') );
-                     return true;
+               // echo "test";
+                //var_dump($group);
+
+                if(get_sub_field('true_false'))
+                $sub_val = "true";
+                else $sub_val = "false";
+             //   echo "con cal: ";
+            //   var_dump($sub_val);
+             //  var_dump((string)$con_fild);
+              //  echo "<br>";
+               // var_dump((string)$con_fild);
+               // echo "<br>";
+                if($sub_val === (string)$con_fild){
+                   return true;
                 }
                 else return false;
             }
@@ -405,10 +415,34 @@ public function get_name() {
           $this->add_tfasim($settings['pid']);
           if($group_to_check === "more_files")
           $this->add_tfasim_mosad($settings['pid']);
-         if($this->check_logic($group_to_check,$settings['pid']))
-          $filds [] = $group_to_check;
-         // $filds = array("how_is_reporting", "my_incomes","me_and_my_wife" , "placeOfWork", "incum"  );
+         // var_dump($group_to_check);
 
+          if($group_to_check === 'field_5c1b953adb990' || $group_to_check === 'field_5c1b970186b31'  || $group_to_check === 'field_5c24daa6a3f57'){
+              $fild_obj = get_field_object($group_to_check);
+              foreach($fild_obj['sub_fields'] as $one_fild){
+                 // echo $one_fild['key'];
+                //  echo "<br>";
+
+                  if($this->check_logic($one_fild['key'],$settings['pid'])){
+                    $filds [] =  $one_fild['key'];
+                  // echo "con YES";
+                   // var_dump($one_fild['key']);
+                  //  echo "<br>";
+                  }
+                  else{
+                  //    echo "con NO";
+                 //   var_dump($one_fild['key']);
+                 //   echo "<br>";
+                  }
+                  
+              }
+          //  var_dump($filds);
+          }
+          
+         else if($this->check_logic($group_to_check,$settings['pid']))
+         $filds [] = $group_to_check;
+         // $filds = array("how_is_reporting", "my_incomes","me_and_my_wife" , "placeOfWork", "incum"  );
+//required state_proof more_files
       }
       //$filds = $filds + $this_group_filds;
      }

@@ -118,21 +118,9 @@ use WP_Query;
         return $maybe_empty;
     }
     public function acf_save_data( $post_id ){
-       // var_dump($post_id);
-       // var_dump([$_POST]);
-      //  var_dump($_POST['acf']);  
-      //  var_dump($_POST['acf']);  
-    /*  foreach(acf_get_field_groups() as $group){
-        echo "acf_get_field_groups: <br>";
 
-       //   var_dump($group);
-        $opsion[$group['ID']] = $group['title']. "-" .$group['ID'];
-        }*/
-//echo "row count: <br>";
 $rowscount = 0;
 foreach($_POST['acf'] as $group => $val){
-    //var_dump( get_field_object($group) );
-   // wp_die();
 
     $uoniq = true;
         $rows = get_field('post_groups',$post_id);

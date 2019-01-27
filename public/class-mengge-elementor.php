@@ -12,8 +12,8 @@ namespace MeneggeElementor;
     add_action( 'elementor/dynamic_tags/register_tags',[$this,'reg_my_tag']);
     add_action( 'elementor/elements/categories_registered', [$this,'add_categories'] ); 
 	add_action("elementor/frontend/section/before_render", [ $this,'before_section_render']);
-        add_action("elementor/frontend/section/after_render", [ $this,'after_section_render']);
-        add_action('elementor/element/before_section_start', [ $this,'add_section_contrulers'],10, 2);
+     add_action("elementor/frontend/section/after_render", [ $this,'after_section_render']);
+     add_action('elementor/element/before_section_start', [ $this,'add_section_contrulers'],10, 2);
 
 }
 public function add_section_contrulers($element,$section_id){

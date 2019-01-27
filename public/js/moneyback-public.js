@@ -33,6 +33,24 @@ var form_submited = false;
 });
 
 });
+$(".fam_status input").change(function (e) {
+
+var val = $(this).closest (".fam_status").find("input:checked").val();
+if(val === "Married"){
+	var req = true;
+}
+else{
+	var req = false;
+}
+$(".req input").each(function(index) {
+    $(this).attr("required",req);
+});
+
+
+//	var selected_value = $(this+":checked").val();
+//	e.preventDefault();
+	
+});
 $("#triger_acf").click(function (e) { 
 	$(".acf_submit").click();
 });
