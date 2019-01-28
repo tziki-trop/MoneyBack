@@ -331,20 +331,24 @@ public function get_name() {
   
  }
   protected function check_logic($group,$pid){
-
+     // if($group != 'field_5c4e2d0324a10')
+    //  return true;
+   //   else return true;
+     //  echo get_field('field_5c4e27e9b4ea9',(int)$pid);
+     //do_you_get_else_copy_copy
+      // echo get_post_meta((int)$pid, 'incum_do_you_get_else_copy_copy', true);
         if( have_rows('condition','option') ):
         while ( have_rows('condition','option') ) : the_row();
         if($group === get_sub_field("fild")){
-var_dump($group);
-echo "<br>";
-var_dump( get_sub_field("con_fild"));
-            $con_fild = get_field(get_sub_field("con_fild"), (int)$pid) ?: false;
+           $con_fild = get_field(get_sub_field("con_fild"), (int)$pid) ?: false;
+           $con_fild =  get_post_meta((int)$pid, get_sub_field("con_fild"), true);
+           if(empty($con_fild))
+           $con_fild = false;
+           //var_dump( $con_fild);
             while ( have_rows('vals') ) : the_row();
             $layout = get_row_layout();
             if( $layout == 'values' ){
-              //  var_dump ($con_fild);
-                if(is_array($con_fild)){
-                   
+                if(is_array($con_fild)){    
                     if(in_array(get_sub_field('val'), $con_fild))
                     return true;
                 }
@@ -353,12 +357,17 @@ var_dump( get_sub_field("con_fild"));
                 }      
             }
             else if( $layout == 'true_false' ){
-               // echo "test";
-                //var_dump($group);
-
-                if(get_sub_field('true_false'))
+              //  echo "trur false";
+              //  var_dump( get_sub_field('true_false') );
+               if(get_sub_field('true_false'))
                 $sub_val = "true";
                 else $sub_val = "false";
+              //  echo $sub_val;
+                //echo "<br>";
+             //   var_dump((string)$con_fild);
+            //    echo "<br>";
+            //   var_dump( $sub_val );
+           //    echo "<br>";
              //   echo "con cal: ";
             //   var_dump($sub_val);
              //  var_dump((string)$con_fild);
@@ -381,6 +390,162 @@ var_dump( get_sub_field("con_fild"));
         endif;
         return true;
 
+  }
+  protected function check_uploud_filds($fild,$pid){
+      switch($fild){
+          case 'field_5c1b971f86b32':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("דמי מילואים", $btl);
+          return $key;
+          break;
+          case 'field_5c24d8aca3f4a':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("דמי אבטלה", $btl);
+          return $key;
+          break;
+          case 'field_5c24d91ea3f4c':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("דמי לידה", $btl);
+          return $key;
+          break;
+          case 'field_5c24d962a3f4e':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("שמירת הריון", $btl);
+          return $key;
+          break;
+          case 'field_5c24d971a3f4f':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("פגיעה בעבודה", $btl);
+          return $key;
+          break;
+          case 'field_5c24d98ba3f50':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("קצבת זקנה", $btl);
+          return $key;
+          break;
+          case 'field_5c24d99ea3f51':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("גמלת נכות", $btl);
+          return $key;
+          break;
+          case 'field_5c24d9aea3f52':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("דני נכות מעבודה", $btl);
+          return $key;
+          break;
+          case 'field_5c24d9bfa3f53':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("קצבת שאירים", $btl);
+          return $key;
+          break;
+          case 'field_5c24d9bfa3f53':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          $key = in_array("קצבת שאירים", $btl);
+          return $key;
+          break;
+          case 'field_5c24da20a3f55':
+          $data = get_post_meta($pid, 'incum_do_you_get2', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24dd5e21100':
+          $data = get_post_meta($pid, 'incum_bank', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24dd9921102':
+          $data = get_post_meta($pid, 'incum_lottory', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24de1e21106':
+          $data = get_post_meta($pid, 'personal_Details_personal_Details_iver_partner', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24de872110a':
+          $data = get_post_meta($pid, 'personal_Details_personal_Details_iver_partner', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24def32110c':
+          $data = get_post_meta($pid, 'personal_Details_mezunot', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24df282110e':
+          $data = get_post_meta($pid, 'personal_Details_iver', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24df8621113':
+          $data = get_post_meta($pid, 'personal_Details_Police', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24dfb821115':
+          $data = get_post_meta($pid, 'personal_Details_lerning', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24e05a21117':
+          $data = get_post_meta($pid, 'personal_Details_lerning', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24e0e32111b':
+          $data = get_post_meta($pid, 'personal_Details_pay_lala', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24e1482111f':
+          $data = get_post_meta($pid, 'incum_more_income', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c476c9f65b8d':
+         // var_dump("t");
+          $data = get_post_meta($pid, 'how_is_reporting', true);
+         // var_dump ($data);
+          if($data == "הכנסותי והכנסות בן/בת זוגי" )
+          return true;
+          return false;
+          break;
+          case 'field_5c4e27e9b4ea9':
+           $data = get_post_meta($pid, 'personal_Details_offsea_copy', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c4e2d0324a10':
+
+          $data = get_post_meta($pid, 'incum_do_you_get_else_copy_copy', true);
+        // var_dump($data);
+         if($data == "false" || $data == false || $data == "" || $data == null)
+         return false;
+         return true;
+         break;
+          
+          
+          default:
+
+          break;
+      }
   }
   protected function render() {
    
@@ -423,19 +588,14 @@ var_dump( get_sub_field("con_fild"));
                  // echo $one_fild['key'];
                 //  echo "<br>";
 
-                  if($this->check_logic($one_fild['key'],$settings['pid'])){
-                    $filds [] =  $one_fild['key'];
-                  // echo "con YES";
-                   // var_dump($one_fild['key']);
-                  //  echo "<br>";
-                  }
-                  else{
-                  //    echo "con NO";
-                 //   var_dump($one_fild['key']);
-                 //   echo "<br>";
-                  }
-                  
+                //  if($this->check_logic($one_fild['key'],$settings['pid']))
+                  //  $filds [] =  $one_fild['key'];
+
+                  if(  $this->check_uploud_filds($one_fild['key'],$settings['pid']))
+                  $filds [] =  $one_fild['key'];
+ 
               }
+
           //  var_dump($filds);
           }
           
