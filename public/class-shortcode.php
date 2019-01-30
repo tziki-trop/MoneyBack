@@ -15,10 +15,59 @@ class TaxesShortCode {
         add_action('wp_ajax_nopriv_loadmore', [$this,'status_cpt_texfsdf']); 
         add_action('wp_ajax_update_status', [$this,'update_status']); 
         add_action('wp_ajax_nopriv_update_status', [$this,'update_status']); 
-        
+        add_filter('wp_nav_menu_items', [$this,'add_to_menu'], 20, 2);
+
             }
   
+   public function add_to_menu($items ,  $args){
+   // return "t";
+
+      if($args->menu == "tufes" && isset($_GET['tex_id'])){
+    //  var_dump(  $args);
+      //  $htmlpres = new \simple_html_dom(); 
+        $html = str_get_html($items);
+      //  return var_export($html);
+        $index = 0;
+        $curren_page = false;
+        foreach($html->find('a') as $element) {
+            if (strpos($element->class, 'elementor-item elementor-item-active') !== false )
+            $curren_page = true;
+            $href =  $element->href;
+            if ( !$curren_page ) {
+               
+                $href_up =  $href."?tex_id=".$_GET['tex_id'];
+                $html->find('a', $index)->href = $href_up;
+              //  break;       // echo 'true';
+            }
+            else {
+               
+               // $href_up =  "";
+                $html->find('a', $index)->href = '';
+            }
+          
+            $index++;
+        }
+        $index = 0;
+        $curren_page = false;
+        foreach($html->find('a') as $element){
+            $class =  $element->class;
+          //  var_dump( strpos($class, 'current_page_item') !== false );
+            if (strpos($class, 'elementor-item elementor-item-active') !== false) {
+                $html->find('li', $index)->class = $class." activ_menu";
+                break;       // echo 'true';
+            }
+            $html->find('li', $index)->class = $class." activ_menu";
+            $index++;
+         }
+        $html_en = $html->save();
    
+
+         return $html_en;
+
+       }
+       else return $items;
+
+   }
     public function update_status(){
         if(isset($_POST['status'])){
            $res =  wp_update_post(array('ID' => $_POST['post_id'],'post_status' => $_POST['status']));
