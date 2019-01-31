@@ -27,7 +27,7 @@ use WP_Query;
   //  add_action( 'wp_ajax_get_Taxes',  [ $this,'get_Taxes'] );
    // add_action( 'wp_ajax_nopriv_get_Taxes',  [ $this,'get_Taxes' ]);
     add_action( 'elementor_pro/forms/validation', [ $this,'send_email_to_client'],10,2 ); 
-  //  add_filter('acf/pre_save_post' , [ $this,'acf_pre_save'], 10, 1 );
+   // add_action('acf/pre_save_post' , [ $this,'acf_pre_save'], 10, 1 );
  // add_filter( 'wp_insert_post_empty_content', [$this,'disable_save'], 999999, 2 );
    add_action('acf/save_post', [$this,'acf_save_data'], 20,1);
   // add_action( 'save_post', [$this,'acf_save_data'] );
@@ -117,12 +117,106 @@ use WP_Query;
     
         return $maybe_empty;
     }
+    protected function add_tfasim($added_rows,$pid){
+      //  var_dump($added_rows);
+        //       wp_die();
+            $rows = [];
+            $required_tofes_aas = get_field("required", $pid);
+            $exixt = false;
+            if(!is_array($required_tofes_aas['tofes_aas'])){
+                    foreach ($added_rows as $key => $value) {
+                        $rows [] = array(
+                            'name'	=> $value,
+                            'tofes' => '',
+                        );
+                        # code...
+                    }
+            }
+            else{
+                $current_rows = [];
+                foreach($required_tofes_aas['tofes_aas'] as $index=>$current_row){
+                    $current_rows [] = $current_row['name'];
+                    var_dump($current_rows);
+                }
+                    foreach($added_rows as $index=>$add_row){
+                    if(!in_array($add_row, $current_rows)){
+                        $rows [] = array(
+                            'name'	=> $add_row[''],
+                            'tofes' => '',
+                        );
+                    }
+                   
+            
+
+                 }
+                 var_dump("fore");
+
+                 var_dump($rows);
+                $rows = $rows + $required_tofes_aas['tofes_aas'];
+                var_dump($rows);
+
+                var_dump($required_tofes_aas['tofes_aas']);
+                $required_tofes_aas['tofes_aas'] = $rows;	
+                }
+                
+                update_field("required", $required_tofes_aas, $pid);
+     }
+
+     protected function add_tfasim_mosad($pid){
+      //  var_dump ( $pid);
+       //  return;
+        if( have_rows('personal_Details_lerning_detail',$pid) ):
+            //    var_dump ( "test");
+    
+            $rows = [];
+            $required_tofes_aas = get_field("more_files", $pid);
+          //  var_dump($required_tofes_aas);
+            while ( have_rows('personal_Details_lerning_detail',$pid) ) : the_row();
+           // echo get_sub_field("name");
+                $exixt = false;
+               // $new_rows = [];
+               //detiels_lerning
+               if(is_array($required_tofes_aas['eanlimodim_fiels'])){
+                foreach($required_tofes_aas['eanlimodim_fiels'] as $index=>$current_row){
+                    if($current_row['detiels_lerning'] === get_sub_field("mosad_name"))
+                    $exixt = $index;
+                    //sdfsf dfsdfsf 
+                }
+            }
+                if($exixt !== false){
+                    $rows [] = $required_tofes_aas['eanlimodim_fiels'][$exixt];
+                }
+                else  $rows [] = array(
+                'detiels_lerning'	=> get_sub_field("mosad_name"),
+            );
+    
+          endwhile;
+        //  var_dump($required_tofes_aas);
+          $required_tofes_aas['eanlimodim_fiels'] = $rows;		
+          update_field("more_files", $required_tofes_aas, $pid);
+          endif;
+          //var_dump( get_field_object('required') );
+    
+      
+     }
     public function acf_save_data( $post_id ){
+      
+        if(isset($_POST['acf']['field_5c16c13e76e20']['field_5c16c2873fb89'])){
+            $biss  = array_values( $_POST['acf']['field_5c16c13e76e20']['field_5c16c2873fb89'] );
+            foreach ($biss as $key => $value) {
+                $bis [] = $value['field_5c16c29a3fb8a'];
+                # code...
+            }
+            
+           // var_dump($bis);
+           // wp_die();
+            $this->add_tfasim($bis,$post_id);
+        }
+      
+        $rowscount = 0;
+     foreach($_POST['acf'] as $group => $val){
 
-$rowscount = 0;
-foreach($_POST['acf'] as $group => $val){
-
-    $uoniq = true;
+        $uoniq = true;
         $rows = get_field('post_groups',$post_id);
         if($rows)
         {
@@ -132,9 +226,9 @@ foreach($_POST['acf'] as $group => $val){
                      $uoniq = false;
               }
         }
-    if($uoniq && !empty($val)){
+     if($uoniq && !empty($val)){
         $group_detl =  get_field_object($group) ;
-    //    ["label"]=> string(23) "פרטים אישיים" ["name"]=> string(8) "personal" 
+        //    ["label"]=> string(23) "פרטים אישיים" ["name"]=> string(8) "personal" 
         $row = array(
             'group_key'	=> $group,
             'group_label' => $group_detl['label'],
@@ -142,12 +236,21 @@ foreach($_POST['acf'] as $group => $val){
 
         );
         $rowscount = add_row( 'post_groups',$row, $post_id );
+             }
+            }
+
+
     }
-}
-
-
-}
     public function acf_pre_save( $post_id ) {
+        if(isset($_POST['acf']['field_5c16c2873fb89'])){
+            $bis = [];
+            foreach($_POST['acf']['field_5c16c2873fb89'] as $key => $val){
+                    $bis [] = $val;
+            }
+            $this->add_tfasim($added_rows,$post_id);
+        }
+
+
        // var_dump($post_id);
        // var_dump([$_POST]);
        // wp_die();

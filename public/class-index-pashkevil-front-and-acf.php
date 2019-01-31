@@ -277,6 +277,8 @@ public function get_name() {
             }
         }
             if($exixt !== false){
+                     //  var_dump($required_tofes_aas);
+
                 $rows [] = $required_tofes_aas['tofes_aas'][$exixt];
             }
             else  $rows [] = array(
@@ -286,8 +288,12 @@ public function get_name() {
 
       endwhile;
     //  var_dump($required_tofes_aas);
-      $required_tofes_aas['tofes_aas'] = $rows;		
+      $required_tofes_aas['tofes_aas'] = $rows;	
+    //  var_dump($required_tofes_aas);
+	
       update_field("required", $required_tofes_aas, $pid);
+
+  // var_dump( get_field("required",$pid) );
       endif;
       //var_dump( get_field_object('required') );
 
@@ -651,53 +657,34 @@ return true;
 
     $filds = [];
     foreach($settings['fild_group_id_array'] as $group_filds){
-    //var_dump ( $settings['fild_group_id_array'] );
      if(!empty($group_filds) && !empty($settings['fild'.$group_filds])){
-      // var_dump("test");
       $this_group_filds = $settings['fild'.$group_filds] ;
       foreach($this_group_filds as $group_to_check){
-          if($group_to_check === "required")
-          $this->add_tfasim($settings['pid']);
-          if($group_to_check === "more_files")
+         // if($group_to_check === "field_5c1b953adb990")
+        //  $this->add_tfasim($settings['pid']);
+          if($group_to_check === "field_5c24daa6a3f57")
           $this->add_tfasim_mosad($settings['pid']);
-         // var_dump($group_to_check);
-
-          if($group_to_check === 'field_5c1b953adb990' || $group_to_check === 'field_5c1b970186b31'  || $group_to_check === 'field_5c24daa6a3f57'){
+          if( /* $group_to_check === 'field_5c1b953adb990' || */ $group_to_check === 'field_5c1b970186b31'  || $group_to_check === 'field_5c24daa6a3f57'){
               $fild_obj = get_field_object($group_to_check);
+             // $fild_obj['sub_fields'] [] = array('key' => $group_to_check);
               foreach($fild_obj['sub_fields'] as $one_fild){
-                 // echo $one_fild['key'];
-                //  echo "<br>";
-
-                //  if($this->check_logic($one_fild['key'],$settings['pid']))
-                  //  $filds [] =  $one_fild['key'];
-
-                  if(  $this->check_uploud_filds($one_fild['key'],$settings['pid']))
+                 if(  $this->check_uploud_filds($one_fild['key'],$settings['pid']))
                   $filds [] =  $one_fild['key'];
  
               }
 
-         //   var_dump($filds);
           }
           
          else if($this->check_logic($group_to_check,$settings['pid']))
          $filds [] = $group_to_check;
-         // $filds = array("how_is_reporting", "my_incomes","me_and_my_wife" , "placeOfWork", "incum"  );
-//required state_proof more_files
       }
-      //$filds = $filds + $this_group_filds;
      }
     }
-    //var_dump($filds);
-   // $filds_in_grups = array_map('intval',$filds);
     $fild_grups = array_map('intval',$settings['fild_group_id_array']);
 
 
       $settungs_acf = array();
       $settungs_acf['html_submit_button'] = "<input type=\"submit\" class=\"acf-button acf_submit button button-primary button-large ".$settings['show_submit']."\" value=\"%s\" />";
-    //  if($settings['ajex'] === 'true')
-    //  $settungs_acf['form_attributes'] =  array(
-	//	'class' => 'ajex',
-   //   );
       $settungs_acf['label_placement'] =   $settings['label_placement'];
       $settungs_acf['field_groups'] =   $fild_grups;
       $settungs_acf['submit_value'] =  $settings['submit_text'];

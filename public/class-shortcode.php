@@ -51,12 +51,14 @@ class TaxesShortCode {
         $curren_page = false;
         foreach($html->find('a') as $element){
             $class =  $element->class;
-          //  var_dump( strpos($class, 'current_page_item') !== false );
+            $li_class = $html->find('li', $index)->class;
             if (strpos($class, 'elementor-item elementor-item-active') !== false) {
-                $html->find('li', $index)->class = $class." activ_menu";
+                $html->find('li', $index)->class = $li_class." activ_menu";
                 break;       // echo 'true';
             }
-            $html->find('li', $index)->class = $class." activ_menu";
+            //$li_class = $html->find('li', $index)->class;
+
+            $html->find('li', $index)->class = $li_class." activ_menu";
             $index++;
          }
         $html_en = $html->save();
