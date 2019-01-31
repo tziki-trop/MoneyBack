@@ -300,24 +300,15 @@ public function get_name() {
   
  }
  protected function add_tfasim_mosad($pid){
-  //  var_dump ( $pid);
-   //  return;
-    if( have_rows('personal_Details_lerning_detail',$pid) ):
-        //    var_dump ( "test");
-
-        $rows = [];
-        $required_tofes_aas = get_field("more_files", $pid);
-      //  var_dump($required_tofes_aas);
+  if( have_rows('personal_Details_lerning_detail',$pid) ):
+      $rows = [];
+        $required_tofes_aas = get_field("mosad_limudim", $pid);
         while ( have_rows('personal_Details_lerning_detail',$pid) ) : the_row();
-       // echo get_sub_field("name");
             $exixt = false;
-           // $new_rows = [];
-           //detiels_lerning
            if(is_array($required_tofes_aas['eanlimodim_fiels'])){
             foreach($required_tofes_aas['eanlimodim_fiels'] as $index=>$current_row){
                 if($current_row['detiels_lerning'] === get_sub_field("mosad_name"))
                 $exixt = $index;
-                //sdfsf dfsdfsf 
             }
         }
             if($exixt !== false){
@@ -328,13 +319,17 @@ public function get_name() {
         );
 
       endwhile;
-    //  var_dump($required_tofes_aas);
       $required_tofes_aas['eanlimodim_fiels'] = $rows;		
-      update_field("more_files", $required_tofes_aas, $pid);
-      endif;
-      //var_dump( get_field_object('required') );
+      update_field("mosad_limudim", $required_tofes_aas, $pid);
+    //  echo "true";
+      return true;
+     else:
+       // echo "false";
 
-  
+        return false;
+      endif;
+    
+    
  }
   protected function check_logic($group,$pid){
      // if($group != 'field_5c4e2d0324a10')
@@ -580,12 +575,12 @@ public function get_name() {
           return false;
           return true;
           break;
-          case 'field_5c24dfb821115':
+     /*     case 'field_5c24dfb821115':
           $data = get_post_meta($pid, 'personal_Details_lerning', true);
           if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
           return true;
-          break;
+          break; */
           case 'field_5c24e05a21117':
           $data = get_post_meta($pid, 'personal_Details_lerning', true);
           if($data == "false" || $data == false || $data == "" || $data == null)
@@ -660,22 +655,30 @@ return true;
      if(!empty($group_filds) && !empty($settings['fild'.$group_filds])){
       $this_group_filds = $settings['fild'.$group_filds] ;
       foreach($this_group_filds as $group_to_check){
-         // if($group_to_check === "field_5c1b953adb990")
-        //  $this->add_tfasim($settings['pid']);
-          if($group_to_check === "field_5c24daa6a3f57")
-          $this->add_tfasim_mosad($settings['pid']);
+          // בדיקת טופס 106
+          if($group_to_check === "field_5c1b953adb990"){
+          $this->add_tfasim($settings['pid']);
+          $filds [] = $group_to_check;
+          continue;
+          }
+         // בדיקת טופס מוסד לימודים
+          if($group_to_check === "field_5c52e2b12d4e0"){
+           if($this->add_tfasim_mosad($settings['pid']))
+            $filds [] = $group_to_check;
+            continue; 
+          }
+           // בדיקת טפסי העלאת קבצים לפי תנאים ספציפיים
           if( /* $group_to_check === 'field_5c1b953adb990' || */ $group_to_check === 'field_5c1b970186b31'  || $group_to_check === 'field_5c24daa6a3f57'){
               $fild_obj = get_field_object($group_to_check);
-             // $fild_obj['sub_fields'] [] = array('key' => $group_to_check);
               foreach($fild_obj['sub_fields'] as $one_fild){
                  if(  $this->check_uploud_filds($one_fild['key'],$settings['pid']))
                   $filds [] =  $one_fild['key'];
  
               }
-
+              continue;
           }
-          
-         else if($this->check_logic($group_to_check,$settings['pid']))
+          // בדיקת לוגיקה לפי גרופים
+         if($this->check_logic($group_to_check,$settings['pid']))
          $filds [] = $group_to_check;
       }
      }

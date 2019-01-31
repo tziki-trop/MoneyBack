@@ -201,7 +201,7 @@ use WP_Query;
      }
     public function acf_save_data( $post_id ){
       
-        if(isset($_POST['acf']['field_5c16c13e76e20']['field_5c16c2873fb89'])){
+       /* if(isset($_POST['acf']['field_5c16c13e76e20']['field_5c16c2873fb89'])){
             $biss  = array_values( $_POST['acf']['field_5c16c13e76e20']['field_5c16c2873fb89'] );
             foreach ($biss as $key => $value) {
                 $bis [] = $value['field_5c16c29a3fb8a'];
@@ -211,7 +211,7 @@ use WP_Query;
            // var_dump($bis);
            // wp_die();
             $this->add_tfasim($bis,$post_id);
-        }
+        } */
       
         $rowscount = 0;
      foreach($_POST['acf'] as $group => $val){
