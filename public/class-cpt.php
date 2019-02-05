@@ -54,7 +54,7 @@ use WP_Query;
 
         $args = array(
             'post_type' =>  'taxes',
-            'post_status' => 'new',
+            'post_status' => 'trash',
             'tax_input' =>  $tax_input,
             'meta_input' => array('owner' => $user_id)
         );
@@ -200,22 +200,11 @@ use WP_Query;
       
      }
     public function acf_save_data( $post_id ){
-      
-       /* if(isset($_POST['acf']['field_5c16c13e76e20']['field_5c16c2873fb89'])){
-            $biss  = array_values( $_POST['acf']['field_5c16c13e76e20']['field_5c16c2873fb89'] );
-            foreach ($biss as $key => $value) {
-                $bis [] = $value['field_5c16c29a3fb8a'];
-                # code...
-            }
-            
-           // var_dump($bis);
-           // wp_die();
-            $this->add_tfasim($bis,$post_id);
-        } */
-      
-        $rowscount = 0;
+        // set 
+//var_dump($_POST);
+//wp_die();
+     $rowscount = 0;
      foreach($_POST['acf'] as $group => $val){
-
         $uoniq = true;
         $rows = get_field('post_groups',$post_id);
         if($rows)
@@ -237,7 +226,23 @@ use WP_Query;
         );
         $rowscount = add_row( 'post_groups',$row, $post_id );
              }
-            }
+         }
+         if((isset($_POST['acf']['field_5c24e27628aec']) && $_POST['acf']['field_5c24e27628aec'] == "true" )
+          || (isset($_POST['acf']['field_5c24e4da654ed']) && $_POST['acf']['field_5c24e4da654ed'] == "true"  )){
+            $args = array(
+                'post_status' => 'mail',
+                'ID' => $post_id
+            );
+            wp_update_post($args);
+         }
+         else if($rowscount > 1){
+             $args = array(
+                 'post_status' => 'new',
+                 'ID' => $post_id
+             );
+             wp_update_post($args);
+         }
+
 
 
     }

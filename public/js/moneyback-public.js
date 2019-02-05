@@ -22,9 +22,16 @@ var form_submited = false;
 				this.onChange(e, $el);
 			}
 		});
-	
-    $(".reperter_section").each(function(index){
-	$(this).find(".fil_val").each(function (param) { 
+		//add req
+$(".acf-field.tf").each(function(index){
+	var input = $(this).find("input").first();
+	input.attr("required",true);
+
+
+
+});
+$(".reperter_section").each(function(index){
+$(this).find(".fil_val").each(function (param) { 
 		
 
 		var name = $(this).attr("name");

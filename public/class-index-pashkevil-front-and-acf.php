@@ -507,11 +507,28 @@ public function get_name() {
         }
         else return false;
           break;
+          //field_5c24e08821119
+          case 'field_5c24e08821119':
+          $btl = get_post_meta($pid, 'personal_Details_Which_deposit', true);
+          if(is_array($btl)){
+         // $key = in_array("קצבת שאירים", $btl);
+          return true;
+          }
+          else return false;
           case 'field_5c24d9bfa3f53':
           $btl = get_post_meta($pid, 'incum_btl', true);
           if(is_array($btl)){
 
           $key = in_array("קצבת שאירים", $btl);
+          return $key;
+        }
+        else return false;
+          break;     
+          case 'field_5c24d9d5a3f54':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+
+          $key = in_array("אחר", $btl);
           return $key;
         }
         else return false;
@@ -530,7 +547,17 @@ public function get_name() {
           return false;
           return true;
           break;
-          //field_5c24e11b2111d
+          case 'field_5c24dacea3f58':
+         // var_dump("test");
+          //field_5c16c3320ba99 resing
+          $data = get_post_meta($pid, 'incum_resing', true);
+                  //  var_dump($data);
+
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          //field_5c16c3320ba99
           case 'field_5c24dd5e21100':
           $data = get_post_meta($pid, 'incum_bank', true);
         //  var_dump($data);

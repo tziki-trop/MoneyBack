@@ -8,6 +8,8 @@ class TaxesShortCode {
         $this->add_wp_actions();
      }
      public function add_wp_actions(){
+        add_shortcode('add_filter', [$this,'add_filter']);
+
          add_shortcode('status_cpt_tex', [$this,'status_cpt_tex']);
          add_shortcode('get_cpts_tabole', [$this,'get_cpts_tabole']);
          add_action( 'wp_ajax_foobar', [$this,'ajax_filter_cpts'] );
@@ -18,7 +20,64 @@ class TaxesShortCode {
         add_filter('wp_nav_menu_items', [$this,'add_to_menu'], 20, 2);
 
             }
-  
+public function add_filter(){
+    ob_start();
+    ?>
+    <form class="elementor-form three_row" method="post" name="New Form">
+	<div class="elementor-form-fields-wrapper elementor-labels-above">
+		<div class="elementor-field-type-number elementor-field-group elementor-column elementor-field-group-pid elementor-col-100">
+					<label for="form-field-pid" class="elementor-field-label">מספר תיק</label><input type="number" name="form_fields[pid]" id="form-field-pid" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="מספר תיק" min="" max="">				</div>
+		<div class="elementor-field-type-date elementor-field-group elementor-column elementor-field-group-from_date elementor-col-100">
+					<label for="form-field-from_date" class="elementor-field-label">מתאריך</label><input type="date" name="form_fields[from_date]" id="form-field-from_date" class="elementor-field elementor-size-sm elementor-field-textual elementor-date-field flatpickr-input" placeholder="מתאריך" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">				</div>
+		<div class="elementor-field-type-date elementor-field-group elementor-column elementor-field-group-to_date elementor-col-100">
+					<label for="form-field-to_date" class="elementor-field-label">עד תאריך</label><input type="date" name="form_fields[to_date]" id="form-field-to_date" class="elementor-field elementor-size-sm elementor-field-textual elementor-date-field flatpickr-input" placeholder="מתאריך" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">				</div>
+								<div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-status elementor-col-100">
+					<label for="form-field-status" class="elementor-field-label">סטטוס</label>		<div class="elementor-field elementor-select-wrapper ">
+		<select name="form_fields[status]" id="form-field-status" class="elementor-field-textual elementor-size-sm">
+		<option value="any">- בחר אפשרות -</option>
+        <?php 
+    foreach( $this->get_cpt_by_status() as $status => $args ){
+      //  var_export($args);
+        ?>
+		<option value="<?php echo $status; ?>"><?php echo $args['name']; ?></option>
+        <?php 
+    }
+     ?>
+        </select>
+		</div>
+						</div>
+								<div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-cpa elementor-col-100">
+					<label for="form-field-cpa" class="elementor-field-label">משוייך ל:</label>		<div class="elementor-field elementor-select-wrapper ">
+		<select name="form_fields[cpa]" id="form-field-cpa" class="elementor-field-textual elementor-size-sm">
+        <option value="">- בחר אפשרות -</option>
+        <?php 
+        $blogusers = get_users( [ 'role__in' => [ 'Administrator', 'cpa' ] ] );
+// Array of WP_User objects.
+foreach ( $blogusers as $user ) {
+    ?>
+    <option value="<?php echo $user->ID; ?>"><?php echo $user->display_name; ?></option>
+    <?php 
+}
+?>
+		<option value="1">1</option>
+        </select>
+		</div>
+						</div>
+		<div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100">
+		<button type="submit" class="elementor-button elementor-size-sm">
+		<span>
+		<span class="elementor-button-text">סינון</span>
+		</span>
+		</button>
+		</div>
+	</div>
+</form>
+
+    <?php
+      $output = ob_get_contents();
+      ob_end_clean();
+      return $output;
+}
    public function add_to_menu($items ,  $args){
    // return "t";
 
@@ -117,9 +176,17 @@ class TaxesShortCode {
             }
   
     public function status_cpt_tex(){
+        if( !is_user_logged_in() ) 
+        return '';
+        $statuses = $this->get_cpt_by_status();
+         $user = wp_get_current_user();
+         $role = ( array ) $user->roles;
+         if(in_array("cpa",$role)){
+            unset($statuses['new']);
+         }
         ob_start();
     
-        foreach( $this->get_cpt_by_status() as $status => $args ){
+        foreach( $statuses as $status => $args ){
             
             ?>
             <div class="one_status <?php echo $status; ?>" data-ststus-name="<?php echo $status; ?>"
