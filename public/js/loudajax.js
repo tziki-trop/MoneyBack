@@ -39,10 +39,12 @@ $(".elementor-field-group button").click(function (e) {
     
 });
 $( 'body' ).delegate( ".status select", "change", function() {
+    var td_worrper = $(this).closest("tr");
+  
    var id = $(this).closest("tr").data("post-id");
-   update_cpt_status(id ,this.value);
+   update_cpt_status(id ,this.value , td_worrper);
   });
-  $(".one_status").click(function (e) {
+$(".one_status").click(function (e) {
     if($(this).hasClass("activ")){
 
     e.preventDefault();
@@ -128,7 +130,7 @@ function get_ajax_cpt(data ,replase){
           canBeLoaded = false; 
         },
         success:function(data){
-            
+          //  debugger;
           misha_loadmore_params.max_page = data.max_page;
           misha_loadmore_params.current_page++;
           if(replase){
@@ -144,8 +146,8 @@ function get_ajax_cpt(data ,replase){
       //  }
     });
 }
-function update_cpt_status(id ,stsus){
-
+function update_cpt_status(id ,stsus,td_wor){
+    td_wor.append("<i class='fa fa-spinner fa-spin'></i>");
     var data = {
         'action': 'update_status',
         'post_id' : id,
@@ -161,7 +163,7 @@ function update_cpt_status(id ,stsus){
         },
         success:function(data){
           
-                
+            td_wor.find("i").remove();
                 canBeLoaded = true; // the ajax is completed, now we can run it again
             }
     

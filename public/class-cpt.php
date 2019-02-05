@@ -200,11 +200,20 @@ use WP_Query;
       
      }
     public function acf_save_data( $post_id ){
+    if(isset($_POST['acf']['field_5c19084918bc3']) && $_POST['acf']['field_5c19084918bc3'] != '' ){
+      //  var_dump($_POST['acf']);
+     //   wp_die();
+        $args = array(
+            'post_status' => 'wait',
+            'ID' => $post_id
+        );
+        wp_update_post($args);
+   }
         // set 
 //var_dump($_POST);
 //wp_die();
      $rowscount = 0;
-     foreach($_POST['acf'] as $group => $val){
+    foreach($_POST['acf'] as $group => $val){
         $uoniq = true;
         $rows = get_field('post_groups',$post_id);
         if($rows)
@@ -227,15 +236,29 @@ use WP_Query;
         $rowscount = add_row( 'post_groups',$row, $post_id );
              }
          }
-         if((isset($_POST['acf']['field_5c24e27628aec']) && $_POST['acf']['field_5c24e27628aec'] == "true" )
+    if((isset($_POST['acf']['field_5c24e27628aec']) && $_POST['acf']['field_5c24e27628aec'] == "true" )
           || (isset($_POST['acf']['field_5c24e4da654ed']) && $_POST['acf']['field_5c24e4da654ed'] == "true"  )){
             $args = array(
                 'post_status' => 'mail',
                 'ID' => $post_id
             );
             wp_update_post($args);
-         }
-         else if($rowscount > 1){
+    }//field_5c190a65158e2
+    else if(isset($_POST['acf']['field_5c19084918bc3'])){
+        $args = array(
+            'post_status' => 'submitted',
+            'ID' => $post_id
+        );
+        wp_update_post($args);
+    }
+    else if(isset($_POST['acf']['field_5c190a65158e2'])){
+        $args = array(
+            'post_status' => 'wait',
+            'ID' => $post_id
+        );
+        wp_update_post($args);
+    }  
+    else if($rowscount > 1){
              $args = array(
                  'post_status' => 'new',
                  'ID' => $post_id

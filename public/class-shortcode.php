@@ -59,7 +59,6 @@ foreach ( $blogusers as $user ) {
     <?php 
 }
 ?>
-		<option value="1">1</option>
         </select>
 		</div>
 						</div>
@@ -148,16 +147,46 @@ foreach ( $blogusers as $user ) {
                 $args['post_status'] = $_POST['post_status'];
                 if(isset($_POST['post_id']) && $_POST['post_id'] != '')
                 $args['post__in'] = array( (int)$_POST['post_id']);
+                $meta_query = array();
                /* 'cpa' : cpa,
                 'from' : from,
                 'to' : to*/
                 if(isset($_POST['cpa']) && $_POST['cpa'] != 'any')
-                $args['meta_query'] = array(
+                $meta_query [] =
                     array(
                         'key'     => 'cpa',
                         'value'   => $_POST['cpa'],
                         'compare' => 'LIKE',
-                    ));
+                    );
+                    /*
+                             'action': 'loadmore',
+        'page' : misha_loadmore_params.current_page,
+        'post_status' : ststus,
+        'post_id' : post_id,
+        'cpa' : cpa,
+        'from' : from,
+        'to' : to
+
+                    */
+                  //  $date  = new DateTime($_POST['from']);
+                 // $new_date = date('Y-m-d',  $_POST['from']);
+              //   echo json_encode(array('post_id' => $_POST['from']));
+                    //  echo $output;
+                 //     wp_die();
+                   // 'date_query' => array(
+                   //     'after' => '2012-04-01' 
+                  //    ),
+                    $date_query = array();  
+                 if(isset($_POST['from']) && $_POST['from'] != ''){
+                    $date_query ['after'] = $_POST['from'];
+                 }
+                 if(isset($_POST['to']) && $_POST['to'] != ''){
+                    $date_query ['before'] = $_POST['to'];
+                 }
+                 $meta_query [] = array( 'relation'  => 'AND' );
+                 if(!empty($date_query))
+                $args['date_query'] = $date_query;
+                $args['meta_query'] = $meta_query;
                 $args['paged'] = (int)$_POST['page'] + 1;
                 $wp_query = new WP_Query( $args );
                 if( $wp_query->have_posts() ) :
@@ -226,7 +255,7 @@ foreach ( $blogusers as $user ) {
             </a>
         </td>
 
-        <td class="pid"><span><?php echo get_the_ID(); ?></span></td>
+        <td class="pid"><a href="<?php echo get_permalink(); ?>"><span><?php echo get_the_ID(); ?></span></a></td>
         <td class="submittion"><span><? echo get_the_date(); ?></span></td>
         <td class="tax-year"><span>
         <? echo get_the_terms(get_the_ID(),"taxes_year")[0]->name; ?> 
@@ -259,7 +288,7 @@ foreach ( $blogusers as $user ) {
             <tr>
                 <th width="300">שם לקוח</th>
                 <th width="100">מס' תיק</th>
-                <th width="120">הגשה</th>
+                <th width="120">נוצר בתאריך</th>
                 <th width="100">שנת מס</th>
                 <th width="300">משויך ל</th>
                 <th width="200">סטטוס</th>

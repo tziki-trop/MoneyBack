@@ -662,12 +662,7 @@ return true;
 
 
     $settings = $this->get_settings_for_display();
-    if($settings['pid'] != ""){
-    $user = (int)get_field( 'owner', $settings['pid'] );
-    if($user != get_current_user_id()  && !current_user_can('administrator') && !is_admin())
-    return;
-   }
-
+   
     $famely_status = get_field('personal_famely_status', (int)$settings['pid']);
     if($famely_status != ''){
         if($famely_status != 'Married' &&  $famely_status != 'Separated'){
@@ -694,6 +689,18 @@ return true;
             $filds [] = $group_to_check;
             continue; 
           }
+        //  var_dump($group_to_check);
+          if($group_to_check === "field_5c190a65158e2"){
+            if( !is_user_logged_in() ) 
+            return '';
+             $user = wp_get_current_user();
+             $role = ( array ) $user->roles;
+             if(in_array("cpa",$role)){
+                return '';
+             }
+         
+           } 
+          //field_5c190a65158e2
            // בדיקת טפסי העלאת קבצים לפי תנאים ספציפיים
           if( /* $group_to_check === 'field_5c1b953adb990' || */ $group_to_check === 'field_5c1b970186b31'  || $group_to_check === 'field_5c24daa6a3f57'){
               $fild_obj = get_field_object($group_to_check);
