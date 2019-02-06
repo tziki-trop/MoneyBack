@@ -185,9 +185,53 @@ public function __construct(){
         wp_set_auth_cookie  ( $user->ID ); 
         $ajax_handler->add_response_data( 'redirect_url', get_permalink(109));
     }
+    //add_note_to_client
+    if($send === "add_note_to_client"){
+        $raw_fields = $record->get( 'fields' );
+        $fields = [];   
+        foreach ( $raw_fields as $id => $field ) {
+            $fields[ $id ] = (string)$field['value'];
+        }
+        $row = array(
+            'note'	=> $fields[ 'body' ],
+        );
+        $rowscount = add_row( 'notes',$row, (int)$fields[ 'post_id' ]  );
+        if($rowscount == 0)
+        $ajax_handler->add_error_message("אירעה בעיה, נסה לשלוח ידנית");
+    }
+    if($send === "send_messege_to_client"){
+        $raw_fields = $record->get( 'fields' );
+        $fields = [];   
+        foreach ( $raw_fields as $id => $field ) {
+            $fields[ $id ] = (string)$field['value'];
+        }
+        $post_author_id = get_post_field( 'post_author', (int)$fields[ 'post_id' ] );
+        $curauth = get_user_by('ID', $post_author_id);
+        $cpa = get_user_by('ID', get_current_user_id());
+	//	$user_nicename    = $curauth->user_nicename;
+	//	$display_name     = $curauth->display_name;
+	//	$user_description = $curauth->user_description;
+	//	$user_email       = $curauth->user_email;
+	///	$user_url         = $curauth->user_url;
+	//	$user_website     = $curauth->website_name;
+//		$user_twitter     = $curauth->twitter;
+	  //  $author_id = $post->post_author;
+      //  $author = get_the_author_meta('display_name', $author_id); 
+      //  $ajax_handler->add_error_message($curauth->user_email);
+        $row = array(
+            'subject'	=> $fields[ 'subject' ],
+            'body' => $fields[ 'body' ],
+        );
+        $rowscount = add_row( 'messeges',$row, (int)$fields[ 'post_id' ]  );
+        $headers = array('Content-Type: text/html; charset=UTF-8;', 'From: '.$cpa->display_name.' <'.$cpa->user_email.'>');
+       // $ajax_handler->add_error_message(json_encode($headers));
 
-        
-    
+        $mail_ras = wp_mail( $curauth->user_email, $fields[ 'subject' ], $fields[ 'body' ] , $headers );
+        if(!$mail_ras)
+        $ajax_handler->add_error_message("אירעה בעיה, נסה לשלוח ידנית");
+
+        }
+  
     }   
 }
     new menegge_users();

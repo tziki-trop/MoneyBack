@@ -9,6 +9,7 @@ class TaxesShortCode {
      }
      public function add_wp_actions(){
         add_shortcode('add_filter', [$this,'add_filter']);
+        add_shortcode('acf_repeter', [$this,'acf_repeter']);
 
          add_shortcode('status_cpt_tex', [$this,'status_cpt_tex']);
          add_shortcode('get_cpts_tabole', [$this,'get_cpts_tabole']);
@@ -20,6 +21,39 @@ class TaxesShortCode {
         add_filter('wp_nav_menu_items', [$this,'add_to_menu'], 20, 2);
 
             }
+     public function acf_repeter( $atts = [] ){
+        $atts = array_change_key_case((array)$atts, CASE_LOWER);
+ 
+        // override default attributes with user attributes
+        $wporg_atts = shortcode_atts([
+                                         'main' => '',
+                                         'sub' => '',
+                                         'sub1' => '',
+                                     ]
+                                     , $atts);
+         $o = '';
+        if( have_rows($wporg_atts['main'],get_the_ID()) ):
+        $in = 0;
+         $o .= '<div>';
+        while ( have_rows($wporg_atts['main'],get_the_ID()) ) : the_row();
+        $in++;
+        $o .= '<p>&nbsp;'.$in.'.&nbsp;';
+        $o .= get_sub_field($wporg_atts['sub']);
+        $o .= '</p>';      
+        if($wporg_atts['sub1'] != ''){
+            $o .= '<p class=\'dis\'>';
+            $o .= get_sub_field($wporg_atts['sub1']);
+            $o .= '</p>';  
+        }
+                    endwhile;
+                    $o .= '</div>';
+                else:
+                    $o .= '<p>עדיין ריק פה </p>';
+   
+       endif;
+       return $o;
+              
+      }
 public function add_filter(){
     ob_start();
     ?>
