@@ -38,6 +38,9 @@ class loud_includ {
 
 	private function load_dependencies() {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/simple_html_dom.php';
+//class-cardcom.php
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-cardcom.php';
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/set-accsess.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-add-field_prodact.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-add-inclouds.php';

@@ -18,6 +18,7 @@ use WP_Query;
     add_action( 'init', [$this,'on_init' ]);
     add_action( 'reg_cpts', [$this,'on_init' ]);
     add_filter('insert_cpt', [$this,'insert_cpt'],10,2 );
+    add_action( 'elementor_pro/posts/query/user_posts', [$this,'user_posts'] );
 
   //  add_action( 'add_meta_boxes_Taxes', [$this,'meta_box' ]);
  //   add_action( 'save_post_Taxes', [$this,'save_meta_box_data' ]);
@@ -36,6 +37,7 @@ use WP_Query;
                // error_log( "insert cpt function");
 
             $exsist = $this->check_if_cpt_exsist($user_id,$year);
+           // return $exsist;
          //   error_log($exsist);
             if($exsist != false)
             return $exsist;
@@ -65,24 +67,22 @@ use WP_Query;
         }
        return $pid;   
     }
+    public function user_posts($query){
+        $query->set( 'author', get_current_user_id());
+
+    }
     protected function check_if_cpt_exsist($user_id,$year){
         $exsist = false;
         $args = array(
             'post_type' =>  'taxes',
-            'post_status' => 'publish',
-            'meta_query' =>  array(
-                    array(
-                    'key'     => 'owner',
-                    'value'   => $user_id,
-                    'compare' => '='
-                    )
-                    ),
+            'post_status' => 'any',
+            'author' =>  get_current_user_id(),      
             'tax_query' => array(
                     array(
                     'taxonomy' => 'taxes_year',
                     'field'    => 'term_id',
                     'terms'    => array( (int)$year ),
-                    'operator' => '=',
+                    'operator' => 'IN',
                         ),            
                     )
                     );

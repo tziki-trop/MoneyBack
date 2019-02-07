@@ -2,6 +2,125 @@ var form_submited = false;
 (function( $ ) {
 	'use strict';
 	$(document).ready(function () {
+			$(".tab_title").click(function(){
+				debugger;
+				$(this).closest(".father_box").find(".tab_mida").slideToggle();
+				//$(this).find(".tab_mida").toggle();
+				
+			});
+		
+			$( document ).on('submit_success', function(e ,b){
+				debugger;
+				var ddd = b;
+				var url  = b.data.redirect_url;
+				if($(e.target).attr("id") === "donation"){
+					debugger;
+				}
+				
+				// form has been submitted do your tracking here...
+			});
+	
+		var data  = findGetParameter("tex_id");
+		debugger;
+	//	localStorage[data.tex_id] = paranterss;
+
+		if(localStorage[window.location.href] != undefined){
+			var param = JSON.parse(localStorage[window.location.href]);
+			debugger;
+			param.forEach(element => {
+				if(element.type === "reg"){
+					switch(element.input_type){
+						case "radio" : 
+					//	debugger;
+						if(element.val != undefined){
+							debugger;
+							$("input[name='"+element.key+"'][value='"+element.val+"']").click();
+						//var all_redio = $("input[id='"+element.val+"']").closest(".acf-radio-list");
+					//	all_redio.find("input").prop('checked',false);
+						//all_redio.find("input").attr('checked','');
+					//	all_redio.closest("label").removeClass("selected");
+					//	$("input[id='"+element.val+"']").prop('checked',true);
+					//	$("input[id='"+element.val+"']").attr('checked','checked');
+					//	$("input[id='"+element.val+"']").closest("label").addClass("selected");
+//label
+						}
+						break;
+						case "hidden" : 
+						break;
+						default:
+						$("input[name='"+element.key+"']").attr("value",element.val);
+						break;
+					}
+
+				}
+				//repeater num 					input_num = $(this).find(".acf-repeater").length;
+
+				else if(element.type === "repeater"){
+				//	debugger;
+				//	input_num = $(this).closest(".acf-repeater").find(".acf-row").length;
+
+					if(parseInt(element.num) < $(this).closest(".acf-repeater").find(".acf-row").length){
+						var add_in = parseInt(element.num) < $(this).closest(".acf-repeater").find(".acf-row").length;
+						for (i = 0; i < add_in; i++) {
+							$(this).closest(".acf-repeater").find("[data-event='add-row']").click();
+						}
+					}
+				}
+			});
+			//var param = getFormCookie(window.location.href);
+
+		}
+		$("#btn_save").click(function (e) { 
+			e.preventDefault();
+		//.acf-input
+			var paranterss = [];
+			$( ".acf-input" ).each(function(index) {
+				var type = "reg";
+				var input_num = 1;
+				if($(this).find(".acf-repeater").length > 0){
+					type = "repeater";
+					debugger;
+				    var fff = 	$(this).closest(".acf-repeater").find(".acf-row").last();
+					input_num = $(this).closest(".acf-repeater").find(".acf-row").last().data("id");
+				}
+				//repeater num 					input_num = $(this).find(".acf-repeater").length;
+
+			//	debugger;
+				$(this).find("input").each(function(index) {
+					var input_key = $(this).attr("name");
+					var input_val = $(this).val();
+					var input_type = $(this).attr("type");
+					var input_val = '';
+					switch(input_type){
+						case "radio" : 
+						//debugger;
+						input_val = $(this).attr("checked");
+						debugger;
+						if(input_val == "checked"){
+							input_val = $(this).attr("value");
+
+						}
+						debugger;
+						//value="Separated"
+						break;
+						default:
+						input_val = $(this).val();
+						break;
+					}
+					//debugger;
+					var fild = {"type": type,"key": input_key,"val": input_val,"num": input_num,"input_type":input_type};
+					paranterss.push( fild );
+				});
+			  
+				//paranterss[] = fild;
+			});
+			debugger;
+			var data  = findGetParameter("tex_id");
+			localStorage[window.location.href] = JSON.stringify(paranterss);
+			//setFormCookie(JSON.stringify(paranterss),data.tex_id);
+		
+			
+		});
 		var postID = acf.get('post_id');
 		var instance = new acf.Model({
 			events: {
@@ -23,12 +142,30 @@ var form_submited = false;
 			}
 		});
 		//add req
+//<input type="button" id="loadFileXml" value="loadXml" onclick="document.getElementById('file').click();" />
+$(".acf-file-uploader input[type='file']").each(function(index){
+	var button = "<div class = \"uploud_worpper\"><button class=\"uploud_button\" type=\"button\">העלה קובץ</button><span class=\"file_name\"></span></div>";
+	$(button).insertAfter($(this));
+	$(this).hide();
+	//insertAfter
+//	var input = $(this).find("input").first();
+//	input.attr("required",true);
+});
+$( 'body' ).delegate( ".acf-file-uploader input[type='file']", "change", function(e) {
+	debugger;
+	$(e.target).closest("label").find(".file_name").html($(e.target).val());
+});
+$( 'body' ).delegate( ".acf-file-uploader .uploud_button", "click", function(e) {
+	debugger;
+	$(e.target).closest("label").find("input").click();
+});
+
+
+
+
 $(".acf-field.tf").each(function(index){
 	var input = $(this).find("input").first();
 	input.attr("required",true);
-
-
-
 });
 $(".reperter_section").each(function(index){
 $(this).find(".fil_val").each(function (param) { 
@@ -83,6 +220,7 @@ $('.acf-form').on('click', '[data-event="remove-row"]', function(e) {
 	$(this).find(".acf-input").toggle();
 	
 });
+
 $("#acf-field_5c16c13e76e20-field_5c16c25176e21").change(function (e) { 
 	
    var father =	$(this).closest(".acf-fields");
@@ -165,6 +303,36 @@ $(this).closest(".elementor-widget-container").find(".worrper_new_input").last()
 });
 });
 })( jQuery );
+function setFormCookie(value,url) {
+	var expires = new Date();
+	expires.setTime(expires.getTime() + (1 * 24 * 60 * 60 * 1000));
+	document.cookie = url + '=' + value + ';expires=' + expires.toUTCString();
+}
 
+function getFormCookie(url) {
+	var keyValue = document.cookie.match('(^|;) ?'+ url +'=([^;]*)(;|$)');
+	return keyValue ? keyValue[2] : null;
+}
+function findGetParameter(parameterName) {
+	var exist = false;
+    		  var paranterss = {};
+    var result = null,
+        tmp = [];
+    location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+		if(!exist && item === "")
+			return false;
+		exist = true;
+		//debugger;
+          tmp = item.split("=");
+          paranterss[tmp[0]] = decodeURIComponent(tmp[1]);
+          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+	if(exist)
+    return paranterss;
+	else return false;
+}
   
 

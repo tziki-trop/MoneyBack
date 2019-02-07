@@ -74,8 +74,10 @@ public function __construct(){
 
                 $fields[ $id ] = (string)$field['value'];
             } 
-
+         //   $ajax_handler->add_error_message( $fields['message']);
         $insert_cpt = apply_filters('insert_cpt',get_current_user_id(),$fields['message']);
+                 //  $ajax_handler->add_error_message( $insert_cpt );
+
         $vars = array('tex_id' => $insert_cpt); 
         $url = add_query_arg($vars,get_permalink(40));
         
@@ -103,6 +105,7 @@ public function __construct(){
             'user_pass' => $fields[ 'pass' ],
             'user_email' => $fields[ 'email' ],
             'user_login' => $fields[ 'email' ],
+            'display_name' => $fields[ 'name' ],
             'role' =>  'owner' 
         );
         $user = wp_insert_user($userarray);
@@ -159,7 +162,7 @@ public function __construct(){
         return;
         }
         $title = "הסיסמה שלך באתר Money Back השתנתה";
-        $content = "הזיזמה החדשה שלך באתר: <bt>";
+        $content = "הסיסמה החדשה שלך באתר: <bt>";
         $content .=  $pas;
         $content .=  "באפשרותך לשנות אותה בהגדרות המשתמש באתר";
 

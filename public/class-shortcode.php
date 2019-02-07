@@ -192,25 +192,8 @@ foreach ( $blogusers as $user ) {
                         'value'   => $_POST['cpa'],
                         'compare' => 'LIKE',
                     );
-                    /*
-                             'action': 'loadmore',
-        'page' : misha_loadmore_params.current_page,
-        'post_status' : ststus,
-        'post_id' : post_id,
-        'cpa' : cpa,
-        'from' : from,
-        'to' : to
-
-                    */
-                  //  $date  = new DateTime($_POST['from']);
-                 // $new_date = date('Y-m-d',  $_POST['from']);
-              //   echo json_encode(array('post_id' => $_POST['from']));
-                    //  echo $output;
-                 //     wp_die();
-                   // 'date_query' => array(
-                   //     'after' => '2012-04-01' 
-                  //    ),
-                    $date_query = array();  
+      
+                $date_query = array();  
                  if(isset($_POST['from']) && $_POST['from'] != ''){
                     $date_query ['after'] = $_POST['from'];
                  }
@@ -220,6 +203,11 @@ foreach ( $blogusers as $user ) {
                  $meta_query [] = array( 'relation'  => 'AND' );
                  if(!empty($date_query))
                 $args['date_query'] = $date_query;
+                $meta_query [] = array(
+                    'key'     => 'payment',
+                    'value'   => 'payed',
+                    'compare' => 'LIKE',
+                );
                 $args['meta_query'] = $meta_query;
                 $args['paged'] = (int)$_POST['page'] + 1;
                 $wp_query = new WP_Query( $args );
@@ -311,7 +299,15 @@ foreach ( $blogusers as $user ) {
         $args = array(
             'posts_per_page' => 10,
             'post_type' => 'taxes',
-            'paged'          => $paged
+            'paged'          => $paged,
+            'meta_query' => array(
+                array(
+                    'key'     => 'payment',
+                    'value'   => 'payed',
+                    'compare' => 'LIKE',
+                )
+            )
+              
           );
         $wp_query = new WP_Query( $args );
         if( $wp_query->have_posts() ){

@@ -2,6 +2,36 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+ .acf-basic-uploader{
+     padding: 0px!important;
+ }
+ .uploud_worpper{
+    background: #E4E8EA!important;
+    background-color: rgb(228, 232, 234) !important;
+   height: 60px;
+   width: 100%;
+    border-radius: 15px!important;
+    font-size: 1.125rem!important;
+ } 
+ .one .one_item:after{
+content: ",";
+
+ }
+ .one .one_item:last-child:after{
+    content: ''!important;
+     }
+.one .one_item{
+         padding-right: 10px;
+     } 
+     .one .one_item:first-child{
+        padding-right: 0px;
+    } 
+ .fild_title{
+     font-weight: 500;
+ }
+ .acf-row-handle{
+     background-color: transparent!important;
+ }
 .tufes_menu .activ_menu{
      background-color: #0780BD!important;
  }
@@ -52,7 +82,7 @@ margin-top: -3px;
     padding-right: 30px;
 }
 .tufes_menu .menu-item:after{
-	    content: "";
+	content: "";
     position: absolute;
     left: -32px;
     top: 0px;

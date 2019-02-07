@@ -97,7 +97,7 @@ protected function _register_controls() {
         echo "<span class='one'>";
         foreach($sabs as $sab){
           //  echo $sab['name'];
-            echo "<span>";
+            echo "<span class='one_item'>";
           $fffid =   get_sub_field($sab['name']);
           if(is_array( $fffid) && isset($fffid['url']) ){
               ?>
@@ -114,7 +114,7 @@ protected function _register_controls() {
              
             echo "</span>";
         }
-        echo "</span>";
+        echo "</span><br>";
    endwhile;
 
 else :
@@ -149,17 +149,23 @@ endif;
             }
             else{
                 $filr_to_print =  get_field($obj['name'],get_the_ID());
+                $fild_with_label = '';
                 if($filr_to_print == "false")
-                echo "לא";
+                $fild_with_label  .= "לא";
                 else if($filr_to_print == "true")
-                echo "כן";
+                $fild_with_label  .=  "כן";
                 else if(!is_array($filr_to_print))
-                echo $filr_to_print;
+                $fild_with_label  .=  $filr_to_print;
                 else{
                     foreach($filr_to_print as $one_fild){
-                        echo $one_fild;
+                        $fild_with_label  .=  $one_fild."<br>";
                     }
                 }
+                if(!empty($fild_with_label)){
+                    echo  "<span class='fild_title'>". $obj['label']."</span><br>";
+                    echo $fild_with_label;
+                }
+               
               //  $this->print_fild(get_field($obj['name'],get_the_ID()));
 //echo get_field($obj['name'],get_the_ID());
             }

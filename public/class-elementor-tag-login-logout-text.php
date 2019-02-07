@@ -48,8 +48,14 @@ protected function _register_controls() {
 	}
 
 	public function render() {
-        if(is_user_logged_in())
-        echo $this->get_settings( 'login' );
+        if(is_user_logged_in()){
+			$login_text = $this->get_settings( 'login' );
+		if('display_name' == $login_text ){
+			$user = get_user_by('ID', get_current_user_id());
+			echo "שלום ".$user->display_name;
+		}
+		else echo $login_text;
+		}
         else   echo $this->get_settings( 'logout' );
 
 	}
