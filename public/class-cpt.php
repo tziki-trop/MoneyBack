@@ -32,6 +32,13 @@ use WP_Query;
  // add_filter( 'wp_insert_post_empty_content', [$this,'disable_save'], 999999, 2 );
    add_action('acf/save_post', [$this,'acf_save_data'], 20,1);
   // add_action( 'save_post', [$this,'acf_save_data'] );
+  add_filter('check_if_cpt_exsist', [$this,'check_if_cpt_exsist'], 10, 2);
+    }
+    protected function get_pages_tufes($user = false){
+        return array(
+            40, 190,372,374,376,378
+        );
+
     }
     public function insert_cpt($user_id,$year){
                // error_log( "insert cpt function");
@@ -68,10 +75,13 @@ use WP_Query;
        return $pid;   
     }
     public function user_posts($query){
-        $query->set( 'author', get_current_user_id());
+      $query->set( 'author', get_current_user_id());
+        $query->set( 'post_status', 'any');
+       $query->set( 'post_type', 'taxes');
+
 
     }
-    protected function check_if_cpt_exsist($user_id,$year){
+    public function check_if_cpt_exsist($user_id,$year){
         $exsist = false;
         $args = array(
             'post_type' =>  'taxes',
@@ -200,6 +210,24 @@ use WP_Query;
       
      }
     public function acf_save_data( $post_id ){
+        $current_url = wp_get_referer();
+
+      //  $page = get_page_by_path($_SERVER['HTTP_REFERER']);
+    //    $page =    str_replace("?tex_id=".$post_id,"",$_SERVER['HTTP_REFERER']);
+    //    $page =    str_replace(home_url(),"",$page);
+        $page = trim(parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH), '/');
+
+        $page = get_page_by_path($page);
+         $pages = get_post_meta($post_id, 'pages', true);
+   
+         if(is_array($pages))
+        $pages [] = $page->ID;
+         else $pages = array($page->ID);
+         update_post_meta($post_id, 'pages', $pages);
+
+         
+  //var_dump($page);
+  //  wp_die();
     if(isset($_POST['acf']['field_5c19084918bc3']) && $_POST['acf']['field_5c19084918bc3'] != '' ){
       //  var_dump($_POST['acf']);
      //   wp_die();

@@ -77,9 +77,24 @@ public function __construct(){
          //   $ajax_handler->add_error_message( $fields['message']);
         $insert_cpt = apply_filters('insert_cpt',get_current_user_id(),$fields['message']);
                  //  $ajax_handler->add_error_message( $insert_cpt );
-
+                 $pages = get_post_meta($insert_cpt, 'pages', true);
+                 $page_to_ridirect = 40;
+                 if(is_array($pages)){
+                   $tufes = array(
+                         40, 190,372,374,376,378
+                     );
+                     foreach($tufes as $one){
+                         if(in_array($one,$pages))
+                         continue;
+                         else{
+                             $page_to_ridirect = $one;
+                             break;
+                         } 
+                     }
+                     
+                 }
         $vars = array('tex_id' => $insert_cpt); 
-        $url = add_query_arg($vars,get_permalink(40));
+        $url = add_query_arg($vars,get_permalink($page_to_ridirect));
         
        $ajax_handler->add_response_data( 'redirect_url', $url);
  

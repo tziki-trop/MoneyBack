@@ -10,6 +10,9 @@ class TaxesShortCode {
      public function add_wp_actions(){
         add_shortcode('add_filter', [$this,'add_filter']);
         add_shortcode('acf_repeter', [$this,'acf_repeter']);
+        add_shortcode('get_cpt_term', [$this,'get_cpt_term']);
+        add_shortcode('go_to_edit_post', [$this,'go_to_edit_post']);
+        add_shortcode('ststus_payment', [$this,'ststus_payment']);
 
          add_shortcode('status_cpt_tex', [$this,'status_cpt_tex']);
          add_shortcode('get_cpts_tabole', [$this,'get_cpts_tabole']);
@@ -21,6 +24,66 @@ class TaxesShortCode {
         add_filter('wp_nav_menu_items', [$this,'add_to_menu'], 20, 2);
 
             }
+            //                  return update_post_meta($id,'payment',"payed");
+            public function ststus_payment(){
+                if(get_field('payment',get_the_ID()) == "payed"){
+                    $status = get_post_status_object( get_post_status( get_the_ID()) );
+                      return "סטטוס: " .$status->label;
+                }
+              else{
+                  $print = "סטטוס: ממתין לתשלום";
+                  $url = add_query_arg(array("tex_id" => get_the_id()), get_permalink(378));
+                  $print .= "<a href='".$url."'> מעבר לתשלום</a>" ;
+                  return $print;
+              }
+               
+          
+          return $print;
+      }
+            public function go_to_edit_post(){
+
+              //  $terms = get_the_terms( get_the_ID() , 'taxes_year' );
+                $print = '';
+                if(get_post_status(get_the_ID()) === "new"){
+                    $pages = get_post_meta(get_the_ID(), 'pages', true);
+                    $page_to_ridirect = 40;
+                    if(is_array($pages)){
+                      $tufes = array(
+                            40, 190,372,374,376,378
+                        );
+                        foreach($tufes as $one){
+                            if(in_array($one,$pages))
+                            continue;
+                            else{
+                                $page_to_ridirect = $one;
+                                break;
+                            } 
+                        }
+                        
+                    }
+                    
+                  //  $print .= var_export($pages);
+                    $url = add_query_arg(array("tex_id" => get_the_id()), get_permalink($page_to_ridirect));
+                    $print .= "<a href='".$url."'>לעריכת התיק</a>" ;
+
+                }
+             
+        
+        return $print;
+    }
+            public function get_cpt_term(){
+                $terms = get_the_terms( get_the_ID() , 'taxes_year' );
+                $print = '';
+                if ( $terms != null ){
+                foreach( $terms as $term ) {
+                // Print the name method from $term which is an OBJECT
+                $print .= $term->slug ;
+                // Get rid of the other data stored in the object, since it's not needed
+               // unset($term);
+            }
+        }
+        return $print;
+    }
      public function acf_repeter( $atts = [] ){
         $atts = array_change_key_case((array)$atts, CASE_LOWER);
  
@@ -113,20 +176,28 @@ foreach ( $blogusers as $user ) {
 }
    public function add_to_menu($items ,  $args){
    // return "t";
-
+ 
       if($args->menu == "tufes" && isset($_GET['tex_id'])){
-    //  var_dump(  $args);
-      //  $htmlpres = new \simple_html_dom(); 
+        $pages = get_post_meta((int)$_GET['tex_id'], 'pages', true);
+        if(!is_array($pages))
+        $tufes = array( get_permalink(40) );
+        else{
+        foreach($pages as $fild_pages){
+            $tufes [] = get_permalink($fild_pages);
+        }
+    }
         $html = str_get_html($items);
-      //  return var_export($html);
+       // return var_export($pages);
         $index = 0;
         $curren_page = false;
         foreach($html->find('a') as $element) {
+            $class =  $element->class;
+            $li_class = $html->find('li', $index)->class;
             if (strpos($element->class, 'elementor-item elementor-item-active') !== false )
             $curren_page = true;
             $href =  $element->href;
-            if ( !$curren_page ) {
-               
+            if ( in_array( $href ,$tufes)) {
+               $html->find('li', $index)->class = $li_class." fild_menu";
                 $href_up =  $href."?tex_id=".$_GET['tex_id'];
                 $html->find('a', $index)->href = $href_up;
               //  break;       // echo 'true';
