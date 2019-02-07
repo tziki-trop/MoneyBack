@@ -3,7 +3,7 @@ var form_submited = false;
 	'use strict';
 	$(document).ready(function () {
 			$(".tab_title").click(function(){
-				debugger;
+				
 				$(this).closest(".father_box").find(".tab_mida").slideToggle();
 				//$(this).find(".tab_mida").toggle();
 				
@@ -12,28 +12,38 @@ var form_submited = false;
 			$( document ).on('submit_success', function(e ,b){
 				debugger;
 				var ddd = b;
-				var url  = b.data.redirect_url;
-				if($(e.target).attr("id") === "donation"){
-					debugger;
+				var url  = b.data.redirect_url_to;
+				var id =$(e.target).attr("id");
+				if(id === "donation"){
+					$("#open_payment").click();
+				$("#payment").attr("src",url);
+				
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				
+				}
+				if(id === "add_note_to_client" || id === "send_messege_to_client"){
+					location.reload();
 				}
 				
 				// form has been submitted do your tracking here...
 			});
 	
 		var data  = findGetParameter("tex_id");
-		debugger;
+		
 	//	localStorage[data.tex_id] = paranterss;
 
 		if(localStorage[window.location.href] != undefined){
 			var param = JSON.parse(localStorage[window.location.href]);
-			debugger;
+			
 			param.forEach(element => {
 				if(element.type === "reg"){
 					switch(element.input_type){
 						case "radio" : 
-					//	debugger;
+					//	
 						if(element.val != undefined){
-							debugger;
+							
 							$("input[name='"+element.key+"'][value='"+element.val+"']").click();
 						//var all_redio = $("input[id='"+element.val+"']").closest(".acf-radio-list");
 					//	all_redio.find("input").prop('checked',false);
@@ -56,7 +66,7 @@ var form_submited = false;
 				//repeater num 					input_num = $(this).find(".acf-repeater").length;
 
 				else if(element.type === "repeater"){
-				//	debugger;
+				//	
 				//	input_num = $(this).closest(".acf-repeater").find(".acf-row").length;
 
 					if(parseInt(element.num) < $(this).closest(".acf-repeater").find(".acf-row").length){
@@ -79,13 +89,13 @@ var form_submited = false;
 				var input_num = 1;
 				if($(this).find(".acf-repeater").length > 0){
 					type = "repeater";
-					debugger;
+					
 				    var fff = 	$(this).closest(".acf-repeater").find(".acf-row").last();
 					input_num = $(this).closest(".acf-repeater").find(".acf-row").last().data("id");
 				}
 				//repeater num 					input_num = $(this).find(".acf-repeater").length;
 
-			//	debugger;
+			//	
 				$(this).find("input").each(function(index) {
 					var input_key = $(this).attr("name");
 					var input_val = $(this).val();
@@ -93,28 +103,28 @@ var form_submited = false;
 					var input_val = '';
 					switch(input_type){
 						case "radio" : 
-						//debugger;
+						//
 						input_val = $(this).attr("checked");
-						debugger;
+						
 						if(input_val == "checked"){
 							input_val = $(this).attr("value");
 
 						}
-						debugger;
+						
 						//value="Separated"
 						break;
 						default:
 						input_val = $(this).val();
 						break;
 					}
-					//debugger;
+					//
 					var fild = {"type": type,"key": input_key,"val": input_val,"num": input_num,"input_type":input_type};
 					paranterss.push( fild );
 				});
 			  
 				//paranterss[] = fild;
 			});
-			debugger;
+			
 			var data  = findGetParameter("tex_id");
 			localStorage[window.location.href] = JSON.stringify(paranterss);
 			//setFormCookie(JSON.stringify(paranterss),data.tex_id);
@@ -152,11 +162,11 @@ $(".acf-file-uploader input[type='file']").each(function(index){
 //	input.attr("required",true);
 });
 $( 'body' ).delegate( ".acf-file-uploader input[type='file']", "change", function(e) {
-	debugger;
+	
 	$(e.target).closest("label").find(".file_name").html($(e.target).val());
 });
 $( 'body' ).delegate( ".acf-file-uploader .uploud_button", "click", function(e) {
-	debugger;
+	
 	$(e.target).closest("label").find("input").click();
 });
 
@@ -325,7 +335,7 @@ function findGetParameter(parameterName) {
 		if(!exist && item === "")
 			return false;
 		exist = true;
-		//debugger;
+		//
           tmp = item.split("=");
           paranterss[tmp[0]] = decodeURIComponent(tmp[1]);
           if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);

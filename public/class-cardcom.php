@@ -39,7 +39,9 @@ class Cardcom_Public {
 
      //add_post_meta($pid,'error_log',$res['output']);
      if(isset($res['status']) && $res['status'])
-     $ajax_handler->add_response_data( 'redirect_url', $res['output'] );
+    // $ajax_handler->add_success_message($res['output'][0]);
+
+    $ajax_handler->add_response_data( 'redirect_url_to', $res['output'] );
 
     
 
@@ -176,9 +178,9 @@ class Cardcom_Public {
     protected function get_campny_settings($settings = []){
         $settings['Language'] = "he";
         
-        $settings['ErrorRedirectUrl'] = get_permalink(99);
+        $settings['ErrorRedirectUrl'] = get_permalink(2628);
 
-        $settings['SuccessRedirectUrl'] = get_permalink(99);
+        $settings['SuccessRedirectUrl'] = get_permalink(2624);
         //$settings['TerminalNumber'] = 66659;
                 $settings['TerminalNumber'] = 1000;
                 $settings['UserName'] = "barak9611";

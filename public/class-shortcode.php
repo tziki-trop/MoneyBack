@@ -13,6 +13,7 @@ class TaxesShortCode {
         add_shortcode('get_cpt_term', [$this,'get_cpt_term']);
         add_shortcode('go_to_edit_post', [$this,'go_to_edit_post']);
         add_shortcode('ststus_payment', [$this,'ststus_payment']);
+        add_shortcode('get_progres', [$this,'get_progres']);
 
          add_shortcode('status_cpt_tex', [$this,'status_cpt_tex']);
          add_shortcode('get_cpts_tabole', [$this,'get_cpts_tabole']);
@@ -25,7 +26,19 @@ class TaxesShortCode {
 
             }
             //                  return update_post_meta($id,'payment',"payed");
+            public function get_progres(){
+                $pages = get_post_meta(get_the_ID(), 'pages', true);
+                $progres = 0;
+                if(is_array($pages)){
+                    $array_unique = array_unique ( $pages);
+                  $progres =  count($array_unique) / 6 * 100;
+                }
+                return "<div class='progres'><div class='progres_text'><p>". round( $progres)."% מולא"."</p></div><div class='inside' style=\"width: ".round( $progres)."%;\"></div></div>";
+              //  return  round( $progres)."% מולא";
+            } 
             public function ststus_payment(){
+                  
+                
                 if(get_field('payment',get_the_ID()) == "payed"){
                     $status = get_post_status_object( get_post_status( get_the_ID()) );
                       return "סטטוס: " .$status->label;
@@ -95,25 +108,29 @@ class TaxesShortCode {
                                      ]
                                      , $atts);
          $o = '';
+         $o .= '<div class=\'worrper\'>';
         if( have_rows($wporg_atts['main'],get_the_ID()) ):
         $in = 0;
-         $o .= '<div>';
+        
         while ( have_rows($wporg_atts['main'],get_the_ID()) ) : the_row();
         $in++;
-        $o .= '<p>&nbsp;'.$in.'.&nbsp;';
+        $o .= '<div><p>&nbsp;'.$in.'.&nbsp;';
         $o .= get_sub_field($wporg_atts['sub']);
         $o .= '</p>';      
         if($wporg_atts['sub1'] != ''){
-            $o .= '<p class=\'dis\'>';
+            $o .= '<p class=\'dis\'>&nbsp;&nbsp;';
             $o .= get_sub_field($wporg_atts['sub1']);
             $o .= '</p>';  
         }
-                    endwhile;
-                    $o .= '</div>';
-                else:
-                    $o .= '<p>עדיין ריק פה </p>';
-   
+        $o .= '</div>';
+
+        endwhile;
+                   
+        else:
+            $o .= '<p>עדיין ריק פה </p>';
+                   
        endif;
+       $o .= "</div>";
        return $o;
               
       }

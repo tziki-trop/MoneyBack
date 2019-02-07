@@ -2,6 +2,24 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+ .progres{
+    border: solid;
+    display: block;
+    height: 60px;
+    width: 100%;
+    padding: 3px;
+ }
+ .progres .progres_text{
+     text-align: center;
+     position: absolute;
+     height: 100%;
+     width: 100%;
+ }
+ .inside{
+    width: 83%;
+    height: 100%;
+    background-color: #0080003b;
+ }
  .acf-basic-uploader{
      padding: 0px!important;
  }
@@ -42,15 +60,28 @@ content: ",";
     cursor: pointer!important;
     
 }
-.tufes_menu .menu-item.activ_menu .elementor-item::before{
+.tufes_menu .menu-item.activ_menu.fild_menu .elementor-item::before{
 
-content:'\f058';
-font-family: FontAwesome;
+
 color: #e6af10;
-font-size: 26px;
-vertical-align: middle;
-margin-top: -3px;
+
 }
+.tufes_menu .fild_menu .elementor-item:after{
+    color: #087FBD!important;
+}
+.tufes_menu .fild_menu.activ_menu .elementor-item:after{
+    color: #e6af10!important;
+}
+
+.tufes_menu .menu-item.fild_menu .elementor-item::before{
+
+    content:'\f058';
+    font-family: FontAwesome;
+    color: #087FBD!important;
+    font-size: 26px;
+    vertical-align: middle;
+    margin-top: -3px;
+    }
 .tufes_menu .activ_menu:before{
     content: "";
     position: absolute;
