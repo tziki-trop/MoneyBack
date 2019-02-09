@@ -32,7 +32,6 @@ var form_submited = false;
 	
 		var data  = findGetParameter("tex_id");
 		
-	//	localStorage[data.tex_id] = paranterss;
 
 		if(localStorage[window.location.href] != undefined){
 			var param = JSON.parse(localStorage[window.location.href]);
@@ -41,21 +40,16 @@ var form_submited = false;
 				if(element.type === "reg"){
 					switch(element.input_type){
 						case "radio" : 
-					//	
+						
 						if(element.val != undefined){
 							
 							$("input[name='"+element.key+"'][value='"+element.val+"']").click();
-						//var all_redio = $("input[id='"+element.val+"']").closest(".acf-radio-list");
-					//	all_redio.find("input").prop('checked',false);
-						//all_redio.find("input").attr('checked','');
-					//	all_redio.closest("label").removeClass("selected");
-					//	$("input[id='"+element.val+"']").prop('checked',true);
-					//	$("input[id='"+element.val+"']").attr('checked','checked');
-					//	$("input[id='"+element.val+"']").closest("label").addClass("selected");
-//label
+
 						}
 						break;
 						case "hidden" : 
+						break;
+						case "file" : 
 						break;
 						default:
 						$("input[name='"+element.key+"']").attr("value",element.val);
@@ -80,6 +74,11 @@ var form_submited = false;
 			//var param = getFormCookie(window.location.href);
 
 		}
+		//btn_get
+		$("#btn_get").click(function (e) { 
+			savetofesajax("get");
+		});
+
 		$("#btn_save").click(function (e) { 
 			e.preventDefault();
 		//.acf-input
@@ -126,7 +125,9 @@ var form_submited = false;
 			});
 			
 			var data  = findGetParameter("tex_id");
-			localStorage[window.location.href] = JSON.stringify(paranterss);
+			//save_tufes
+			savetofesajax("save",JSON.stringify(paranterss));
+			//localStorage[window.location.href] = JSON.stringify(paranterss);
 			//setFormCookie(JSON.stringify(paranterss),data.tex_id);
 		
 			
@@ -151,15 +152,11 @@ var form_submited = false;
 				this.onChange(e, $el);
 			}
 		});
-		//add req
-//<input type="button" id="loadFileXml" value="loadXml" onclick="document.getElementById('file').click();" />
 $(".acf-file-uploader input[type='file']").each(function(index){
 	var button = "<div class = \"uploud_worpper\"><button class=\"uploud_button\" type=\"button\">העלה קובץ</button><span class=\"file_name\"></span></div>";
 	$(button).insertAfter($(this));
 	$(this).hide();
-	//insertAfter
-//	var input = $(this).find("input").first();
-//	input.attr("required",true);
+
 });
 $( 'body' ).delegate( ".acf-file-uploader input[type='file']", "change", function(e) {
 	
@@ -186,6 +183,17 @@ $(this).find(".fil_val").each(function (param) {
 		$(this).attr("name",new_name);
 });
 
+});
+
+$(".acf-field-5c1e8bb67e0fd input").each(function(index){
+	debugger;
+			$(this).attr("readonly",true);
+			$(this).prop('readonly', true);
+});
+$(".tf input").each(function(index){
+//	var inputs = $(this).find("input");
+debugger;
+	$(this).attr("required",true);
 });
 $(".fam_status input").change(function (e) {
 
@@ -313,6 +321,65 @@ $(this).closest(".elementor-widget-container").find(".worrper_new_input").last()
 });
 });
 })( jQuery );
+function savetofesajax(ajax_actio,data){
+	var data = {
+        'action': 'save_tufes',
+        'ajax_actio': ajax_actio,
+        'post_id' : findGetParameter("tex_id").tex_id,
+		'page' : window.location.href,
+		'data' : data
+	};
+	debugger;
+	jQuery.ajax({
+        url : "/wp-admin/admin-ajax.php",
+        data:data,
+        dataType: 'json',
+        type:'POST',
+        beforeSend: function( xhr ){
+        // canBeLoaded = false; 
+        },
+        success:function(data){
+			debugger;
+			if(ajax_actio === "get" && data.status == true)
+			add_data_to_filds(data.data);
+           //canBeLoaded = true; // the ajax is completed, now we can run it again
+            }
+      //  }
+    });
+}
+function add_data_to_filds(data){
+	data = JSON.parse(data);
+	data.forEach(element => {
+		if(element.type === "reg"){
+			switch(element.input_type){
+				case "radio" : 
+				
+				if(element.val != undefined){
+					
+					jQuery("input[name='"+element.key+"'][value='"+element.val+"']").click();
+
+				}
+				break;
+				case "hidden" : 
+				break;
+				case "file" : 
+				break;
+				default:
+				jQuery("input[name='"+element.key+"']").attr("value",element.val);
+				break;
+			}
+
+		}
+		else if(element.type === "repeater"){
+	    if(parseInt(element.num) < $(this).closest(".acf-repeater").find(".acf-row").length){
+				var add_in = parseInt(element.num) < jQuery(this).closest(".acf-repeater").find(".acf-row").length;
+				for (i = 0; i < add_in; i++) {
+					jQuery(this).closest(".acf-repeater").find("[data-event='add-row']").click();
+				}
+			}
+		}
+	});
+}
 function setFormCookie(value,url) {
 	var expires = new Date();
 	expires.setTime(expires.getTime() + (1 * 24 * 60 * 60 * 1000));
