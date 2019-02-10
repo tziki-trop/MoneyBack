@@ -158,6 +158,40 @@ $(".acf-file-uploader input[type='file']").each(function(index){
 	$(this).hide();
 
 });
+$( 'body' ).delegate( ".acf-field input", "change", function(e) {
+//	debugger;
+	var is_ok = true;
+	var fields = $(".acf-field")
+	.find("select, textarea, input").serializeArray();
+
+$.each(fields, function(i, field) {
+//	debugger;
+if (!field.value && $("input[name='"+field.name+"']").prop('required')){
+	if($("input[name='"+field.name+"']").attr("type") === "radio"){
+		var radio_buttons = $("input[name='"+field.name+"']");
+         if( radio_buttons.filter(':checked').length == 0)
+			is_ok = false;
+			} 
+else if($("input[name='"+field.name+"']").attr("type") === "hidden"){
+
+}
+			else{
+	//debugger;
+	is_ok = false;
+}
+
+}
+
+ // alert(field.name + ' is required');
+}); 
+
+if(is_ok){
+	debugger;
+	$("#triger_acf").addClass("activ");
+}
+console.log(fields);
+	//$(e.target).closest("label").find(".file_name").html($(e.target).val());
+});
 $( 'body' ).delegate( ".acf-file-uploader input[type='file']", "change", function(e) {
 	
 	$(e.target).closest("label").find(".file_name").html($(e.target).val());
@@ -186,14 +220,16 @@ $(this).find(".fil_val").each(function (param) {
 });
 
 $(".acf-field-5c1e8bb67e0fd input").each(function(index){
-	debugger;
 			$(this).attr("readonly",true);
 			$(this).prop('readonly', true);
 });
 $(".tf input").each(function(index){
 //	var inputs = $(this).find("input");
-debugger;
 	$(this).attr("required",true);
+});
+$("input[name='acf[field_5c48caf5fdb9f][field_5c476b79f5688]']").each(function(index) {
+	debugger;
+    $(this).attr("required",true);
 });
 $(".fam_status input").change(function (e) {
 
@@ -204,6 +240,8 @@ if(val === "Married"){
 else{
 	var req = false;
 }
+//how_is_reportin
+
 $(".req input").each(function(index) {
     $(this).attr("required",req);
 });

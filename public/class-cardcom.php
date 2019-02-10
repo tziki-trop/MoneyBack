@@ -31,8 +31,17 @@ class Cardcom_Public {
     $raw_fields = $record->get( 'fields' );
 	$fields = [];
 	foreach ( $raw_fields as $id => $field ) {
-		$fields[ $id ] = (string)$field['value'];
-	}
+        $fields[ $id ] = (string)$field['value'];
+    }
+    update_post_meta($fields['pid'],'all_true' , true);
+    update_post_meta($fields['pid'],'takanon' , true);
+    update_post_meta($fields['pid'],'invoice_mail' , true);
+    $pages = get_post_meta($fields['pid'], 'pages', true);
+   
+    if(is_array($pages))
+    $pages [] = 378;
+    else $pages = array(378);
+    update_post_meta($fields['pid'], 'pages', $pages);
      $post_param = [];
      $res = $this->get_url($fields,$fields['pid']);
     // $ajax_handler->add_error_message($res);
@@ -181,12 +190,12 @@ class Cardcom_Public {
         $settings['ErrorRedirectUrl'] = get_permalink(2628);
 
         $settings['SuccessRedirectUrl'] = get_permalink(2624);
-        //$settings['TerminalNumber'] = 66659;
-                $settings['TerminalNumber'] = 1000;
-                $settings['UserName'] = "barak9611";
+        $settings['TerminalNumber'] = 66659;
+            //    $settings['TerminalNumber'] = 1000;
+              //  $settings['UserName'] = "barak9611";
 
                 
-	//	$settings['UserName'] = "R6ulivqrnuIJ9fDjay4M";
+		$settings['UserName'] = "R6ulivqrnuIJ9fDjay4M";
 		return $settings;
     }
 }

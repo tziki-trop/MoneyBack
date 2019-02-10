@@ -39,6 +39,17 @@ protected function _register_controls() {
 				
 			]
 		);
+		$this->add_control(
+			'current_id',
+			[
+				'label' => __( 'current id', 'plugin-domain' ),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => __( 'true', 'your-plugin' ),
+				'label_off' => __( 'false', 'your-plugin' ),
+				'return_value' => 'true',
+				'default' => 'false',
+			]
+		);
 		
 		
 	}
@@ -48,7 +59,10 @@ protected function _register_controls() {
         $val =    $param_name['url'] ;	
         $get_parameter = $this->get_settings( 'get_parameter' ); 
         if(isset($_GET[ $get_parameter ]))
-        $val  = add_query_arg($get_parameter , $_GET[ $get_parameter ] , $val );
+		$val  = add_query_arg($get_parameter , $_GET[ $get_parameter ] , $val );
+		if( $this->get_settings( 'current_id' ) == "true")
+		$val  = add_query_arg($get_parameter , get_queried_object_id() , $val );
+
        
 		echo $val;
 	}

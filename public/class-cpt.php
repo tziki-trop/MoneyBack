@@ -369,7 +369,7 @@ return true;
             if( $wp_query->have_posts() ){
                 while ($wp_query->have_posts()) : $wp_query->the_post();
                 return get_the_ID();
-                 endwhile;
+                endwhile;
             }
             wp_reset_query();
             return false;

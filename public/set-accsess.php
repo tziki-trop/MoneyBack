@@ -27,7 +27,7 @@ $this->add_actions();
         
         $role = $this->get_user_role();
         // עמוד מנהל ראשי 554
-        if(is_page(554) && in_array("cpa", $role ))
+        if((is_page(554) || is_page(2556)) && in_array("cpa", $role ))
         wp_redirect(get_permalink(447));
         // 369 - הגשת טופס
         if(is_page(369) && !is_user_logged_in() )

@@ -624,7 +624,10 @@ foreach ( $blogusers as $user ) {
              </tbody>";
         }
          public function get_pdf(){
-             $post_id = 252;
+             if(!isset($_GET["tex_id"]))
+             return "";
+            $post_id = $_GET["tex_id"];
+          //   $post_id = 2639;
             // $year = $this->get_cpt_term($post_id);
              $year = get_the_terms((int)$post_id , 'taxes_year' )[0]->slug;
              
@@ -636,7 +639,9 @@ foreach ( $blogusers as $user ) {
                 $personal [$one] = get_field('personal_'.$one,$post_id);
                 $partner_personal [$one] = get_field('partner_personal_'.$one,$post_id);
                 if($one == "birthday"){
-                $personal ['age'] = (int)date('Y', strtotime($personal[$one])) - date('Y', strtotime("now"));
+          
+
+                $personal ['age'] = (int)date('Y', strtotime(str_replace("/","-",$personal[$one]))) - date('Y', strtotime("now"));
                 $partner_personal ['age'] = (int)date('Y', strtotime($partner_personal[$one])) - date('Y', strtotime("now"));
             }
             }
@@ -773,6 +778,7 @@ foreach ( $blogusers as $user ) {
 <?php 
 $conen = "";
 //              'get_info_by' => array ( 0 => 'דוא"ל', 1 => 'מסרון', ), )
+if(is_array($addres['get_info_by'])){
 foreach($addres['get_info_by'] as $one ){
     echo $conen;
     ?>
@@ -780,6 +786,13 @@ foreach($addres['get_info_by'] as $one ){
     <?
     $conen = ",";
 
+}
+}
+else{
+    ?>
+<span style="font-weight: 400;">ללא</span>
+
+    <?
 }
 ?>
 
@@ -857,8 +870,8 @@ foreach($addres['get_info_by'] as $one ){
     ?>
     <?php
     $partner_placeOfWork = get_field('partner_placeOfWork_bizz_names',$post_id);
-    // return var_export($how_is_reporting);
-     foreach($partner_placeOfWork as $index => $one ){
+    if(is_array($partner_placeOfWork)){
+    foreach($partner_placeOfWork as $index => $one ){
          //partner_placeOfWork
          ?>
  <tr>
@@ -870,6 +883,7 @@ foreach($addres['get_info_by'] as $one ){
  
          <?php
      }
+    }
 ?>
 
 </tbody>
@@ -949,7 +963,7 @@ $cildren  =  get_field('personal_Details_chileds_childs',$post_id);
 </td>
 <td>
 <p><span style="font-weight: 400;">
-<?php echo (int)$year - (int)date('Y', strtotime($child['child_birthday']));?>
+<?php echo (int)$year - (int)date('Y', strtotime(str_replace("/","-",$child['child_birthday'])));?>
 </span></p>
 </td>
 <?php
@@ -1039,10 +1053,20 @@ $this->get_incom($incum,$post_id);
         continue;
       if( apply_filters('check_uploud_filds_condition',$one_fild['key'],$post_id)){
        // var_dump($one_fild["type"]);
-
+       $text_to_add_tolabel = '';
         if( have_rows($fild_obj['name']."_".$one_fild['name'],$post_id) ):
         while ( have_rows($fild_obj['name']."_".$one_fild['name'],$post_id))  : the_row();
         $sabs = get_field_object($one_fild['key'])['sub_fields'];
+           
+          //  if($one_fild == "tofes_aas")  
+       //  var_dump($one_fild['name'] );
+            if($one_fild['name'] == "tofes_aas") 
+            $text_to_add_tolabel =  get_sub_field('name');
+            if($one_fild['name'] == "eanlimodim_fiels") 
+            $text_to_add_tolabel =  get_sub_field('detiels_lerning');
+        //   $text_to_add_tolabel =  get_sub_field('detiels_lerning');
+
+      //   var_dump($text_to_add_tolabel);
         foreach($sabs as $sab){
             $fffid =   get_sub_field($sab['name']);
             if(is_array( $fffid) && isset($fffid['url']) ){
@@ -1057,7 +1081,7 @@ $this->get_incom($incum,$post_id);
           <p><span style="font-weight: 400;"><?php echo $text; ?></span></p>
           </td>
           <td colspan="2">
-          <p><span style="font-weight: 400;"><?php echo $one_fild['label']; ?></span></p>
+          <p><span style="font-weight: 400;"><?php echo $one_fild['label']." ".$text_to_add_tolabel; ?></span></p>
           </td>
           </tr>
           <?php

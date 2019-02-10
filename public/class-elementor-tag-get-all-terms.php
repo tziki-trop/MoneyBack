@@ -81,15 +81,13 @@ protected function _register_controls() {
 				 foreach($terms as $term){
 					 //  add_filter('check_if_cpt_exsist', [$this,'check_if_cpt_exsist'], 10, 2);
 
-					$year_exist = apply_filters('check_if_cpt_exsist',get_current_user_id(), $term->term_id);
-					if($year_exist)
-					continue;
+				//	$year_exist = apply_filters('check_if_cpt_exsist',get_current_user_id(), $term->term_id);
+				//	if($year_exist)
+				//	continue;
 					 ?> 
 				<div class="one_year">  
 				<span class="elementor-field-option">
-				<input value="<?php echo $term->term_id; ?>" type="radio" 
-				id="form-field-message-<?php echo $index; ?>"
-				 name="form_fields[message]" required="">
+				<input value="<?php echo $term->term_id; ?>" type="radio" id="form-field-message-<?php echo $index; ?>" name="form_fields[message]" required="">
 				<label for="form-field-message-<?php echo $index; ?>"><?php echo $term->name; ?></label>
 				</span>
 				 </div>
