@@ -42,6 +42,8 @@ class loud_includ {
 require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-cardcom.php';
 require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/set-accsess.php';
 
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/global-function.php';
+  
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-add-field_prodact.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-add-inclouds.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-moneyback-public.php';

@@ -363,18 +363,7 @@ public function get_name() {
                if(get_sub_field('true_false'))
                 $sub_val = "true";
                 else $sub_val = "false";
-              //  echo $sub_val;
-                //echo "<br>";
-             //   var_dump((string)$con_fild);
-            //    echo "<br>";
-            //   var_dump( $sub_val );
-           //    echo "<br>";
-             //   echo "con cal: ";
-            //   var_dump($sub_val);
-             //  var_dump((string)$con_fild);
-              //  echo "<br>";
-               // var_dump((string)$con_fild);
-               // echo "<br>";
+         
                 if($sub_val === (string)$con_fild){
                    return true;
                 }
@@ -705,8 +694,8 @@ return true;
           if( /* $group_to_check === 'field_5c1b953adb990' || */ $group_to_check === 'field_5c1b970186b31'  || $group_to_check === 'field_5c24daa6a3f57'){
               $fild_obj = get_field_object($group_to_check);
               foreach($fild_obj['sub_fields'] as $one_fild){
-                 if(  $this->check_uploud_filds($one_fild['key'],$settings['pid']))
-                  $filds [] =  $one_fild['key'];
+                if( apply_filters('check_uploud_filds_condition',$one_fild['key'],$settings['pid']))
+                $filds [] =  $one_fild['key'];
  
               }
               continue;

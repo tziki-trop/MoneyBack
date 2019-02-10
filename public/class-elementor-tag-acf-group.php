@@ -99,6 +99,7 @@ protected function _register_controls() {
           //  echo $sab['name'];
             echo "<span class='one_item'>";
           $fffid =   get_sub_field($sab['name']);
+         // var_dump($fffid);
           if(is_array( $fffid) && isset($fffid['url']) ){
               ?>
               <span class="pri_img">

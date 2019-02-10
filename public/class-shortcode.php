@@ -523,9 +523,111 @@ foreach ( $blogusers as $user ) {
                  break;
              }
          }
+         protected function get_repetter_shit($repeter,$repname,$post_id){
+            $incomdata = get_field_object($repeter);
+           //personal_Details_lerning_detail
+           // var_dump($incomdata);
+            if( have_rows($repname,$post_id) ):
+                echo "<table>
+                <tbody>";
+            while ( have_rows($repname,$post_id) ) : the_row();
+           // var_dump($incomdata["sub_fields"]);
+            echo "<tr>";
+            foreach($incomdata["sub_fields"] as $index => $fild){
+
+                echo "<td>";
+                echo $fild['label'];
+                echo ": ";
+                echo get_sub_field($fild['name']);
+                echo "</td>";
+            }
+            endwhile; 	
+            echo "</tr>";
+            echo "</table>
+            </tbody>";
+            echo "<table>
+            <tbody>";
+            endif;
+        
+         }
+         protected function get_incom($incum,$post_id){
+             echo "<table>
+             <tbody>";
+            $incomdata = get_field_object($incum['key']);
+           foreach($incomdata["sub_fields"] as $index => $fild){
+                $val = get_field($incum['name']."_".$fild['name'],$post_id);
+            
+               // else $val = get_field($incum['name'],$post_id)[$fild['name']];
+              //  $val = get_field("personal_Details_lerning_detail",$post_id);
+      
+                if($val == "")
+                continue;
+                if(empty($val))
+                continue;
+                if($val == "false")
+                continue;
+                // var_dump($fild['type'] );
+                if($fild['type'] == "text" || $fild['type'] == 'date_picker' || $fild['type'] == 'number' || is_array($val)){
+                  $value = "";
+                  if(is_array($val) && $fild['type'] != 'group' && $fild['type'] != "repeater"){
+                    $value .= "פירוט: ";
+                    //var_dump($fild['type']);
+                    foreach($val as $ind => $one_val){
+                        $value .= $one_val.". ";
+                                }
+                    }
+               else if($fild['type'] == "repeater"){
+                   $this->get_repetter_shit($fild['key'],$incum['name']."_".$fild['name'],$post_id);
+                   continue;
+                 //  var_dump(get_field_object($fild['key']));
+                }
+                  else if($fild['type'] == 'group'){
+                      if($fild['name'] == "chileds")
+                      continue;
+                       $sub_group = array("key" => $fild['key'],"name" => $incum['name']."_".$fild['name']);
+                     
+                     ///   echo "<table> <tbody><tr>" ;
+                    
+                       $this->get_incom($sub_group,$post_id);
+                       echo "<table> <tbody>" ;
+                     //  echo "</table></tbody><tr>";
+                        continue;
+                  }
+                  else {
+                    $value = $fild['label'].": ".$val;
+                  }
+                  ?>
+                    <td colspan="2">
+                    <p><span style="font-weight: 400;"><? echo $value; ?></span></p>
+                    </td>
+                    
+            
+                  <?php
+                 }
+              if($fild['type'] == "button_group" && !is_array($val)){
+                ?>
+                
+                <tr>
+                  <td >
+                  <p><span style="font-weight: 400;"><? echo $fild['label']; ?></span></p>
+                 </td>
+                 <td>
+                    <p><strong>כן</strong></p>
+                   </td>
+               </tr>
+            
+                <?
+              }
+            }
+            
+            echo "</table>
+             </tbody>";
+        }
          public function get_pdf(){
-             $post_id = 2639;
-             $year = $this->get_cpt_term($post_id);
+             $post_id = 252;
+            // $year = $this->get_cpt_term($post_id);
+             $year = get_the_terms((int)$post_id , 'taxes_year' )[0]->slug;
+             
              $personal = array();
              $partner_personal = array();
              $detales = array('first_name','last_name','id_num','gend','famely_status','birthday','father_name');
@@ -633,17 +735,7 @@ foreach ( $blogusers as $user ) {
          foreach($detales as $one){
              $addres [$one] = get_field('address_group_'.$one,$post_id);
          }
-    /*
-     $addres 
-            array ( 'adress_home' => 'asdf', 'post' => 'asd',
-             'another_mailbox' => array ( 0 => 'יש לי כתובת אחרת למשלוח דברי דואר', )
-             , 'adress_' => 'asdf', 'post_2' => 'sdf', 'email' => 'a@a.com', 
-             'phone' => '4', 'mobile_phone' => '44',
-              'get_info' => array ( 0 => 'אני מעוניין/מעוניינת שרשות המיסים תעביר לי הודעות', ), 
-              'get_info_by' => array ( 0 => 'דוא"ל', 1 => 'מסרון', ), )
 
-
-     */
     if(is_array($addres['another_mailbox'])&& in_array('יש לי כתובת אחרת למשלוח דברי דואר',$addres['another_mailbox']))
     $addres['another_mailbox'] = true;
     else $addres['another_mailbox'] = false;
@@ -783,167 +875,39 @@ foreach($addres['get_info_by'] as $one ){
 </tbody>
 </table>
 <p>&nbsp;</p>
-<p><span style="font-weight: 400;">שאלון הכנסות, כפי שסיכמנו, יופיע רק השאלות שסומן V פלוס הפירוט. כמו"כ מספיק לצטט את עיקר השאלה. כדלהלן:</span></p>
-<table>
-<tbody>
+<p><span style="font-weight: 400;">שאלון הכנסות</span></p>
+
 <?php
-$incum = "incum";
-$incomdata = get_field($incum,$post_id);
+//$incum = "incum";
+//$incomdata = get_field($incum,$post_id);
 //var_dump($incom);
 $incum =array("key" => "field_5c16c26a8dd3c","name" => "incum") ;
+$this->get_incom($incum,$post_id);
 
-$incomdata = get_field_object($incum['key']);
-//var_dump($incomdata);
-//return var_export($partner_placeOfWork);
-foreach($incomdata["sub_fields"] as $index => $fild){
-    $val = get_field($incum['name']."_".$fild['name'],$post_id);
-    if($val == "")
-    continue;
-    if(empty($val))
-    continue;
-    if($val == "false")
-    continue;
-  var_dump($fild['type'] );
-  if($fild['type'] == "text" || is_array($val)){
-      $value = "";
-      if(is_array($val) && $fild['type'] != 'group'){
-        $value .= "פירוט: ";
-      //  $conent = "";
-        foreach($val as $one_val){
-            $value .= $one_val.". ";
-          //  $conent = ",";
-
-        }
-      }
-      else if($fild['type'] == 'group'){
-          $filde = get_field_object($fild['key']);
-          foreach ($filde["sub_fields"] as $key => $subfild) {
-            $fild_val = get_field($incum['name']."_".$fild['name']."_".$subfild['name'],$post_id);
-            $value .= $subfild['label'].": ".$this->get_tr_fa($fild_val).".<br> ";
-          }
-      }
-      else {
-        $value = "פירוט: ".$val;
-
-      //  $value  = $val;
-      }
-      ?>
-            <tr>
-        <td colspan="2">
-        <p><span style="font-weight: 400;"><? echo $value; ?></span></p>
-        </td>
-        </tr>
-
-      <?php
-  }
-  if($fild['type'] == "button_group" && !is_array($val)){
-    ?>
-    
-    <tr>
-<td>
-<p><span style="font-weight: 400;"><? echo $fild['label']; ?></span></p>
-</td>
-<td>
-<p><strong>כן</strong></p>
-</td>
-</tr>
-<tr>
-
-    <?
-  }
-  //  var_dump( get_field_object($incum."_".$name));
-}
-/*
-array ( 'do_you_get' => 'false', 
-'' => NULL,
- 'btl' => array ( ), 
- 'detiles' => '', 
- 'do_you_get2' => 'false',
-  'Info' => '', 
-  'resing' => 'false', 
-  'do_you_get_else_copy_copy' => 'false', 
-  'rent' => 'false', 
-  'rent_info' => array ( 'yerusha' => '', 'how_is_owner' => '', 'before_wedding' => '', 'למי_שייכת_הדירה' => '', ), 
-  'offsite' => 'false', 
-  'offsite_info' => '', 
-  'other_money' => 'false',
-   'other_money_Info' => '', 
-   'bank' => 'false',
-    'lottory' => 'false',
-     'lottory_info' => '', 
-     'more_income' => 'false', 
-     'more_income_info' => '',
-      'energy' => 'false', 
-      'energy_info' => '', 
-      'digital_income' => 'false', 
-      'digital_income_info' => '', 
-      'self' => 'false', 
-      'self_Info' => '', )
-
-
-*/
 ?>
-</tbody>
-</table>
-<table>
-<tbody>
-<tr>
-<td>
-<p><span style="font-weight: 400;">האם היו לך הכנסות מהשכרת דירה למגורים?</span></p>
-</td>
-<td>
-<p><strong>כן</strong></p>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<p><span style="font-weight: 400;">פירוט: השכרתי 7 דירות באקירוב עם תשואה חודשית של 85,000 ש"ח</span></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">האם היו לך בשנה זו תקבולים מביטוח לאומי?</span></p>
-</td>
-<td>
-<p><strong>כן</strong></p>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<p><span style="font-weight: 400;">פירוט: קצבת זקנה / דמי לידה</span></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-<table>
-<tbody>
-<tr>
-<td>
+
+
+
 <p><strong>שאלון הכנסות בן הזוג</strong></p>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<p><span style="font-weight: 400;">האם היה לך הכנסה שאינה חייבת בניהול ספרים?</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">כן</span></p>
-</td>
-</tr>
-<tr>
-<td colspan="3">
-<p><span style="font-weight: 400;">פירוט: זכיתי במלגת עיון</span></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
+
+<?php
+$incum =array("key" => "field_5c484b31ac382","name" => "partner_incum") ;
+$this->get_incom($incum,$post_id);
+
+
+?>
+
+<?php 
+ //var_dump(get_field('personal_Details_chileds_do_you_or_your_wife',$post_id));
+if(get_field('personal_Details_chileds_do_you_or_your_wife',$post_id) == "true"){
+$cildren  =  get_field('personal_Details_chileds_childs',$post_id);
+
+?>
 <table>
 <tbody>
 <tr>
 <td>
-<p><strong>שם הילד</strong></p>
+<p><strong>שם </strong></p>
 </td>
 <td>
 <p><strong>תאריך לידה</strong></p>
@@ -959,154 +923,80 @@ array ( 'do_you_get' => 'false',
 <p><strong>משתתף בכלכלתו</strong></p>
 </td>
 <td>
+<p><strong>אני הורה יחיד</strong></p>
+</td>
+<td>
 <p><strong>במוסד טיפולי</strong></p>
 </td>
 <td>
 <p><strong>נטול יכולת</strong></p>
 </td>
 <td>
-<p><strong>אני הורה יחיד</strong></p>
+<p><strong>לקות למידה</strong></p>
 </td>
-<td>&nbsp;</td>
 </tr>
+
+    <?php
+        foreach($cildren as $child){
+
+            ?>
 <tr>
 <td>
-<p><span style="font-weight: 400;">יוסי</span></p>
+<p><span style="font-weight: 400;"><? echo $child['child_name'] ?></span></p>
 </td>
 <td>
-<p><span style="font-weight: 400;">1/1/2000</span></p>
+<p><span style="font-weight: 400;"><?php echo $child['child_birthday']; ?> </span></p>
 </td>
 <td>
-<p><span style="font-weight: 400;">14</span></p>
+<p><span style="font-weight: 400;">
+<?php echo (int)$year - (int)date('Y', strtotime($child['child_birthday']));?>
+</span></p>
 </td>
+<?php
+$child_pro = array(
+    "ילד זה נמצא תחת חזקתי",
+    "אני משתתף בכלכלתו של ילד זה",
+    "אני משמש כהורה יחיד לילד זה",
+    "ילד זה נמצא במוסד לטיפול מיוחד",
+    "ילד זה נטול יכולת",
+    "ילד זה בעל לקות למידה",
+);
+foreach($child_pro as $one_ch){
+    $v = "";
+    if(is_array($child['how_hold_the_boy']) && in_array($one_ch,$child['how_hold_the_boy']))
+    $v = "V";
+    else if($one_ch == $child['how_hold_the_boy'])
+    $v = "V";
+
+?>
 <td>
-<p><span style="font-weight: 400;">V</span></p>
+<p><span style="font-weight: 400;"><? echo  $v; ?></span></p>
 </td>
-<td>
-<p><span style="font-weight: 400;">V</span></p>
-</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">בנצי</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">1/1/2001</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">13</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">V</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">V</span></p>
-</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">דודי</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">1/1/2002</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">12</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">V</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">V</span></p>
-</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
+<? } ?>
+
+            <?php
+        }
+    ?>
 </tbody>
 </table>
+<?php } ?>
 <p>&nbsp;</p>
 <p><strong>נתונים אישיים:</strong></p>
+
+<?php
+$incum =array("key" => "field_5c1a4bfe952c4","name" => "personal_Details") ;
+$this->get_incom($incum,$post_id);
+
+
+?>
+
+
+<p>תרומות</p>
 <table>
 <tbody>
-<tr>
-<td colspan="3">
-<p><span style="font-weight: 400;">האם הנך עולה חדש או עולה חוזר?</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">כן</span></p>
-</td>
-</tr>
-<tr>
-<td colspan="4">
-<p><span style="font-weight: 400;">תאריך עליה: 1/1/2008</span></p>
-</td>
-</tr>
-<tr>
-<td colspan="3">
-<p><span style="font-weight: 400;">האם שרתת בשירות סדיר או במשטרה?</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">כן</span></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">תחילת שירות 1/1/2000</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">סיום שירות 1/1/2003</span></p>
-</td>
-<td colspan="2">
-<p><span style="font-weight: 400;">חודשי שירות 36</span></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-<table>
-<tbody>
-<tr>
-<td colspan="2">
-<p><strong>נתונים אישיים של בן הזוג</strong></p>
-</td>
-</tr>
-<tr>
-<td colspan="5">
-<p><span style="font-weight: 400;">האם התגוררת בישוב מוטב?</span></p>
-</td>
-<td>
-<p><strong>כן</strong></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">[שם ישוב] </span><strong>אילת</strong></p>
-</td>
-<td colspan="2">
-<p><span style="font-weight: 400;">תאריך התחלה: </span><strong>1/12014</strong></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">תאריך סיום: X</span></p>
-</td>
-<td colspan="2">
-<p><span style="font-weight: 400;">אני עדיין מתגורר</span></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-<table>
-<tbody>
+    <?php
+    if(get_field('truma',$post_id) == "true"){
+    ?>
 <tr>
 <td>
 <p><span style="font-weight: 400;">האם תרמת השנה לעמותה עם סעיף 46</span></p>
@@ -1115,48 +1005,81 @@ array ( 'do_you_get' => 'false',
 <p><strong>כן</strong></p>
 </td>
 </tr>
+    <?php } ?>
+    <?php
+    if(get_field('nispe',$post_id) == "true"){
+    ?>
+<tr>
+<td>
+<p><span style="font-weight: 400;">האם בשנת המס היו לך הוצאות להנצחת נספה בפעולות איבה?</span></p>
+</td>
+<td>
+<p><strong>כן</strong></p>
+</td>
+</tr>
+    <?php } ?>
 </tbody>
 </table>
 <p>&nbsp;</p>
+
+
+<p><strong>נספחים</strong></p>
 <table>
 <tbody>
-<tr>
-<td colspan="2">
-<p><strong>נספחים</strong></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">צורף</span></p>
-</td>
-<td colspan="2">
-<p><span style="font-weight: 400;">תעודת זהות</span></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">צורף</span></p>
-</td>
-<td colspan="2">
-<p><span style="font-weight: 400;">טופס 106 מחברת X</span></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">צורף</span></p>
-</td>
-<td colspan="2">
-<p><span style="font-weight: 400;">טופס 106 מחברת V</span></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">לא צורף</span></p>
-</td>
-<td colspan="2">
-<p><span style="font-weight: 400;">אישור מביטוח לאומי</span></p>
-</td>
-</tr>
+<?php
+  // if( /* $group_to_check === 'field_5c1b953adb990' || */ $group_to_check === 'field_5c1b970186b31'  || $group_to_check === 'field_5c24daa6a3f57'){
+   $files_groups = array('field_5c1b953adb990','field_5c1b970186b31' ,'field_5c24daa6a3f57','field_5c52e2b12d4e0');
+   foreach($files_groups as $group_to_check){
+    $fild_obj = get_field_object($group_to_check);
+    foreach($fild_obj['sub_fields'] as $one_fild){
+
+      // if($fild_obj['type'] != "")
+       // var_dump($one_fild["type"]);
+        if($one_fild["type"] == "message")
+        continue;
+      if( apply_filters('check_uploud_filds_condition',$one_fild['key'],$post_id)){
+       // var_dump($one_fild["type"]);
+
+        if( have_rows($fild_obj['name']."_".$one_fild['name'],$post_id) ):
+        while ( have_rows($fild_obj['name']."_".$one_fild['name'],$post_id))  : the_row();
+        $sabs = get_field_object($one_fild['key'])['sub_fields'];
+        foreach($sabs as $sab){
+            $fffid =   get_sub_field($sab['name']);
+            if(is_array( $fffid) && isset($fffid['url']) ){
+                    $text = "צורף";
+            }
+            else  $text = "לא צורף";
+
+        }
+            ?>
+          <tr>
+          <td>
+          <p><span style="font-weight: 400;"><?php echo $text; ?></span></p>
+          </td>
+          <td colspan="2">
+          <p><span style="font-weight: 400;"><?php echo $one_fild['label']; ?></span></p>
+          </td>
+          </tr>
+          <?php
+        
+        endwhile;
+        
+        else:
+
+            
+       endif; 
+    } 
+      
+
+    }
+    
+    }
+
+
+?>
+
+
+
 </tbody>
 </table>
 <p>&nbsp;</p>
