@@ -252,8 +252,50 @@ $(".req input").each(function(index) {
 //	e.preventDefault();
 	
 });
+//window.top.location.href
+$("#iframr_btn").click(function (e) { 
+	debugger;
+	var url = $(this).attr("href");
+	window.top.location.href = url;
+	e.preventDefault();
+	e.stopPropagation();
+});
 $("#triger_acf").click(function (e) { 
 	$(".acf_submit").click();
+});
+//$.each(".group_header", function (indexInArray, valueOfElement) { 
+	//elementor-button-link
+$( ".num_group" ).each(function(index) {
+		var text = $(this).text();
+		text = text.replace(/\s/g, '');
+	
+	//	debugger;
+		$( ".elementor-button-link .elementor-button-text" ).each(function(index) {
+	
+	//	$.each("h2", function (indexInArray, valueOfElement) { 
+			debugger;
+			 if($(this).text().replace(/\s/g, '') === text){
+			//	 debugger;
+				 $(this).closest("a").addClass("activ");
+	
+			 }
+		});
+	});
+$( ".group_header" ).each(function(index) {
+	var text = $(this).text();
+	text = text.replace(/\s/g, '');
+
+//	debugger;
+	$( "h2" ).each(function(index) {
+
+//	$.each("h2", function (indexInArray, valueOfElement) { 
+		debugger;
+		 if($(this).text().replace(/\s/g, '') === text){
+		//	 debugger;
+			 $(this).addClass("activ");
+
+		 }
+	});
 });
 $( "[data-fild]" ).each(function(index) {
 	var fild = $(this).attr("data-fild");
