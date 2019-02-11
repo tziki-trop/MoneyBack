@@ -2,6 +2,25 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+.podcast{
+    background-image: url("/wp-content/uploads/2019/02/yahav.jpg");
+
+ }
+ .ui-icon.podcast {
+    background: url("images/24-podcast-square.png") 0 0 no-repeat;
+  }
+ .acf-file-uploader .show-if-value ,.acf-file-uploader{
+     border-radius: 25px;
+ }
+ .acf-file-uploader .file-icon{
+    background: transparent!important;
+    border-left-color: transparent!important;
+ }
+ .elementor-widget-acf_front_end_widget .acf-input .file-info {
+    font-family: "Heebo", Sans-serif;
+    font-weight: 100!important;
+}
  .progres{
     border: solid;
     display: block;
@@ -47,6 +66,29 @@ content: ",";
  .fild_title{
      font-weight: 500;
  }
+ #triger_acf{
+    background-color:#ECF0F2;
+ }
+ #triger_acf.activ{
+     background-color: #0881c1!important;
+ }
+ #triger_acf.activ:before{
+    border-right: 28px solid #0881c1!important;
+
+}
+ #triger_acf:before {
+    cursor: pointer;
+    content: "";
+    position: absolute;
+    left: -27px;
+    top: 0;
+    width: 0;
+    height: 100%;
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    z-index: 3;
+    border-right: 28px solid #ECF0F2!important;
+}
  .acf-row-handle{
      background-color: transparent!important;
  }
@@ -54,8 +96,13 @@ content: ",";
      background-color: #0780BD!important;
  }
  .tufes_menu .menu-item .elementor-item{
-     cursor: none!important;
+     cursor: not-allowed!important;
  }
+ 
+ .tufes_menu .menu-item.fild_menu .elementor-item{
+    cursor: pointer!important;
+    
+}
  .tufes_menu .menu-item.activ_menu .elementor-item{
     cursor: pointer!important;
     

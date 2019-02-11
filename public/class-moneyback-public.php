@@ -72,6 +72,8 @@ class Moneyback_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+		
+		wp_enqueue_style( "jq_min_css", plugin_dir_url( __FILE__ ) . 'css/jquery-ui.min.css', array(), $this->version, 'all' );
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/moneyback-public.css', array(), $this->version, 'all' );
 
@@ -96,7 +98,9 @@ class Moneyback_Public {
 		 * class.
 		 */
 		wp_enqueue_script( 'load_mb_ajax', plugin_dir_url( __FILE__ ) .  'js/loudajax.js', array('jquery') , $this->version, true );
-	
+		
+		wp_enqueue_script( 'jquery_min_ui', plugin_dir_url( __FILE__ ) .  'js/jquery-ui.js', array('jquery') , $this->version, false );
+
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/moneyback-public.js', array( 'jquery' ), $this->version, false );
 
 	}

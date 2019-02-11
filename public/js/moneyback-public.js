@@ -1,16 +1,15 @@
 var form_submited = false;
+
 (function( $ ) {
 	'use strict';
 	$(document).ready(function () {
-			$(".tab_title").click(function(){
-				
-				$(this).closest(".father_box").find(".tab_mida").slideToggle();
-				//$(this).find(".tab_mida").toggle();
-				
-			});
+		form_activ();
+	
+		
+
 		
 			$( document ).on('submit_success', function(e ,b){
-				debugger;
+				
 				var ddd = b;
 				var url  = b.data.redirect_url_to;
 				var id =$(e.target).attr("id");
@@ -159,42 +158,44 @@ $(".acf-file-uploader input[type='file']").each(function(index){
 
 });
 $( 'body' ).delegate( ".acf-field input", "change", function(e) {
-//	debugger;
+//	
+form_activ();
+//console.log(fields);
+});
+function form_activ(){
 	var is_ok = true;
 	var fields = $(".acf-field")
 	.find("select, textarea, input").serializeArray();
 
 $.each(fields, function(i, field) {
-//	debugger;
+//	
 if (!field.value && $("input[name='"+field.name+"']").prop('required')){
 	if($("input[name='"+field.name+"']").attr("type") === "radio"){
-		var radio_buttons = $("input[name='"+field.name+"']");
-         if( radio_buttons.filter(':checked').length == 0)
+		   var radio_buttons = $("input[name='"+field.name+"']");
+           if( radio_buttons.filter(':checked').length == 0)
 			is_ok = false;
-			} 
-else if($("input[name='"+field.name+"']").attr("type") === "hidden"){
+	} 
+     else if($("input[name='"+field.name+"']").attr("type") === "hidden"){
 
-}
-			else{
-	//debugger;
-	is_ok = false;
-}
+     }
+	else{
+	      is_ok = false;
+     }
 
-}
+    }
 
  // alert(field.name + ' is required');
 }); 
 
 if(is_ok){
-	debugger;
+	
 	$("#triger_acf").addClass("activ");
 }
-console.log(fields);
-	//$(e.target).closest("label").find(".file_name").html($(e.target).val());
-});
+}
 $( 'body' ).delegate( ".acf-file-uploader input[type='file']", "change", function(e) {
-	
-	$(e.target).closest("label").find(".file_name").html($(e.target).val());
+	var filename = $(e.target).val().split('\\').pop();
+
+	$(e.target).closest("label").find(".file_name").html(filename);
 });
 $( 'body' ).delegate( ".acf-file-uploader .uploud_button", "click", function(e) {
 	
@@ -228,7 +229,7 @@ $(".tf input").each(function(index){
 	$(this).attr("required",true);
 });
 $("input[name='acf[field_5c48caf5fdb9f][field_5c476b79f5688]']").each(function(index) {
-	debugger;
+	
     $(this).attr("required",true);
 });
 $(".fam_status input").change(function (e) {
@@ -367,7 +368,7 @@ function savetofesajax(ajax_actio,data){
 		'page' : window.location.href,
 		'data' : data
 	};
-	debugger;
+	
 	jQuery.ajax({
         url : "/wp-admin/admin-ajax.php",
         data:data,
@@ -377,7 +378,7 @@ function savetofesajax(ajax_actio,data){
         // canBeLoaded = false; 
         },
         success:function(data){
-			debugger;
+			
 			if(ajax_actio === "get" && data.status == true)
 			add_data_to_filds(data.data);
            //canBeLoaded = true; // the ajax is completed, now we can run it again

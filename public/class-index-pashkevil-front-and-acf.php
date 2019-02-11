@@ -653,10 +653,17 @@ return true;
     $settings = $this->get_settings_for_display();
    
     $famely_status = get_field('personal_famely_status', (int)$settings['pid']);
+    $merid = true;
+    //var_dump($merid);
+
     if($famely_status != ''){
         if($famely_status != 'Married' &&  $famely_status != 'Separated'){
+            $merid = false;
+           // unset($settings['fild157']['field_5c484b31ac382']);//partner_incum
+          //  var_dump($settings['fild157']);
             if (($key = array_search(78, $settings['fild_group_id_array'])) !== false) {
-                unset($settings['fild_group_id_array'][$key]);
+                unset($settings['fild_group_id_array'][$key]);//partner_incum
+                //field_5c484b31ac382
             }
         }
     }
@@ -700,6 +707,9 @@ return true;
               }
               continue;
           }
+          // הורדת פרטי הכנסות בת זוג אם צריך
+          if($group_to_check == "field_5c484b31ac382" && !$merid)
+          continue;
           // בדיקת לוגיקה לפי גרופים
          if($this->check_logic($group_to_check,$settings['pid']))
          $filds [] = $group_to_check;
