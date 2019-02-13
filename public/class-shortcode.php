@@ -220,37 +220,42 @@ foreach ( $blogusers as $user ) {
  
       if($args->menu == "tufes" && isset($_GET['tex_id'])){
         $pages = get_post_meta((int)$_GET['tex_id'], 'pages', true);
+      //  return var_export($pages);
         if(!is_array($pages))
         $tufes = array( get_permalink(40) );
         else{
-        foreach($pages as $fild_pages){
+        foreach(array_unique($pages) as $fild_pages){
             $tufes [] = get_permalink($fild_pages);
         }
-    }
+       }
         $html = str_get_html($items);
-       // return var_export($pages);
-        $index = 0;
+      
+       // $index = -1;
         $curren_page = false;
-        foreach($html->find('a') as $element) {
+        $tufesdddd = '';
+        foreach($html->find('a') as $index => $element) {
+            
+           // $index = $index + 1;
+
             $class =  $element->class;
             $li_class = $html->find('li', $index)->class;
             if (strpos($element->class, 'elementor-item elementor-item-active') !== false )
             $curren_page = true;
             $href =  $element->href;
             if ( in_array( $href ,$tufes)) {
+             //   $tufesdddd .='t';
                $html->find('li', $index)->class = $li_class." fild_menu";
                 $href_up =  $href."?tex_id=".$_GET['tex_id'];
                 $html->find('a', $index)->href = $href_up;
-              //  break;       // echo 'true';
+              //  $tufesdddd .= $href_up;
             }
             else {
-               
-               // $href_up =  "";
-                $html->find('a', $index)->href = '';
-            }
+              $html->find('a', $index)->href = '';
+                 }
           
-            $index++;
+            //$index = $index + 1;
         }
+      //  return  $tufesdddd;
         $index = 0;
         $curren_page = false;
         foreach($html->find('a') as $element){
@@ -258,10 +263,8 @@ foreach ( $blogusers as $user ) {
             $li_class = $html->find('li', $index)->class;
             if (strpos($class, 'elementor-item elementor-item-active') !== false) {
                 $html->find('li', $index)->class = $li_class." activ_menu";
-                break;       // echo 'true';
+                break; 
             }
-            //$li_class = $html->find('li', $index)->class;
-
             $html->find('li', $index)->class = $li_class." activ_menu";
             $index++;
          }

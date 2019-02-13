@@ -2,7 +2,50 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
-
+ .acf-field-5c168eabe4597 .select2-selection--single {
+    background-color: #E4E8EA!important;
+    border-width: 0px!important;
+    border-radius: 15px;
+    padding: 25px;
+    /* border-radius: 25px; */
+}
+.acf-field-5c1a57dba2d90 .select2-selection--single {
+    background-color: #fff!important;
+    border-width: 1px!important;
+    border-radius: 15px!important;
+    padding: 25px;
+}
+#select2-acf-field_5c168e86e4595-field_5c168eabe4597-results li ,#select2-acf-field_5c1a4bfe952c4-field_5c1a57bea2d8f-field_5c1a57dba2d90-results li{
+    font-size: 1.125rem!important;
+    font-weight: 400!important;
+    font-family: "Heebo", Sans-serif!important;
+}
+.acf-field-5c168eabe4597 .select2-selection__arrow , .acf-field-5c1a57dba2d90 .select2-selection__arrow{
+    top:12px!important;
+}
+.acf-field-5c168eabe4597 .select2-selection__rendered  , .acf-field-5c1a57dba2d90 .select2-selection__rendered  {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 12px;
+    left: 0px;
+    font-size: 1.125rem!important;
+    font-weight: 400;
+}
+.side_menu a {
+    cursor: default;
+    background-color: #787d80bf!important; 
+}
+.side_menu h2{
+    color:#787d80bf!important; 
+}
+.side_menu h2.activ{
+    color:#0077b0!important; 
+}
+.side_menu a.activ{
+    cursor: pointer;
+    background-color: #0077b0!important; 
+}
 .podcast{
     background-image: url("/wp-content/uploads/2019/02/yahav.jpg");
 
@@ -75,6 +118,19 @@ content: ",";
  #triger_acf.activ:before{
     border-right: 28px solid #0881c1!important;
 
+}
+.arrou_right::before{
+    cursor: pointer;
+    content: "";
+    position: absolute;
+    right: -27px;
+    top: 0;
+    width: 0;
+    height: 100%;
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    z-index: 3;
+    border-left: 28px solid #0881c1!important;
 }
  #triger_acf:before {
     cursor: pointer;

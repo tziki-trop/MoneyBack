@@ -4,7 +4,7 @@ var form_submited = false;
 	'use strict';
 	$(document).ready(function () {
 		form_activ();
-	
+		side_menu_set();
 		
 
 		
@@ -77,6 +77,8 @@ var form_submited = false;
 		$("#btn_get").click(function (e) { 
 			savetofesajax("get");
 		});
+//copyten
+//	$(document).ready(function () {
 
 		$("#btn_save").click(function (e) { 
 			e.preventDefault();
@@ -157,8 +159,23 @@ $(".acf-file-uploader input[type='file']").each(function(index){
 	$(this).hide();
 
 });
+$( 'body' ).delegate( ".side_menu a", "click", function(e) {
+	e.stopPropagation();
+	e.preventDefault();
+	if(!$(this).hasClass("activ"))
+	return;
+	var id = $(this).attr("href");
+	
+	$([document.documentElement, document.body]).animate({
+        scrollTop: $(id).offset().top - 200
+    }, 2000);
+	});
+$( 'body' ).delegate( ".acf-field-date-picker .acf-label", "click", function(e) {
+$(this).closest(".acf-field-date-picker").find("input").focus();
+});
 $( 'body' ).delegate( ".acf-field input", "change", function(e) {
 //	
+side_menu_set();
 form_activ();
 //console.log(fields);
 });
@@ -169,8 +186,14 @@ function form_activ(){
 
 $.each(fields, function(i, field) {
 //	
+if($("input[name='"+field.name+"']").closest(".acf-field").hasClass("tf")){
+	debugger;
+	if(!$("input[name='"+field.name+"']").closest(".acf-field").find(".selected").length > 0)
+	is_ok = false;
+}
 if (!field.value && $("input[name='"+field.name+"']").prop('required')){
 	if($("input[name='"+field.name+"']").attr("type") === "radio"){
+			
 		   var radio_buttons = $("input[name='"+field.name+"']");
            if( radio_buttons.filter(':checked').length == 0)
 			is_ok = false;
@@ -184,12 +207,15 @@ if (!field.value && $("input[name='"+field.name+"']").prop('required')){
 
     }
 
- // alert(field.name + ' is required');
 }); 
 
 if(is_ok){
 	
 	$("#triger_acf").addClass("activ");
+}
+else{
+	$("#triger_acf").removeClass("activ");
+
 }
 }
 $( 'body' ).delegate( ".acf-file-uploader input[type='file']", "change", function(e) {
@@ -208,7 +234,9 @@ $( 'body' ).delegate( ".acf-file-uploader .uploud_button", "click", function(e) 
 $(".acf-field.tf").each(function(index){
 	var input = $(this).find("input").first();
 	input.attr("required",true);
+	form_activ();
 });
+
 $(".reperter_section").each(function(index){
 $(this).find(".fil_val").each(function (param) { 
 		
@@ -237,24 +265,23 @@ $(".fam_status input").change(function (e) {
 var val = $(this).closest (".fam_status").find("input:checked").val();
 if(val === "Married"){
 	var req = true;
+	$(".menu_fartner a").addClass("activ");
+	$(".menu_fartner h2").addClass("activ");
 }
 else{
+	$(".menu_fartner a").removeClass("activ");
+	$(".menu_fartner h2").removeClass("activ");
+
 	var req = false;
 }
-//how_is_reportin
 
 $(".req input").each(function(index) {
     $(this).attr("required",req);
 });
 
-
-//	var selected_value = $(this+":checked").val();
-//	e.preventDefault();
-	
 });
-//window.top.location.href
+
 $("#iframr_btn").click(function (e) { 
-	debugger;
 	var url = $(this).attr("href");
 	window.top.location.href = url;
 	e.preventDefault();
@@ -263,40 +290,36 @@ $("#iframr_btn").click(function (e) {
 $("#triger_acf").click(function (e) { 
 	$(".acf_submit").click();
 });
-//$.each(".group_header", function (indexInArray, valueOfElement) { 
-	//elementor-button-link
+function side_menu_set(){
 $( ".num_group" ).each(function(index) {
+	
+	if(!$(this).is(":hidden")){
+
 		var text = $(this).text();
 		text = text.replace(/\s/g, '');
-	
-	//	debugger;
+
 		$( ".elementor-button-link .elementor-button-text" ).each(function(index) {
-	
-	//	$.each("h2", function (indexInArray, valueOfElement) { 
-			debugger;
-			 if($(this).text().replace(/\s/g, '') === text){
-			//	 debugger;
+		 if($(this).text().replace(/\s/g, '') === text){
 				 $(this).closest("a").addClass("activ");
 	
 			 }
 		});
+	}
 	});
 $( ".group_header" ).each(function(index) {
+	if(!$(this).is(":hidden")){
 	var text = $(this).text();
 	text = text.replace(/\s/g, '');
 
-//	debugger;
 	$( "h2" ).each(function(index) {
-
-//	$.each("h2", function (indexInArray, valueOfElement) { 
-		debugger;
 		 if($(this).text().replace(/\s/g, '') === text){
-		//	 debugger;
 			 $(this).addClass("activ");
 
 		 }
 	});
+}
 });
+}
 $( "[data-fild]" ).each(function(index) {
 	var fild = $(this).attr("data-fild");
 	var value = $(this).attr("data-fild-val");

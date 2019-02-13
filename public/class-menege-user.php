@@ -179,6 +179,7 @@ public function __construct(){
         $title = "הסיסמה שלך באתר Money Back השתנתה";
         $content = "הסיסמה החדשה שלך באתר: <bt>";
         $content .=  $pas;
+        $content .=  " ";
         $content .=  "באפשרותך לשנות אותה בהגדרות המשתמש באתר";
 
         $headers = array('Content-Type: text/html; charset=UTF-8;', 'From: '.get_bloginfo( "name").' <noreplay@'.str_replace(array( 'http://', 'https://','www.' ),'',home_url()).'>');
@@ -195,13 +196,16 @@ public function __construct(){
         } 
         $user = wp_authenticate( $fields[ 'email' ], $fields[ 'pas' ]);
         if(is_wp_error($user)){
-        $ajax_handler->add_error_message($user->get_error_message());
+            $error = str_replace("\wp-login.php?action=lostpassword",get_permalink(2556),$user->get_error_message());
+          //  $error = $user->get_error_message();
+         //   wp-login.php?action=lostpassword
+        $ajax_handler->add_error_message($error);
         return;
         } 
         wp_clear_auth_cookie();
         wp_set_current_user ( $user->ID );
         wp_set_auth_cookie  ( $user->ID ); 
-        $ajax_handler->add_response_data( 'redirect_url', get_permalink(109));
+        $ajax_handler->add_response_data( 'redirect_url', get_permalink(2556));
     }
     //add_note_to_client
     if($send === "add_note_to_client"){
