@@ -651,10 +651,10 @@ return true;
 
 
     $settings = $this->get_settings_for_display();
-   
-    $famely_status = get_field('personal_famely_status', (int)$settings['pid']);
+
     $merid = true;
-    //var_dump($merid);
+
+    $famely_status = get_field('personal_famely_status', (int)$settings['pid']);
 
     if($famely_status != ''){
         if($famely_status != 'Married' &&  $famely_status != 'Separated'){
@@ -673,6 +673,14 @@ return true;
      if(!empty($group_filds) && !empty($settings['fild'.$group_filds])){
       $this_group_filds = $settings['fild'.$group_filds] ;
       foreach($this_group_filds as $group_to_check){
+        if($group_to_check === "field_5c656f3b4d487"){
+            $how_is_reporting = get_field('how_is_how_is_reporting', (int)$settings['pid']);
+          //  var_dump($how_is_reporting);
+            if($how_is_reporting != "הכנסותי והכנסות בן/בת זוגי")
+            continue;
+            $filds [] = $group_to_check;
+           // continue;
+            }
           // בדיקת טופס 106
           if($group_to_check === "field_5c1b953adb990"){
           $this->add_tfasim($settings['pid']);
