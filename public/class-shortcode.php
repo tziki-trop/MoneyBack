@@ -292,15 +292,12 @@ foreach ( $blogusers as $user ) {
                     'post_type' => 'taxes',
                     'nopaging' => false
                   );
-                if(isset($_POST['post_status']))
+                if(isset($_POST['post_status']) && $_POST['post_status'] != '')
                 $args['post_status'] = $_POST['post_status'];
                 if(isset($_POST['post_id']) && $_POST['post_id'] != '')
                 $args['post__in'] = array( (int)$_POST['post_id']);
                 $meta_query = array();
-               /* 'cpa' : cpa,
-                'from' : from,
-                'to' : to*/
-                if(isset($_POST['cpa']) && $_POST['cpa'] != 'any')
+                if(isset($_POST['cpa']) && $_POST['cpa'] != 'any' && $_POST['cpa'] != '')
                 $meta_query [] =
                     array(
                         'key'     => 'cpa',
@@ -316,7 +313,7 @@ foreach ( $blogusers as $user ) {
                     $date_query ['before'] = $_POST['to'];
                  }
                  $meta_query [] = array( 'relation'  => 'AND' );
-                 if(!empty($date_query))
+                if(!empty($date_query) && $_POST['to'] != '' && $_POST['from'] != '')
                 $args['date_query'] = $date_query;
                 $meta_query [] = array(
                     'key'     => 'payment',
@@ -358,7 +355,7 @@ foreach ( $blogusers as $user ) {
             <div class="one_status <?php echo $status; ?>" data-ststus-name="<?php echo $status; ?>"
              style="background-color: <?php echo $args['color']; ?>;">
                 <a href="">
-                <?php echo $args['name']."(".$args['count'].")"; ?>
+                <?php echo $args['name']."(<span class='count'>".$args['count']."</span>)"; ?>
                 </a>
   
             </div>
@@ -411,18 +408,16 @@ foreach ( $blogusers as $user ) {
      }
     public function get_cpts_tabole(){
         $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
         $args = array(
             'posts_per_page' => 10,
             'post_type' => 'taxes',
-            'paged'          => $paged,
+            'paged'          => $paged,  
             'meta_query' => array(
-                array(
-                    'key'     => 'payment',
-                    'value'   => 'payed',
-                    'compare' => 'LIKE',
-                )
-            )
-              
+                'key'     => 'payment',
+                'value'   => 'payed',
+                'compare' => 'LIKE',
+            )     
           );
         $wp_query = new WP_Query( $args );
         if( $wp_query->have_posts() ){
@@ -477,8 +472,15 @@ foreach ( $blogusers as $user ) {
                     $status['val'] =  get_sub_field('val'); 
                     $args = array(
                         'post_status' => $status['val'],
-                        'post_type' => 'taxes'
-                      );
+                        'post_type' => 'taxes',
+                      );    
+                      $meta_query = array();
+                      $meta_query [] = array(
+                        'key'     => 'payment',
+                        'value'   => 'payed',
+                        'compare' => 'LIKE',
+                    );
+                    $args['meta_query'] = $meta_query;           
                       $the_query = new WP_Query( $args );
                       $status['count'] = $the_query->found_posts;
                       $status['color'] = get_sub_field('color');

@@ -38,11 +38,19 @@ $(".elementor-field-group button").click(function (e) {
     get_ajax_cpt(data , true);
     
 });
+//$('input').on('focusin', function(){
+$( 'body' ).delegate( ".status select", "focusin", function() {
+
+    console.log("Saving value " + $(this).val());
+    debugger;
+    if (typeof $(this).attr('data-old_val') == typeof undefined || $(this).attr('data-old_val') === false)
+    $(this).attr('data-old_val', $(this).val());
+});
 $( 'body' ).delegate( ".status select", "change", function() {
     var td_worrper = $(this).closest("tr");
-  
+    var hold_val =  $(this).attr('data-old_val');
    var id = $(this).closest("tr").data("post-id");
-   update_cpt_status(id ,this.value , td_worrper);
+   update_cpt_status(id ,this.value , td_worrper , hold_val) ;
   });
 $(".one_status").click(function (e) {
     if($(this).hasClass("activ")){
@@ -146,7 +154,7 @@ function get_ajax_cpt(data ,replase){
       //  }
     });
 }
-function update_cpt_status(id ,stsus,td_wor){
+function update_cpt_status(id ,stsus, td_wor , hold){
     td_wor.append("<i class='fa fa-spinner fa-spin'></i>");
     var data = {
         'action': 'update_status',
@@ -162,9 +170,14 @@ function update_cpt_status(id ,stsus,td_wor){
           canBeLoaded = false; 
         },
         success:function(data){
-          
+        debugger;
+         var hold_count = $("div[data-ststus-name='"+hold+"']").find(".count").text();
+         $("div[data-ststus-name='"+hold+"']").find(".count").text(parseInt(hold_count) - 1);
+         var stsus_coint = $("div[data-ststus-name='"+stsus+"']").find(".count").text();
+         $("div[data-ststus-name='"+stsus+"']").find(".count").text(parseInt(stsus_coint) + 1);
+         td_wor.find("select").attr("data-old_val",stsus);
             td_wor.find("i").remove();
-                canBeLoaded = true; // the ajax is completed, now we can run it again
+            canBeLoaded = true; // the ajax is completed, now we can run it again
             }
     
     });
