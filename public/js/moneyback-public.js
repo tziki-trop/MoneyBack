@@ -303,7 +303,11 @@ $(".req input").each(function(index) {
 });
 
 });
-
+$(".father_box").click(function(){
+	debugger;
+	$(this).find(".tab_mida").toggle();
+	
+})
 $("#iframr_btn").click(function (e) { 
 	var url = $(this).attr("href");
 	window.top.location.href = url;

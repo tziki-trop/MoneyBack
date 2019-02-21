@@ -7,9 +7,10 @@ class TaxesShortCode {
     public function __construct(){
         $this->add_wp_actions();
      }
-     public function add_wp_actions(){
+     public function add_wp_actions(){//qanda_1
         add_shortcode('add_filter', [$this,'add_filter']);
         add_shortcode('acf_repeter', [$this,'acf_repeter']);
+        add_shortcode('acf_repeter_qaa', [$this,'acf_repeter_qaa']);    
         add_shortcode('get_cpt_term', [$this,'get_cpt_term']);
         add_shortcode('go_to_edit_post', [$this,'go_to_edit_post']);
         add_shortcode('ststus_payment', [$this,'ststus_payment']);
@@ -119,6 +120,46 @@ class TaxesShortCode {
               // else return $post_id;
               return $print;
     }
+    public function acf_repeter_qaa( $atts = [] ){
+        $atts = array_change_key_case((array)$atts, CASE_LOWER);
+ 
+        // override default attributes with user attributes
+        $wporg_atts = shortcode_atts([
+                                         'main' => '',
+                                         'q' => '',
+                                         'a' => '',
+                                     ]
+                                     , $atts);
+         $o = '';
+         $o .= '<div class=\'worrper\'>';
+        if( have_rows($wporg_atts['main'],"option") ):
+        $in = 0;
+        
+        while ( have_rows($wporg_atts['main'],"option") ) : the_row();
+        $in++;
+        $o .= '<div class=\'qaa\'>';
+        $o .= '<div class=\'qetion\'>';
+
+        $o .= "<p>".get_sub_field("q").'</p>';
+        $o .= '</div>'; 
+        $o .= '<div class=\'anser\'>';
+          $o .= '<p class=\'dis\'>&nbsp;&nbsp;';
+            $o .= get_sub_field("a");
+            $o .= '</p>';
+            $o .= '</div>';  
+     //   }
+        $o .= '</div>';
+
+        endwhile;
+                   
+        else:
+            $o .= '<p>עדיין ריק פה </p>';
+                   
+       endif;
+       $o .= "</div>";
+       return $o;
+              
+      }
      public function acf_repeter( $atts = [] ){
         $atts = array_change_key_case((array)$atts, CASE_LOWER);
  

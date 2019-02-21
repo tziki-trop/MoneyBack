@@ -2,6 +2,7 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
  .acf-field-5c168eabe4597 .select2-selection--single {
     background-color: #E4E8EA!important;
     border-width: 0px!important;
@@ -118,6 +119,9 @@ content: ",";
  #triger_acf.activ:before{
     border-right: 28px solid #0881c1!important;
 
+}
+.arrou_right a:hover{
+background-color: #0783c3!important;
 }
 .arrou_right::before{
     cursor: pointer;
