@@ -4,6 +4,7 @@ var form_submited = false;
 	'use strict';
 	$(document).ready(function () {
 		form_activ();
+		remove_empty();
 		side_menu_set();
 		
 
@@ -153,12 +154,40 @@ var form_submited = false;
 				this.onChange(e, $el);
 			}
 		});
+		$(".acf-file-uploader .show-if-value").each(function(index){
+			debugger;
+			var file_name = $(this).find("p").first().find("strong").html();
+			if(file_name === "")
+			return;
+			var link_to_file = $(this).find("a").first().clone().wrap("<div />").parent().html();;
+			var button = "<div class = \"uploud_worpper uploud_worpper_file\"><button class=\"uploud_button remove_file\" type=\"button\">הסר קובץ</button><span class=\"file_name\">"+link_to_file+"</span></div>";
+			$(button).insertAfter($(this));
+			$(this).hide();
+			$(this).closest(".acf-file-uploader").find(".hide-if-value").css("display","none");
+		
+		});
+		$( 'body' ).delegate( ".remove_file", "click", function(e) {
+			debugger;
+		  $(this).closest(".acf-file-uploader").find(".show-if-value").css("disply","none");
+		  $(this).closest(".acf-file-uploader").find(".uploud_worpper_file").hide();
+
+		  
+		  $(this).closest(".acf-file-uploader").find(".hide-if-value").css("display","block");
+		//  var button = "<div class = \"uploud_worpper\"><button class=\"uploud_button\" type=\"button\">העלה קובץ</button><span class=\"file_name\"></span></div>";
+		//  $(button).insertAfter($(this).closest(".acf-file-uploader").find(".hide-if-value").find("input[type='file']"));
+		  $(this).hide();
+
+			
+			//$(this).closest(".acf-file-uploader").find(".-cancel").click();
+		});
+		//-cancel
 $(".acf-file-uploader input[type='file']").each(function(index){
 	var button = "<div class = \"uploud_worpper\"><button class=\"uploud_button\" type=\"button\">העלה קובץ</button><span class=\"file_name\"></span></div>";
 	$(button).insertAfter($(this));
 	$(this).hide();
 
 });
+//
 $( 'body' ).delegate( ".side_menu a", "click", function(e) {
 	e.stopPropagation();
 	e.preventDefault();
@@ -333,6 +362,11 @@ function loop_side_element(selector,text,secebn_selector,action){
 			}
 	   });
 
+}
+function remove_empty(){
+	if (!$(".mor_fiels_group").length ) {
+		$(".mor_fiels_group_hdr").remove();
+	}
 }
 function side_menu_set(){
 $( ".num_group" ).each(function(index) {
