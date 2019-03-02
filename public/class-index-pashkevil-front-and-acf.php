@@ -704,9 +704,9 @@ return true;
              }
          
            } 
-          //field_5c190a65158e2
+          //field_5c77d47a20b16
            // בדיקת טפסי העלאת קבצים לפי תנאים ספציפיים
-          if( /* $group_to_check === 'field_5c1b953adb990' || */ $group_to_check === 'field_5c1b970186b31'  || $group_to_check === 'field_5c24daa6a3f57'){
+          if(  $group_to_check === 'field_5c77d47a20b16' ||  $group_to_check === 'field_5c77d3e820ac8' ||  $group_to_check === 'field_5c1b970186b31'  || $group_to_check === 'field_5c24daa6a3f57'){
               $fild_obj = get_field_object($group_to_check);
               foreach($fild_obj['sub_fields'] as $one_fild){
                 if( apply_filters('check_uploud_filds_condition',$one_fild['key'],$settings['pid']))

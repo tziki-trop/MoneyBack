@@ -8,7 +8,7 @@ $(document).ready(function () {
 //.tf .acf-button-group
 $("input[type=radio]").change(function (e) { 
   //  e.preventDefault();
-  debugger;
+  
     $(this).closest(".tf").find("label").not(".selected").addClass("label_blue");
 });
 $(".elementor-field-group button").click(function (e) {
@@ -42,7 +42,7 @@ $(".elementor-field-group button").click(function (e) {
 $( 'body' ).delegate( ".status select", "focusin", function() {
 
     console.log("Saving value " + $(this).val());
-    debugger;
+    
     if (typeof $(this).attr('data-old_val') == typeof undefined || $(this).attr('data-old_val') === false)
     $(this).attr('data-old_val', $(this).val());
 });
@@ -138,7 +138,7 @@ function get_ajax_cpt(data ,replase){
           canBeLoaded = false; 
         },
         success:function(data){
-          //  debugger;
+          //  
           misha_loadmore_params.max_page = data.max_page;
           misha_loadmore_params.current_page++;
           if(replase){
@@ -155,7 +155,7 @@ function get_ajax_cpt(data ,replase){
     });
 }
 function update_cpt_status(id ,stsus, td_wor , hold){
-    td_wor.append("<i class='fa fa-spinner fa-spin'></i>");
+    td_wor.find("td").last().append("<i class='fa fa-spinner fa-spin'></i>");
     var data = {
         'action': 'update_status',
         'post_id' : id,
@@ -170,7 +170,7 @@ function update_cpt_status(id ,stsus, td_wor , hold){
           canBeLoaded = false; 
         },
         success:function(data){
-        debugger;
+        
          var hold_count = $("div[data-ststus-name='"+hold+"']").find(".count").text();
          $("div[data-ststus-name='"+hold+"']").find(".count").text(parseInt(hold_count) - 1);
          var stsus_coint = $("div[data-ststus-name='"+stsus+"']").find(".count").text();

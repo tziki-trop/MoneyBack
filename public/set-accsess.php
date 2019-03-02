@@ -26,6 +26,19 @@ $this->add_actions();
 	public function set_access(){
         
         $role = $this->get_user_role();
+        // עמוד סינגל
+        if(is_single()){
+        //   var_dump($role);
+
+            if($role == false)
+            wp_redirect(get_permalink(224));
+           else if(!in_array("cpa",$role) && !in_array("administrator",$role)){
+              wp_redirect(get_permalink(224));
+           }
+        } 
+        // עמוד מנהל רגיל
+        if(is_page(447) && !is_user_logged_in() && !in_array("cpa",$role))
+        wp_redirect(get_permalink(224));
         // עמוד מנהל ראשי 554
         if((is_page(554) || is_page(2556)) && in_array("cpa", $role ))
         wp_redirect(get_permalink(447));

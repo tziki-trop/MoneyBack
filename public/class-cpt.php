@@ -65,8 +65,32 @@ public function check_uploud_filds_condition($fild,$pid){
          }
          else return false;
           break;
+          case 'field_5c7416a3896ba'://personal_Details_leave_outhere
+          $btl = get_post_meta($pid, 'personal_Details_personal_Details_iver_partner', true);
+          if($btl == "false" || $btl == false || $btl == "" || $btl == null){
+            $btl2 = get_post_meta($pid, 'personal_Details_chileds_childs_how_hold_the_boy', true);
+            if(!is_array($btl2))
+            return false;
+            if(in_array("ילד זה נטול יכולת", $btl2) || in_array("ילד זה נמצא במוסד טיפול מיוחד", $btl2) || in_array("ילד בעל לקות למידה", $btl2))
+            return true;
+          }
+          else return true;
+         if(is_array($btl)){
+          $key = in_array("דמי מילואים", $btl);
+          return $key;
+         }
+         else return false;
+          break;
           //field_5c24de5321108
           case 'field_5c24de5321108':
+          $btl = get_post_meta($pid, 'personal_Details_chileds_childs_how_hold_the_boy', true);
+         if(is_array($btl)){
+          $key = in_array("ילד בעל לקות למידה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c7416a6896bd':
           $btl = get_post_meta($pid, 'personal_Details_chileds_childs_how_hold_the_boy', true);
          if(is_array($btl)){
           $key = in_array("ילד בעל לקות למידה", $btl);
@@ -82,7 +106,168 @@ public function check_uploud_filds_condition($fild,$pid){
          }
          else return false;
           break;
+          case 'field_5c5fff46502a2':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+         if(is_array($btl)){
+          $key = in_array("דמי מילואים", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820aca':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("דמי מילואים", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820acc':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("דמי מילואים", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820acd':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("דמי אבטלה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820acf':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("דמי אבטלה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          //field_5c77d3e820ae2	field_5c77d3e820ae4
+          case 'field_5c77d3e820ae2':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("קצבת שאירים", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ae4':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("קצבת שאירים", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820adf':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("דני נכות מעבודה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ae1':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("דני נכות מעבודה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820adc':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("גמלת נכות", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ade':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("גמלת נכות", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ad9':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("קצבת זקנה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820adb':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("קצבת זקנה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ad6':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("פגיעה בעבודה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ad8':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("פגיעה בעבודה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ad3':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("שמירת הריון", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ad5':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("שמירת הריון", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ad0':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("דמי לידה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
+          case 'field_5c77d3e820ad2':
+          $btl = get_post_meta($pid, 'incum_partner_btl', true);
+         if(is_array($btl)){
+          $key = in_array("דמי לידה", $btl);
+          return $key;
+         }
+         else return false;
+          break;
           case 'field_5c24d8aca3f4a':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+          $key = in_array("דמי אבטלה", $btl);
+          return $key;
+          }
+        else return false;
+          break;
+          case 'field_5c7414f075e78':
           $btl = get_post_meta($pid, 'incum_btl', true);
           if(is_array($btl)){
           $key = in_array("דמי אבטלה", $btl);
@@ -98,7 +283,24 @@ public function check_uploud_filds_condition($fild,$pid){
         }
         else return false;
           break;
+          case 'field_5c7414f175e79':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+          $key = in_array("דמי לידה", $btl);
+          return $key;
+        }
+        else return false;
+          break;
           case 'field_5c24d962a3f4e':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+
+          $key = in_array("שמירת הריון", $btl);
+          return $key;
+        }
+        else return false;
+          break;
+          case 'field_5c7414f175e7a':
           $btl = get_post_meta($pid, 'incum_btl', true);
           if(is_array($btl)){
 
@@ -116,7 +318,25 @@ public function check_uploud_filds_condition($fild,$pid){
         }
         else return false;
           break;
+          case 'field_5c7414f975e7c':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+
+          $key = in_array("פגיעה בעבודה", $btl);
+          return $key;
+        }
+        else return false;
+          break;
           case 'field_5c24d98ba3f50':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+
+          $key = in_array("קצבת זקנה", $btl);
+          return $key;
+        }
+        else return false;
+          break;
+          case 'field_5c7414f975e7d':
           $btl = get_post_meta($pid, 'incum_btl', true);
           if(is_array($btl)){
 
@@ -134,7 +354,25 @@ public function check_uploud_filds_condition($fild,$pid){
         }
         else return false;
           break;
+          case 'field_5c7414f175e7b':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+
+          $key = in_array("גמלת נכות", $btl);
+          return $key;
+        }
+        else return false;
+          break;
           case 'field_5c24d9aea3f52':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+
+          $key = in_array("דני נכות מעבודה", $btl);
+          return $key;
+        }
+        else return false;
+          break;
+          case 'field_5c7414eb75e77':
           $btl = get_post_meta($pid, 'incum_btl', true);
           if(is_array($btl)){
 
@@ -152,14 +390,30 @@ public function check_uploud_filds_condition($fild,$pid){
         }
         else return false;
           break;
+          case 'field_5c7414fb75e7e':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+
+          $key = in_array("קצבת שאירים", $btl);
+          return $key;
+        }
+        else return false;
+          break;
           //field_5c24e08821119
           case 'field_5c24e08821119':
           $btl = get_post_meta($pid, 'personal_Details_Which_deposit', true);
           if(is_array($btl)){
-         // $key = in_array("קצבת שאירים", $btl);
           return true;
           }
           else return false;
+          break;
+          case 'field_5c741749896c4':
+          $btl = get_post_meta($pid, 'personal_Details_Which_deposit', true);
+          if(is_array($btl)){
+          return true;
+          }
+          else return false;
+          break;
           case 'field_5c24d9bfa3f53':
           $btl = get_post_meta($pid, 'incum_btl', true);
           if(is_array($btl)){
@@ -178,8 +432,38 @@ public function check_uploud_filds_condition($fild,$pid){
         }
         else return false;
           break;
+          case 'field_5c7414fc75e7f':
+          $btl = get_post_meta($pid, 'incum_btl', true);
+          if(is_array($btl)){
+
+          $key = in_array("אחר", $btl);
+          return $key;
+        }
+        else return false;
+          break;
           case 'field_5c24da20a3f55':
           $data = get_post_meta($pid, 'incum_do_you_get2', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c7414fc75e80':
+          $data = get_post_meta($pid, 'incum_do_you_get2', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d3e820ae8':
+          $data = get_post_meta($pid, 'incum_partner_do_you_get2', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d3e820aea':
+          $data = get_post_meta($pid, 'incum_partner_do_you_get2', true);
         //  var_dump($data);
           if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
@@ -192,19 +476,64 @@ public function check_uploud_filds_condition($fild,$pid){
           return false;
           return true;
           break;
-          case 'field_5c24dacea3f58':
-         // var_dump("test");
-          //field_5c16c3320ba99 resing
-          $data = get_post_meta($pid, 'incum_resing', true);
-                  //  var_dump($data);
-
+          case 'field_5c741749896c5':
+          $data = get_post_meta($pid, 'personal_Details_leave_outhere', true);
+        //  var_dump($data);
           if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          //field_5c77d47a20b43	field_5c77d47a20b45
+          case 'field_5c77d47a20b43':
+          $data = get_post_meta($pid, 'personal_Details_partner_leave_outhere', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b45':
+          $data = get_post_meta($pid, 'personal_Details_partner_leave_outhere', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24dacea3f58':
+          $data = get_post_meta($pid, 'incum_resing', true);
+         if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c7414fc75e82':
+          $data = get_post_meta($pid, 'incum_resing', true);
+         if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
           return true;
           break;
           //field_5c16c3320ba99
           case 'field_5c24dd5e21100':
           $data = get_post_meta($pid, 'incum_bank', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c74152375e84':
+          $data = get_post_meta($pid, 'incum_bank', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b1b':
+          $data = get_post_meta($pid, 'incum_partner_bank', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b1d':
+          $data = get_post_meta($pid, 'incum_partner_bank', true);
         //  var_dump($data);
           if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
@@ -217,7 +546,34 @@ public function check_uploud_filds_condition($fild,$pid){
           return false;
           return true;
           break;
+          case 'field_5c7414fc75e83':
+          $data = get_post_meta($pid, 'incum_lottory', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b1e':
+          $data = get_post_meta($pid, 'incum_partner_lottory', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b20':
+          $data = get_post_meta($pid, 'incum_partner_lottory', true);
+        //  var_dump($data);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
           case 'field_5c24de1e21106':
+          $data = get_post_meta($pid, 'personal_Details_personal_Details_iver_partner', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c7416a6896bb':
           $data = get_post_meta($pid, 'personal_Details_personal_Details_iver_partner', true);
           if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
@@ -229,8 +585,57 @@ public function check_uploud_filds_condition($fild,$pid){
           return false;
           return true;
           break;
+          case 'field_5c7416a7896be':
+          $data = get_post_meta($pid, 'personal_Details_personal_Details_iver_partner', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          //field_5c77d47a20b21 field_5c77d47a20b23 field_5c77d47a20b24 field_5c77d47a20b26
+          case 'field_5c77d47a20b21':
+          $data = get_post_meta($pid, 'personal_Details_partner_iver_partner', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b23':
+          $data = get_post_meta($pid, 'personal_Details_partner_iver_partner', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b24':
+          $data = get_post_meta($pid, 'personal_Details_partner_iver_partner', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b26':
+          $data = get_post_meta($pid, 'personal_Details_partner_iver_partner', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
           case 'field_5c24def32110c':
           $data = get_post_meta($pid, 'personal_Details_mezunot', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c7416a7896bf':
+          $data = get_post_meta($pid, 'personal_Details_mezunot', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b2d':
+          $data = get_post_meta($pid, 'personal_Details_partner_mezunot', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b2f':
+          $data = get_post_meta($pid, 'personal_Details_partner_mezunot', true);
           if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
           return true;
@@ -241,20 +646,84 @@ public function check_uploud_filds_condition($fild,$pid){
           return false;
           return true;
           break;
+          case 'field_5c7416a8896c0':
+          $data = get_post_meta($pid, 'personal_Details_iver', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          //field_5c77d47a20b30	field_5c77d47a20b32
+          case 'field_5c77d47a20b32':
+          $data = get_post_meta($pid, 'personal_Details_partner_iver', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b30':
+          $data = get_post_meta($pid, 'personal_Details_partner_iver', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
           case 'field_5c24df8621113':
           $data = get_post_meta($pid, 'personal_Details_Police', true);
           if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
           return true;
           break;
-     /*     case 'field_5c24dfb821115':
+          case 'field_5c7416a6896bc':
+          $data = get_post_meta($pid, 'personal_Details_Police', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          //field_5c77d47a20b36	field_5c77d47a20b38
+          case 'field_5c77d47a20b36':
+          $data = get_post_meta($pid, 'personal_Details_partner_Police', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b38':
+          $data = get_post_meta($pid, 'personal_Details_partner_Police', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c24e05a21117':
           $data = get_post_meta($pid, 'personal_Details_lerning', true);
           if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
           return true;
-          break; */
-          case 'field_5c24e05a21117':
+          break;
+          case 'field_5c74169f896b9':
           $data = get_post_meta($pid, 'personal_Details_lerning', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          //field_5c77d47a20b39	field_5c77d47a20b3b
+          case 'field_5c77d47a20b39':
+          $data = get_post_meta($pid, 'personal_Details_partner_lerning', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b3b':
+          $data = get_post_meta($pid, 'personal_Details_partner_lerning', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          //field_5c77d47a20b40	field_5c77d47a20b42
+          case 'field_5c77d47a20b40':
+          $data = get_post_meta($pid, 'personal_Details_partner_pay_lala', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b42':
+          $data = get_post_meta($pid, 'personal_Details_partner_pay_lala', true);
           if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
           return true;
@@ -265,8 +734,33 @@ public function check_uploud_filds_condition($fild,$pid){
           return false;
           return true;
           break;
+          case 'field_5c741748896c3':
+          $data = get_post_meta($pid, 'personal_Details_pay_lala', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
           case 'field_5c24e1482111f':
           $data = get_post_meta($pid, 'incum_more_income', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c7416a8896c2':
+          $data = get_post_meta($pid, 'incum_more_income', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          //field_5c77d47a20b46	field_5c77d47a20b48
+          case 'field_5c77d47a20b46':
+          $data = get_post_meta($pid, 'incum_partner_more_income', true);
+          if($data == "false" || $data == false || $data == "" || $data == null)
+          return false;
+          return true;
+          break;
+          case 'field_5c77d47a20b48':
+          $data = get_post_meta($pid, 'incum_partner_more_income', true);
           if($data == "false" || $data == false || $data == "" || $data == null)
           return false;
           return true;
@@ -285,6 +779,25 @@ public function check_uploud_filds_condition($fild,$pid){
           return false;
           return true;
           break;
+          case 'field_5c7416a8896c1':
+          $data = get_post_meta($pid, 'personal_Details_offsea_copy', true);
+         if($data == "false" || $data == false || $data == "" || $data == null)
+         return false;
+         return true;
+         break;
+         //field_5c77d47a20b33	field_5c77d47a20b35
+         case 'field_5c77d47a20b33':
+         $data = get_post_meta($pid, 'personal_Details_partner_offsea_copy', true);
+        if($data == "false" || $data == false || $data == "" || $data == null)
+        return false;
+        return true;
+        break;
+        case 'field_5c77d47a20b35':
+        $data = get_post_meta($pid, 'personal_Details_partner_offsea_copy', true);
+       if($data == "false" || $data == false || $data == "" || $data == null)
+       return false;
+       return true;
+       break;
           case 'field_5c4e2d0324a10':
 
           $data = get_post_meta($pid, 'incum_do_you_get_else_copy_copy', true);
@@ -293,6 +806,12 @@ public function check_uploud_filds_condition($fild,$pid){
          return false;
          return true;
          break;
+         case 'field_5c7414fc75e81':
+         $data = get_post_meta($pid, 'incum_do_you_get_else_copy_copy', true);
+        if($data == "false" || $data == false || $data == "" || $data == null)
+        return false;
+        return true;
+        break;
           
           
           default:

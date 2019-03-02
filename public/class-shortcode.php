@@ -333,6 +333,10 @@ foreach ( $blogusers as $user ) {
                     'post_type' => 'taxes',
                     'nopaging' => false
                   );
+                $role = $this->get_user_role();
+                 $is_apc = in_array("cpa", $role );
+                if($is_apc)
+                $_POST['cpa'] = get_current_user_id();
                 if(isset($_POST['post_status']) && $_POST['post_status'] != '')
                 $args['post_status'] = $_POST['post_status'];
                 if(isset($_POST['post_id']) && $_POST['post_id'] != '')
@@ -382,10 +386,12 @@ foreach ( $blogusers as $user ) {
     public function status_cpt_tex(){
         if( !is_user_logged_in() ) 
         return '';
-        $statuses = $this->get_cpt_by_status();
-         $user = wp_get_current_user();
-         $role = ( array ) $user->roles;
-         if(in_array("cpa",$role)){
+        $user = wp_get_current_user();
+        $role = ( array ) $user->roles;
+        $is_cpa = in_array("cpa",$role);
+      
+        $statuses = $this->get_cpt_by_status( $is_cpa);
+        if($is_cpa){
             unset($statuses['new']);
          }
         ob_start();
@@ -407,8 +413,10 @@ foreach ( $blogusers as $user ) {
         ob_end_clean();
         return $output;
      }
-    protected function get_status_select($value){
+    protected function get_status_select($value,$is_cpa = false){
          $statuses = $this->get_cpt_by_status();
+         if($is_cpa)
+         unset($statuses["new"]);
         ?>
         <select  name="status">
 
@@ -419,7 +427,7 @@ foreach ( $blogusers as $user ) {
         <?php
 
      }
-    protected function get_one_row(){
+    protected function get_one_row($is_cpa = false){
          ?>
             
 
@@ -440,28 +448,48 @@ foreach ( $blogusers as $user ) {
         <?php echo get_field('cpa')['display_name']; ?>
         </span></td>
          <td class="status">
-             <? $this->get_status_select(get_post_status(get_the_ID())); ?>
+             <? $this->get_status_select(get_post_status(get_the_ID()),$is_cpa); ?>
         </td>
         </tr>
 
 
         <?php
      }
+     protected function get_user_role(){
+		if( is_user_logged_in() ) {
+        $user = wp_get_current_user();
+         $role = ( array ) $user->roles;
+         return $role;
+          } else {
+          return false;
+        }
+	}
     public function get_cpts_tabole(){
         $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-
+        $role = $this->get_user_role();
+        $is_apc = in_array("cpa", $role );
+        $meta_query = array(array(
+            'key'     => 'payment',
+            'value'   => 'payed',
+            'compare' => 'LIKE',
+        ));
+        if($is_apc){
+            $meta_query [] =   array(
+                'key'     => 'cpa',
+                'value'   => get_current_user_id(),
+                'compare' => 'LIKE',
+            );
+        }
         $args = array(
             'posts_per_page' => 10,
             'post_type' => 'taxes',
             'paged'          => $paged,  
-            'meta_query' => array(
-                'key'     => 'payment',
-                'value'   => 'payed',
-                'compare' => 'LIKE',
-            )     
+            'meta_query' => $meta_query
           );
         $wp_query = new WP_Query( $args );
         if( $wp_query->have_posts() ){
+        
+       
             ob_start();
             ?>
          <table>
@@ -479,7 +507,7 @@ foreach ( $blogusers as $user ) {
             <?php
          while ($wp_query->have_posts()) : $wp_query->the_post();
       
-         $this->get_one_row();
+         $this->get_one_row( $is_apc );
             endwhile;
         
             ?> 
@@ -502,7 +530,7 @@ foreach ( $blogusers as $user ) {
         }
         return '';
      }
-    protected function get_cpt_by_status(){
+    protected function get_cpt_by_status( $is_apc = false){
              $statuses = [];
             if( have_rows('cpt_status','option') ):
             while ( have_rows('cpt_status','option') ) : the_row();
@@ -521,6 +549,13 @@ foreach ( $blogusers as $user ) {
                         'value'   => 'payed',
                         'compare' => 'LIKE',
                     );
+                    if($is_apc){
+                        $meta_query [] =   array(
+                            'key'     => 'cpa',
+                            'value'   => get_current_user_id(),
+                            'compare' => 'LIKE',
+                        );
+                    }
                     $args['meta_query'] = $meta_query;           
                       $the_query = new WP_Query( $args );
                       $status['count'] = $the_query->found_posts;
